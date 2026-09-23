@@ -3719,6 +3719,88 @@ void Body_ProfileReset(void)
  * cube" (OBJECT.C:2061-2072), che tiene la posizione dentro la griglia 64x64:
  * senza, si esce dal cubo e si legge una cella che non c'e'.
  * ------------------------------------------------------------------------- */
+/* ---------------------------------------------------------------------------
+ * S51: `SetInterDepObjet` (P_ANIM.C:595), with the state in the ACTOR.
+ *
+ * The fork's DoAnim calls it with the body; the Jaguar keeps the animation
+ * state in T_OBJET (AnimSrcFrame, AnimMemoTicks, PtrPoseSrc - hal.h), so the
+ * fork's call goes through engine_c/port/jag_anim.c to this. It was the first
+ * half of Body_AnimTick, cut out whole: the bench (host_body.c --clock) now
+ * exercises the very function the game calls.
+ *
+ * Returns -1 when the actor has no usable animation this frame (the fork
+ * checks the same things before calling), 0 when the current frame is not
+ * reached yet, 1 when it is - and then, like the original, records the
+ * reached frame and the time as the new interpolation source.
+ * ------------------------------------------------------------------------- */
+int Body_InterDep(T_OBJET *o, T_ANIMSTEP *st)
+{
+    const le_byte *anim, *fd;
+    UWORD nbf, nba, stride;
+    ULONG elapsed;
+    WORD tot, cur;
+    WORD msrot, stepbeta, stepx, stepy, stepz;
+    int arrived;
+
+    anim = (const le_byte *)HQR_Get(HQR_ANIMS, o->Anim);
+    if (!anim)
+        return -1;
+    nbf = LE16u(anim);
+    nba = LE16u(anim + 2);
+    if (nbf == 0 || nba == 0 || (UWORD)o->Frame >= nbf)
+        return -1;
+
+    stride = (UWORD)(nba * 8 + 8);
+    fd = anim + 8 + (long)stride * (UWORD)o->Frame;
+    tot = LE16(fd);
+
+    /* Lo STESSO confronto a 32 bit di pose_load, e per lo stesso motivo:
+     * ridurre il trascorso a WORD prima di confrontarlo lo fa diventare
+     * negativo dopo 32767 tick di posa ferma. Qui il rischio e' maggiore
+     * che li', perche' una posa ferma per dieci minuti la produce
+     * l'orologio, non il banco. */
+    elapsed = TimerRef - o->AnimMemoTicks;
+    arrived = (elapsed >= (ULONG)tot);
+
+    /* L'intestazione del fotogramma e il record del gruppo 0:
+     *   +0 durata   +2 X  +4 Y  +6 Z
+     *   +8 rotazione maestra  +10 alpha  +12 beta  +14 gamma
+     * La rotazione maestra e' una BANDIERA e non si scala mai; gli altri
+     * sei si prendono interi se il fotogramma e' arrivato, in proporzione
+     * altrimenti (P_ANIM.C:640-666). */
+    msrot = LE16(fd + 8);
+
+    if (arrived) {
+        stepx    = LE16(fd + 2);
+        stepy    = LE16(fd + 4);
+        stepz    = LE16(fd + 6);
+        stepbeta = LE16(fd + 12);
+    } else {
+        WORD t = tot ? tot : 1;
+
+        cur      = (WORD)elapsed;
+        stepbeta = (WORD)(((LONG)LE16(fd + 12) * cur) / t);
+        stepx    = (WORD)(((LONG)LE16(fd + 2) * cur) / t);
+        stepy    = (WORD)(((LONG)LE16(fd + 4) * cur) / t);
+        stepz    = (WORD)(((LONG)LE16(fd + 6) * cur) / t);
+    }
+
+
+    if (arrived) {
+        o->AnimSrcFrame = o->Frame;
+        o->AnimMemoTicks = TimerRef;
+    }
+    st->anim  = anim;
+    st->nbf   = nbf;
+    st->msrot = msrot;
+    st->beta  = stepbeta;
+    st->x     = stepx;
+    st->y     = stepy;
+    st->z     = stepz;
+    return arrived;
+}
+
+
 void Body_AnimTick(void)
 {
     WORD n;
@@ -3757,47 +3839,20 @@ void Body_AnimTick(void)
          * muove con RealAngle e non con l'animazione: e' M5. */
         if (o->Flags & SPRITE_3D)
             continue;
-        anim = (const le_byte *)HQR_Get(HQR_ANIMS, o->Anim);
-        if (!anim)
-            continue;
-        nbf = LE16u(anim);
-        nba = LE16u(anim + 2);
-        if (nbf == 0 || nba == 0 || (UWORD)o->Frame >= nbf)
-            continue;
+        {
+            T_ANIMSTEP st;
+            int r = Body_InterDep(o, &st);
 
-        stride = (UWORD)(nba * 8 + 8);
-        fd = anim + 8 + (long)stride * (UWORD)o->Frame;
-        tot = LE16(fd);
-
-        /* Lo STESSO confronto a 32 bit di pose_load, e per lo stesso motivo:
-         * ridurre il trascorso a WORD prima di confrontarlo lo fa diventare
-         * negativo dopo 32767 tick di posa ferma. Qui il rischio e' maggiore
-         * che li', perche' una posa ferma per dieci minuti la produce
-         * l'orologio, non il banco. */
-        elapsed = TimerRef - o->AnimMemoTicks;
-        arrived = (elapsed >= (ULONG)tot);
-
-        /* L'intestazione del fotogramma e il record del gruppo 0:
-         *   +0 durata   +2 X  +4 Y  +6 Z
-         *   +8 rotazione maestra  +10 alpha  +12 beta  +14 gamma
-         * La rotazione maestra e' una BANDIERA e non si scala mai; gli altri
-         * sei si prendono interi se il fotogramma e' arrivato, in proporzione
-         * altrimenti (P_ANIM.C:640-666). */
-        msrot = LE16(fd + 8);
-
-        if (arrived) {
-            stepx    = LE16(fd + 2);
-            stepy    = LE16(fd + 4);
-            stepz    = LE16(fd + 6);
-            stepbeta = LE16(fd + 12);
-        } else {
-            WORD t = tot ? tot : 1;
-
-            cur      = (WORD)elapsed;
-            stepbeta = (WORD)(((LONG)LE16(fd + 12) * cur) / t);
-            stepx    = (WORD)(((LONG)LE16(fd + 2) * cur) / t);
-            stepy    = (WORD)(((LONG)LE16(fd + 4) * cur) / t);
-            stepz    = (WORD)(((LONG)LE16(fd + 6) * cur) / t);
+            if (r < 0)
+                continue;
+            arrived  = r;
+            anim     = st.anim;
+            nbf      = st.nbf;
+            msrot    = st.msrot;
+            stepbeta = st.beta;
+            stepx    = st.x;
+            stepy    = st.y;
+            stepz    = st.z;
         }
 
         if (msrot)
@@ -3825,8 +3880,7 @@ void Body_AnimTick(void)
         o->WorkFlags &= (WORD)~(ANIM_END + NEW_FRAME);
 
         if (arrived) {
-            o->AnimSrcFrame = o->Frame;
-            o->AnimMemoTicks = TimerRef;
+            /* AnimSrcFrame and AnimMemoTicks: Body_InterDep already did. */
             o->Frame = (WORD)(o->Frame + 1);
             o->WorkFlags |= NEW_FRAME;
 

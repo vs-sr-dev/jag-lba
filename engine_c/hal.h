@@ -895,6 +895,13 @@ void Body_PinArm(void);
 /* L'orologio dell'animazione: fa arrivare i fotogrammi scaduti e ne comincia
  * uno nuovo. UNA volta per quadro di gioco e PRIMA di Body_DrawAll - non una
  * volta per disegno, o l'animazione andrebbe alla velocita' dei ridisegni. */
+/* S51: SetInterDepObjet with the state in the actor (body_draw.c). */
+typedef struct {
+    const unsigned char *anim;
+    UWORD nbf;
+    WORD  msrot, beta, x, y, z;
+} T_ANIMSTEP;
+int  Body_InterDep(T_OBJET *o, T_ANIMSTEP *st);
 void Body_AnimTick(void);
 
 /* Le normali convertite in forma nativa vivono nell'arena PER-CUBO. Va chiamata
