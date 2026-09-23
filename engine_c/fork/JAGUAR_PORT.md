@@ -46,7 +46,7 @@ closest model because it also has 2 MB.
 The fork wants files, LRU pools (`HQR_Init_Ressource`) and a block heap
 (HQM). The cartridge has every archive indexed, and `HQR_Get` already returns
 a pointer in place (or an entry expanded once into the per-room arena). So
-the fork's HQR functions are implemented on top of the HAL (`jag/jag_hqr.c`),
+the fork's HQR functions are implemented on top of the HAL (`engine_c/port/jag_hqr.c`),
 by archive name: no filesystem, no pools, and the whole eviction/compaction
 class of bugs does not exist here.
 
