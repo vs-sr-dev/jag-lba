@@ -118,3 +118,27 @@ Each step ends with a build that runs; the visible ones are marked.
 
 | # | File | What | Why |
 |---|------|------|-----|
+| 1 | `LIB_MENU/MENUFUNC.C` | `PORT_JAG` added to the `Message()` duplicate guard | PERSO.C defines its own, as on SDL/NDS/PSX |
+| 2 | `game/PERSO.C` | `TheEnd` under `#ifndef PORT_JAG` | ours (`hal_panic.c`) draws the code on screen and stops; this one printf()s and exits to DOS |
+
+## Found while building the seam (2026-09-23), not yet acted on
+
+Each of these would have compiled, linked and misbehaved in silence.
+
+- **`NbObjets`/`NbBodys` are `LONG` in GLOBAL.C, were `WORD` in our hal.h.**
+  A big-endian read of the wrong width returns the HIGH half: zero actors.
+  Fixed on our side. Same risk for every shared global and struct: a layout
+  header with `sizeof`/`offsetof` checked by `_Static_assert` on BOTH sides
+  (T_OBJET first - ours appends three fields the fork's must also get).
+- **The cartridge's bodies are JBD (S43), not LBA1's format.** Three fork
+  sites read a body: `SearchBody` (FICHE.C:636) calls `PatchObjet` on it,
+  `InitBody` (OBJECT.C:1064) reads the ZV at `+2` (JBD has it at `+28`,
+  big-endian), and the P_ANIM calls. All three go through the seam, step 3.
+- **`WorldCodeBrick` read `TabBlock` offsets as a native `ULONG`**: LE data,
+  wrong on a 68000. Moot: it is rewritten over `Grid_BlockByte`.
+- **The fork busy-waits on `Key`/`Fire` as well as `TimerRef`**: input has to
+  come from the video interrupt too (`port/jag_sys.c:Jag_Vbl`, not wired yet).
+- **`HQR_Flag` precedes a write into the entry** (`PatchObjet` after a fresh
+  load): a pointer into ROM would drop it. Every archive but BRICK is LZSS in
+  the cartridge, so `HQR_Get` always hands out a DRAM copy; keep it that way
+  for anything the fork patches.
