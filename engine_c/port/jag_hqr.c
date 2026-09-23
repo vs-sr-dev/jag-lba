@@ -235,3 +235,21 @@ void HQM_Free(void *ptr)
 {
     (void)ptr;
 }
+
+/* A RESS entry the fork keeps as a table of native WORDs (PtrZvExtra): swapped
+ * once, in the fork's own heap copy. LoadMalloc_HQR copies, so the cartridge
+ * and HQR_Get's copy (read with LE16 by sprite_draw.c) stay little-endian. */
+void Jag_SwapResWords(void *p, unsigned short index)
+{
+    UBYTE *b = (UBYTE *)p;
+    ULONG n, i;
+
+    if (!b)
+        return;
+    n = HQR_Size(HQR_RESS, index) & ~1UL;
+    for (i = 0; i < n; i += 2) {
+        UBYTE t = b[i];
+        b[i] = b[i + 1];
+        b[i + 1] = t;
+    }
+}

@@ -1752,6 +1752,13 @@ void lba_main(int argc, UBYTE *argv[]) /* PORT: was main(); SDL wrapper in platf
 	PtrPal = LoadMalloc_HQR(PATH_RESSOURCE "ress.hqr", RESS_PAL);
 	BufferShadow = LoadMalloc_HQR(PATH_RESSOURCE "ress.hqr", RESS_SHADOW_GPH);
 	PtrZvExtra = LoadMalloc_HQR(PATH_RESSOURCE "ress.hqr", RESS_GOODIES_GPC);
+#ifdef PORT_JAG
+	/* PORT: 8 LE WORDs a sprite (screen offset, collision box) read
+	 * natively by InitSprite, EXTRA.C and AffScene: swapped once here. The
+	 * box was byte-reversed, so nothing ever stood ON a sprite carrier: the
+	 * nurse stayed where the hover platform left her (JAGUAR_PORT.md #14). */
+	Jag_SwapResWords(PtrZvExtra, RESS_GOODIES_GPC);
+#endif
 	LbaFont = LoadMalloc_HQR(PATH_RESSOURCE "ress.hqr", RESS_FONT_GPM);
 	if (!LbaFont)
 		TheEnd(NOT_ENOUGH_MEM, "LbaFont");

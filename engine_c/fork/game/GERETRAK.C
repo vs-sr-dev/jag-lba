@@ -252,6 +252,36 @@ void DoTrack(WORD numobj)
 					WinText( &DWin, "Obj Y: ", ptrobj->PosObjY ) ;
 					FlipWindow( &DWin ) ;
 				*/
+#ifdef PORT_JAG
+				/* PORT: also arrived when this frame's step would reach or
+				 * pass the point. A sprite moves SRot units a SECOND
+				 * (DoAnim: InitRealValue(0, SRot, 50)), so below ~4.5 fps a
+				 * step of 900 jumps over the 100-unit window and the object
+				 * swings round the point for ever: on the real Jaguar the
+				 * prison hover platform never reached label 105 and the
+				 * "Stop squirming" dialogue never came (JAGUAR_PORT.md #13).
+				 * At the frame rates the game was made for the step is under
+				 * 100 and this is the original test. The step is read from a
+				 * copy: GetRealValue may clear TimeValue. */
+				{
+					T_REAL_VALUE rv = ptrobj->RealAngle;
+					LONG step = GetRealValue(&rv);
+
+					if (step < 0)
+						step = -step;
+					if ((Distance > 100) AND(Distance > step))
+					{
+						ptrobj->OffsetTrack -= 2;
+						flag = FALSE;
+					}
+					else
+					{
+						ptrobj->PosObjX = X0;
+						ptrobj->PosObjY = Y0;
+						ptrobj->PosObjZ = Z0;
+					}
+				}
+#else
 				if (Distance > 100)
 				{
 					ptrobj->OffsetTrack -= 2;
@@ -265,6 +295,7 @@ void DoTrack(WORD numobj)
 					ptrobj->PosObjY = Y0;
 					ptrobj->PosObjZ = Z0;
 				}
+#endif
 			}
 			break;
 

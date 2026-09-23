@@ -26,9 +26,23 @@ extern UBYTE *PtrPal;
 void FadeToPal(UBYTE *ptrpal);
 void SaveTimer(void);
 void RestoreTimer(void);
+void Vsync(void);
+
+/* A bench knob, 0 in every build: extra video interrupts to wait per scene
+ * frame. Poked from BigPEmu (tools/emu_run.ps1 -Poke "Jag_FrameDelay:W=N@F")
+ * it makes the emulator run the game at the real Jaguar's frame rate, which
+ * is what exposed the hover platform that never arrives below ~4.5 fps
+ * (S52, JAGUAR_PORT.md #13). volatile: the script writes it behind the
+ * compiler's back. */
+volatile WORD Jag_FrameDelay = 0;
 
 void Jag_AffScene(LONG flagflip)
 {
+    WORD n;
+
+    for (n = Jag_FrameDelay; n > 0; n--)
+        Vsync();
+
     Jag_SceneFromFork();
 
     if (flagflip) {

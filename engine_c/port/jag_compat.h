@@ -100,4 +100,8 @@ extern long Jag_ScreenSkips;
      | ((unsigned long)((const unsigned char *)(bank))[4 * (n) + 2] << 16) \
      | ((unsigned long)((const unsigned char *)(bank))[4 * (n) + 3] << 24))
 
+/* Byte-swaps, in place, a RESS entry loaded by LoadMalloc_HQR that the fork
+ * reads as native WORDs (jag_hqr.c). */
+void Jag_SwapResWords(void *p, unsigned short index);
+
 #endif /* JAG_COMPAT_H */
