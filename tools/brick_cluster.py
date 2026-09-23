@@ -8,6 +8,9 @@ Pipeline:
   3. Per cluster: stats (size, top-16/32 color coverage, top dims) + 3x3 composite PNG
      of the 9 representative bricks closest to the cluster center.
 """
+import os as _os, sys as _sys
+_sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
+import lba_paths
 import sys, os, struct, zlib, argparse
 from collections import Counter
 import numpy as np
@@ -162,9 +165,9 @@ def main(brk_path, ress_path, out_dir, k, seed):
 
 if __name__ == '__main__':
     ap = argparse.ArgumentParser()
-    ap.add_argument('--brk', default=r'I:\GOG\Little Big Adventure\Common\LBA_BRK.HQR')
-    ap.add_argument('--ress', default=r'I:\GOG\Little Big Adventure\Common\RESS.HQR')
-    ap.add_argument('--out', default=r'd:\Homebrew5\JagLBA\extracted\BRK_clusters')
+    ap.add_argument('--brk', default=lba_paths.common('LBA_BRK.HQR'))
+    ap.add_argument('--ress', default=lba_paths.common('RESS.HQR'))
+    ap.add_argument('--out', default=lba_paths.repo(r'extracted\BRK_clusters'))
     ap.add_argument('-k', type=int, default=12)
     ap.add_argument('--seed', type=int, default=42)
     args = ap.parse_args()

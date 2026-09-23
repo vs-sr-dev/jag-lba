@@ -24,6 +24,9 @@ Body format (post-HQR-decompression), distilled from lba1-classic asm:
 After polygons may come line / sphere / point sections (4 entity types: E_LIGNE / E_POLY /
 E_SPHERE / E_POINT). For the inventory we count poly materials and report leftover bytes.
 """
+import os as _os, sys as _sys
+_sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
+import lba_paths
 import sys, os, struct
 from collections import Counter
 
@@ -184,5 +187,5 @@ def main(brk_path):
             print(f"    body {i}: polys={r['nb_polys']}, remaining={r['remaining']} bytes")
 
 if __name__ == '__main__':
-    path = sys.argv[1] if len(sys.argv) > 1 else r'I:\GOG\Little Big Adventure\Common\BODY.HQR'
+    path = sys.argv[1] if len(sys.argv) > 1 else lba_paths.common('BODY.HQR')
     main(path)

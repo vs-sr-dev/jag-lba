@@ -13,6 +13,9 @@ This informs the cart re-encoding strategy:
   - If average is 30-50: per-zone palette + clustering needed
   - If extreme spread: CRY16 + dithering may be the only path
 """
+import os as _os, sys as _sys
+_sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
+import lba_paths
 import sys, os
 from collections import Counter, defaultdict
 
@@ -94,4 +97,4 @@ def main(brk_path):
         print(f"  {dx:>4}x{dy:<4}  {len(lst):>6}  {avg:>6.1f}  {min(lst):>4}  {max(lst):>4}")
 
 if __name__ == '__main__':
-    main(sys.argv[1] if len(sys.argv) > 1 else r'I:\GOG\Little Big Adventure\Common\LBA_BRK.HQR')
+    main(sys.argv[1] if len(sys.argv) > 1 else lba_paths.common('LBA_BRK.HQR'))

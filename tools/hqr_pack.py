@@ -59,6 +59,9 @@ USO
 La decompressione di ~4,6 MB in Python costa una decina di secondi, percio' il
 risultato viene riusato se e' piu' recente di tutti i suoi ingressi.
 """
+import os as _os, sys as _sys
+_sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
+import lba_paths
 import os
 import struct
 import sys
@@ -68,11 +71,11 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import hqr_decompress as lzss
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-GOG_COMMON = r'I:\GOG\Little Big Adventure\Common'
+GOG_COMMON = lba_paths.COMMON
 # TEXT.HQR non sta in Common: la ristampa 2:21 lo tiene in CommonClassic (e in
 # Speedrun\Windows, che e' la stessa cosa). E' l'unico archivio con una casa
 # diversa, quindi la deroga si dichiara qui invece di generalizzare il percorso.
-GOG_CLASSIC = r'I:\GOG\Little Big Adventure\CommonClassic'
+GOG_CLASSIC = lba_paths.CLASSIC
 ARCHIVE_DIR = {'TEXT': GOG_CLASSIC}
 OUT = os.path.join(REPO, 'cart', 'data_v6.bin')
 

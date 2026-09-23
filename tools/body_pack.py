@@ -41,6 +41,9 @@ V0 only flat shading is implemented in the cart-side rasterizer; poly mats
 as a graceful fallback. The packer preserves the original mat byte so
 later versions can dispatch correctly.
 """
+import os as _os, sys as _sys
+_sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
+import lba_paths
 import sys, os, struct, argparse
 from collections import Counter
 
@@ -168,9 +171,9 @@ def verify_roundtrip(blob, expected_nb_v, expected_nb_p):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--body', type=int, default=0, help='Body index (default: 0 = Twinsen)')
-    ap.add_argument('--in-dir', default=r'd:\Homebrew5\JagLBA\extracted\BODY',
+    ap.add_argument('--in-dir', default=lba_paths.repo(r'extracted\BODY'),
                     help='Directory with entry_NNNN.bin extracted bodies')
-    ap.add_argument('--out-dir', default=r'd:\Homebrew5\JagLBA\extracted\BODY_PACK',
+    ap.add_argument('--out-dir', default=lba_paths.repo(r'extracted\BODY_PACK'),
                     help='Output directory for packed body blobs')
     args = ap.parse_args()
 

@@ -18,6 +18,9 @@ Usage:
   python tools/scene_brick_inventory.py
   python tools/scene_brick_inventory.py --csv out.csv
 """
+import os as _os, sys as _sys
+_sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
+import lba_paths
 import sys, os, struct, argparse
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from hqr_decompress import parse_offsets, extract_entry
@@ -25,7 +28,7 @@ from grid_decode import decode_grid, CUBE_X, CUBE_Y, CUBE_Z
 from render_brick import decode_brick
 
 
-GOG_COMMON = r'I:\GOG\Little Big Adventure\Common'
+GOG_COMMON = lba_paths.COMMON
 
 
 def collect_per_scene(scene_idx, gri_data, bll_data, gri_off, bll_off):

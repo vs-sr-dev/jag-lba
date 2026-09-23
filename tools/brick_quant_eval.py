@@ -11,6 +11,9 @@ For each cluster (K=12 default):
 
 Output: stats table + 12 comparison PNGs in BRK_quant/.
 """
+import os as _os, sys as _sys
+_sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
+import lba_paths
 import sys, os, struct, zlib, argparse
 import numpy as np
 from collections import Counter
@@ -212,9 +215,9 @@ def main(brk_path, ress_path, out_dir, k_clusters=12, sub_pal_size=16, seed=42):
 
 if __name__ == '__main__':
     ap = argparse.ArgumentParser()
-    ap.add_argument('--brk', default=r'I:\GOG\Little Big Adventure\Common\LBA_BRK.HQR')
-    ap.add_argument('--ress', default=r'I:\GOG\Little Big Adventure\Common\RESS.HQR')
-    ap.add_argument('--out', default=r'd:\Homebrew5\JagLBA\extracted\BRK_quant')
+    ap.add_argument('--brk', default=lba_paths.common('LBA_BRK.HQR'))
+    ap.add_argument('--ress', default=lba_paths.common('RESS.HQR'))
+    ap.add_argument('--out', default=lba_paths.repo(r'extracted\BRK_quant'))
     ap.add_argument('-k', type=int, default=12, help='number of clusters')
     ap.add_argument('--pal', type=int, default=16, help='colors per cluster sub-palette')
     ap.add_argument('--seed', type=int, default=42)

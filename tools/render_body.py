@@ -10,6 +10,9 @@ Pipeline:
 Vertex indices in the file are stored as byte offsets into List_Point (stride 6),
 so we divide by 6 to get vertex number.
 """
+import os as _os, sys as _sys
+_sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
+import lba_paths
 import sys, os, struct, argparse
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -353,7 +356,7 @@ def render(body_idx, body_path, out_path, scale, xc, yc, W, H):
 if __name__ == '__main__':
     ap = argparse.ArgumentParser()
     ap.add_argument('--body', type=int, default=0)
-    ap.add_argument('--brk', default=r'I:\GOG\Little Big Adventure\Common\BODY.HQR')
+    ap.add_argument('--brk', default=lba_paths.common('BODY.HQR'))
     ap.add_argument('--out', default=None)
     ap.add_argument('--scale', type=int, default=2)
     ap.add_argument('--xc', type=int, default=0)
@@ -361,6 +364,6 @@ if __name__ == '__main__':
     ap.add_argument('--w', type=int, default=320)
     ap.add_argument('--h', type=int, default=240)
     args = ap.parse_args()
-    out = args.out or rf'd:\Homebrew5\JagLBA\extracted\BODY_render\body_{args.body:03d}_wireframe_x{args.scale}.png'
+    out = args.out or lba_paths.repo(rf'extracted\BODY_render\body_{args.body:03d}_wireframe_x{args.scale}.png')
     os.makedirs(os.path.dirname(out), exist_ok=True)
     render(args.body, args.brk, out, args.scale, args.xc, args.yc, args.w, args.h)

@@ -32,6 +32,9 @@ LE REGOLE, UNA PER UNA (SOURCES/GAMEMENU.C)
                       blocchi alternati salta/scrivi (LIB_SVGA/MASK_A.ASM)
   InterLeave 2, InterSpace 7 (MESSAGE.C, quel che il menu ha attivo)
 """
+import os as _os, sys as _sys
+_sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
+import lba_paths
 import os
 import struct
 import sys
@@ -43,8 +46,8 @@ import front_screen
 from bg_ref import fletcher, normalize_palette, write_png
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-GOG_COMMON = r'I:\GOG\Little Big Adventure\Common'
-GOG_CLASSIC = r'I:\GOG\Little Big Adventure\CommonClassic'
+GOG_COMMON = lba_paths.COMMON
+GOG_CLASSIC = lba_paths.CLASSIC
 
 W, H = 640, 480
 

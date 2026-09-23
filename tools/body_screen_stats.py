@@ -14,6 +14,9 @@ Reports:
   - per-edge |dx| vs |dy| slope-violation distribution
   - dispatchable poly count (all verts in viewport, all edges |dx|<|dy| or dy=0)
 """
+import os as _os, sys as _sys
+_sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
+import lba_paths
 import sys, os, struct, argparse
 from collections import Counter
 
@@ -54,7 +57,7 @@ def main():
     ap.add_argument('--body', type=int, default=0)
     ap.add_argument('--xc', type=int, default=160)
     ap.add_argument('--yc', type=int, default=100)
-    ap.add_argument('--in-dir', default=r'd:\Homebrew5\JagLBA\extracted\BODY_PACK')
+    ap.add_argument('--in-dir', default=lba_paths.repo(r'extracted\BODY_PACK'))
     args = ap.parse_args()
 
     path = os.path.join(args.in_dir, f'body_{args.body:03d}.bin')

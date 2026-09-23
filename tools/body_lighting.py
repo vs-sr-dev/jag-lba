@@ -22,6 +22,9 @@ Used by:
 CLI: stats for body 0 (Twinsen).
 """
 
+import os as _os, sys as _sys
+_sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
+import lba_paths
 import os, sys, math, struct
 from collections import Counter
 
@@ -282,7 +285,7 @@ def print_stats(body, body_idx, light, mode):
 def main():
     import argparse
     ap = argparse.ArgumentParser()
-    ap.add_argument('--body-hqr', default=r'I:\GOG\Little Big Adventure\Common\BODY.HQR')
+    ap.add_argument('--body-hqr', default=lba_paths.common('BODY.HQR'))
     ap.add_argument('--body-idx', type=int, default=0)
     ap.add_argument('--lx', type=float, default=DEFAULT_NORMAL_LIGHT[0])
     ap.add_argument('--ly', type=float, default=DEFAULT_NORMAL_LIGHT[1])

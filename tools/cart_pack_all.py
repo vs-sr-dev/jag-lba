@@ -69,6 +69,9 @@ Usage:
   python tools/cart_pack_all.py
   python tools/cart_pack_all.py --out cart/scene_all.bin
 """
+import os as _os, sys as _sys
+_sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
+import lba_paths
 import sys, os, struct, argparse
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from hqr_decompress import parse_offsets, extract_entry
@@ -76,7 +79,7 @@ from grid_decode import decode_grid, CUBE_X, CUBE_Y, CUBE_Z
 from render_brick import decode_brick
 from render_slide import normalize_palette
 
-GOG_COMMON = r'I:\GOG\Little Big Adventure\Common'
+GOG_COMMON = lba_paths.COMMON
 
 MAGIC = b'JAGLBA03'
 VERSION = 3
@@ -232,11 +235,11 @@ def main():
     ap.add_argument('--bll',  default=os.path.join(GOG_COMMON, 'LBA_BLL.HQR'))
     ap.add_argument('--gri',  default=os.path.join(GOG_COMMON, 'LBA_GRI.HQR'))
     ap.add_argument('--ress', default=os.path.join(GOG_COMMON, 'RESS.HQR'))
-    ap.add_argument('--out',  default=r'd:\Homebrew5\JagLBA\cart\scene_all.bin')
+    ap.add_argument('--out',  default=lba_paths.repo(r'cart\scene_all.bin'))
     ap.add_argument('--max-scenes', type=int, default=None,
                     help='Pack only first N scenes (for size-limited test builds)')
     ap.add_argument('--body-pack-dir',
-                    default=r'd:\Homebrew5\JagLBA\extracted\BODY_PACK',
+                    default=lba_paths.repo(r'extracted\BODY_PACK'),
                     help='Directory containing body_NNN.bin pre-packed by body_pack.py')
     ap.add_argument('--body-include', type=int, nargs='*', default=[0],
                     help='List of body indices to include (default: just 0 = Twinsen)')

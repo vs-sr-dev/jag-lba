@@ -38,6 +38,9 @@ USO
     python tools/bg_ref.py --scene 12
     python tools/bg_ref.py --cam 52,53      # sovrascrive la camera (confronti)
 """
+import os as _os, sys as _sys
+_sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
+import lba_paths
 import argparse
 import os
 import struct
@@ -54,7 +57,7 @@ from render_slide import normalize_palette, write_png
 from memory_map import CELL_SLOTS
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-GOG_COMMON = r'I:\GOG\Little Big Adventure\Common'
+GOG_COMMON = lba_paths.COMMON
 
 # ---------------------------------------------------------------------------
 # Geometria. NON e' piu' una taratura: e' la trascrizione di Map2Screen

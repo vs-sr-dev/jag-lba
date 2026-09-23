@@ -7,6 +7,9 @@ draws the 5 spheres as filled disks with palette coul1 + a red number label.
 Output: build/body000_with_spheres.png — visual reference for S15 V0.
 """
 
+import os as _os, sys as _sys
+_sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
+import lba_paths
 import os, sys, math
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
@@ -59,7 +62,7 @@ def overlay_spheres(png_path, body_payload, xc, yc, out_path):
 
 
 def main():
-    BRK = r'I:\GOG\Little Big Adventure\Common\BODY.HQR'
+    BRK = lba_paths.common('BODY.HQR')
     BODY_IDX = 0
     XC, YC = 160, 100
 

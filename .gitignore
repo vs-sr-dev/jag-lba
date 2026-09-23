@@ -65,3 +65,8 @@ tools/_makefastboot_ref.cpp
 *.png
 *.webp
 .claude/
+
+# -- This machine -------------------------------------------------------------
+# Paths to your game copy, the Jaguar SDK header and the emulator
+# (local.cfg.example documents them).
+local.cfg

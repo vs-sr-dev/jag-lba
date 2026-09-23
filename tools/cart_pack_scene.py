@@ -45,6 +45,9 @@ Format (all multi-byte values BIG-ENDIAN unless noted):
 
 Endianness: all multi-byte BE. 68k native, no byte-swap needed at runtime.
 """
+import os as _os, sys as _sys
+_sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
+import lba_paths
 import sys, os, struct, argparse
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from hqr_decompress import parse_offsets, extract_entry
@@ -393,11 +396,11 @@ def main(scene_id, brk_path, bll_path, gri_path, ress_path, out_path):
 if __name__ == '__main__':
     ap = argparse.ArgumentParser()
     ap.add_argument('--scene', type=int, default=0)
-    ap.add_argument('--brk', default=r'I:\GOG\Little Big Adventure\Common\LBA_BRK.HQR')
-    ap.add_argument('--bll', default=r'I:\GOG\Little Big Adventure\Common\LBA_BLL.HQR')
-    ap.add_argument('--gri', default=r'I:\GOG\Little Big Adventure\Common\LBA_GRI.HQR')
-    ap.add_argument('--ress', default=r'I:\GOG\Little Big Adventure\Common\RESS.HQR')
+    ap.add_argument('--brk', default=lba_paths.common('LBA_BRK.HQR'))
+    ap.add_argument('--bll', default=lba_paths.common('LBA_BLL.HQR'))
+    ap.add_argument('--gri', default=lba_paths.common('LBA_GRI.HQR'))
+    ap.add_argument('--ress', default=lba_paths.common('RESS.HQR'))
     ap.add_argument('--out', default=None)
     args = ap.parse_args()
-    out = args.out or rf'd:\Homebrew5\JagLBA\cart\scene_{args.scene:03d}.bin'
+    out = args.out or lba_paths.repo(rf'cart\scene_{args.scene:03d}.bin')
     main(args.scene, args.brk, args.bll, args.gri, args.ress, out)

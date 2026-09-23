@@ -1,0 +1,13 @@
+# JagLBA - settings of THIS machine. Copy to local.cfg (never committed) and
+# edit. Read by build_v6.bat, tools/lba_paths.py and tools/emu_run.ps1; an
+# environment variable with the same name wins over the file.
+
+# Your own copy of LBA1 (the folder that contains "Common"; the GOG edition's
+# "CommonClassic" is found by itself). This repository contains no game data.
+LBA1_DIR=C:\GOG Games\Little Big Adventure
+
+# The folder with jaguar.inc (Atari Jaguar developer header) for RMAC.
+JAG_INC=C:\jaguar\include
+
+# Optional: BigPEmu with script support (tools/emu_run.ps1 drives it).
+BIGPEMU_DIR=C:\BigPEmu

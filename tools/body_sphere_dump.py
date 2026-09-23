@@ -26,6 +26,9 @@ Point entry (E_POINT, ?? bytes — TBD from raw remainder):
 
 Iso screen radius transform (P_OB_ISO.ASM:928): rs = (rayon * 34) >> 9.
 """
+import os as _os, sys as _sys
+_sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
+import lba_paths
 import os, sys, struct
 from collections import Counter
 
@@ -125,7 +128,7 @@ def proj_iso(x, y, z, xc=160, yc=100):
 
 
 def main():
-    brk_path = sys.argv[1] if len(sys.argv) > 1 else r'I:\GOG\Little Big Adventure\Common\BODY.HQR'
+    brk_path = sys.argv[1] if len(sys.argv) > 1 else lba_paths.common('BODY.HQR')
     body_idx = int(sys.argv[2]) if len(sys.argv) > 2 else 0
 
     with open(brk_path, 'rb') as f:

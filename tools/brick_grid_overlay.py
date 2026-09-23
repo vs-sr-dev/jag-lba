@@ -13,6 +13,9 @@ Output: a PNG with:
 If footprint ALIGNS with diamond → convention OK.
 If footprint is OFFSET → diagnose the sign / axis flip.
 """
+import os as _os, sys as _sys
+_sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
+import lba_paths
 import sys, os, struct, argparse
 import numpy as np
 
@@ -178,10 +181,10 @@ def main(brk_path, ress_path, brick_indices, out_path):
 
 if __name__ == '__main__':
     ap = argparse.ArgumentParser()
-    ap.add_argument('--brk', default=r'I:\GOG\Little Big Adventure\Common\LBA_BRK.HQR')
-    ap.add_argument('--ress', default=r'I:\GOG\Little Big Adventure\Common\RESS.HQR')
+    ap.add_argument('--brk', default=lba_paths.common('LBA_BRK.HQR'))
+    ap.add_argument('--ress', default=lba_paths.common('RESS.HQR'))
     ap.add_argument('--bricks', default='0,1,38', help='comma-sep brick idxs to load')
-    ap.add_argument('--out', default=r'd:\Homebrew5\JagLBA\extracted\SCENE_render\overlay_a2.png')
+    ap.add_argument('--out', default=lba_paths.repo(r'extracted\SCENE_render\overlay_a2.png'))
     args = ap.parse_args()
     bricks = [int(x) for x in args.bricks.split(',')]
     os.makedirs(os.path.dirname(args.out), exist_ok=True)

@@ -31,6 +31,9 @@ Ordering note:
   for nbp <= 6). Verified against body_pack.fan_triangulate threshold = 6.
 """
 
+import os as _os, sys as _sys
+_sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
+import lba_paths
 import os, sys, struct, argparse, math
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
@@ -141,9 +144,9 @@ def verify_blob(blob, body):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument('--body-hqr', default=r'I:\GOG\Little Big Adventure\Common\BODY.HQR')
+    ap.add_argument('--body-hqr', default=lba_paths.common('BODY.HQR'))
     ap.add_argument('--body-idx', type=int, default=0)
-    ap.add_argument('--out-dir', default=r'd:\Homebrew5\JagLBA\extracted\BODY_PACK')
+    ap.add_argument('--out-dir', default=lba_paths.repo(r'extracted\BODY_PACK'))
     ap.add_argument('--lx', type=float, default=0.5774)
     ap.add_argument('--ly', type=float, default=0.5774)
     ap.add_argument('--lz', type=float, default=0.5774)

@@ -51,8 +51,9 @@ import os
 import re
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SINTAB_C = os.path.join(REPO, 'lba1-classic-community-main', 'LIB386',
-                        'LIB_3D', 'P_SINTAB.C')
+# The engine's own table, from the GPL fork already in this repository
+# (identical to lba1-classic-community's LIB386/LIB_3D/P_SINTAB.C).
+SINTAB_C = os.path.join(REPO, 'engine_c', 'fork', 'LIB_3D', 'P_SINTAB.C')
 
 ANGLE_FULL = 1024
 ANGLE_QUARTER = 256

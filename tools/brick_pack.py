@@ -15,6 +15,9 @@ This mode runs the K=12 clustering, computes sub-palettes, encodes ONE brick,
 decodes it back, and verifies pixel-perfect round-trip. Renders 3-panel PNG:
 original (256-color) | quantized (16-color sub-palette) | round-tripped.
 """
+import os as _os, sys as _sys
+_sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
+import lba_paths
 import sys, os, struct, argparse
 import numpy as np
 from collections import Counter
@@ -236,9 +239,9 @@ def main(brk_path, ress_path, brick_idx, out_dir, scale):
 
 if __name__ == '__main__':
     ap = argparse.ArgumentParser()
-    ap.add_argument('--brk', default=r'I:\GOG\Little Big Adventure\Common\LBA_BRK.HQR')
-    ap.add_argument('--ress', default=r'I:\GOG\Little Big Adventure\Common\RESS.HQR')
-    ap.add_argument('--out', default=r'd:\Homebrew5\JagLBA\extracted\BRK_roundtrip')
+    ap.add_argument('--brk', default=lba_paths.common('LBA_BRK.HQR'))
+    ap.add_argument('--ress', default=lba_paths.common('RESS.HQR'))
+    ap.add_argument('--out', default=lba_paths.repo(r'extracted\BRK_roundtrip'))
     ap.add_argument('--brick', type=int, default=0)
     ap.add_argument('--scale', type=int, default=8)
     args = ap.parse_args()

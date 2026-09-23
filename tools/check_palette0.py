@@ -4,6 +4,9 @@
 If palette[0] is reserved as transparent-only, we can use Blitter BCOMPEN
 (skip-on-zero) for masked brick blits without a separate mask plane.
 """
+import os as _os, sys as _sys
+_sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
+import lba_paths
 import sys, os, argparse
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from hqr_decompress import parse_offsets, extract_entry
@@ -58,6 +61,6 @@ def main(brk_path):
 
 if __name__ == '__main__':
     ap = argparse.ArgumentParser()
-    ap.add_argument('--brk', default=r'I:\GOG\Little Big Adventure\Common\LBA_BRK.HQR')
+    ap.add_argument('--brk', default=lba_paths.common('LBA_BRK.HQR'))
     args = ap.parse_args()
     main(args.brk)

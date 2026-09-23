@@ -15,6 +15,9 @@ Strategy:
       brick metadata (DX, DY, HotX, HotY)
   - Aggregate: for each wall column, list (gy, 1st_UWORD) — does 1st_UWORD correlate with gy?
 """
+import os as _os, sys as _sys
+_sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
+import lba_paths
 import sys, os, struct, argparse
 from collections import defaultdict
 
@@ -212,9 +215,9 @@ def main(grid_idx, gri_path, bll_path, brk_path, n_walls, n_floors):
 if __name__ == '__main__':
     ap = argparse.ArgumentParser()
     ap.add_argument('--grid', type=int, default=0)
-    ap.add_argument('--gri', default=r'I:\GOG\Little Big Adventure\Common\LBA_GRI.HQR')
-    ap.add_argument('--bll', default=r'I:\GOG\Little Big Adventure\Common\LBA_BLL.HQR')
-    ap.add_argument('--brk', default=r'I:\GOG\Little Big Adventure\Common\LBA_BRK.HQR')
+    ap.add_argument('--gri', default=lba_paths.common('LBA_GRI.HQR'))
+    ap.add_argument('--bll', default=lba_paths.common('LBA_BLL.HQR'))
+    ap.add_argument('--brk', default=lba_paths.common('LBA_BRK.HQR'))
     ap.add_argument('--walls', type=int, default=8, help='number of wall columns to dump')
     ap.add_argument('--floors', type=int, default=10, help='number of floor cells to dump')
     args = ap.parse_args()

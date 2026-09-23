@@ -15,6 +15,9 @@ Column-RLE (per DecompColonne in GRILLE_A.ASM):
       10xxxxxx -> "same":  read 1 UWORD, repeat `count` times
   Each cell is a UWORD = NumBlock(high byte) + PosBlock(low byte).
 """
+import os as _os, sys as _sys
+_sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
+import lba_paths
 import sys, os, struct, argparse
 from collections import Counter
 
@@ -124,7 +127,7 @@ def main(grid_path, grid_idx):
 
 if __name__ == '__main__':
     ap = argparse.ArgumentParser()
-    ap.add_argument('--gri', default=r'I:\GOG\Little Big Adventure\Common\LBA_GRI.HQR')
+    ap.add_argument('--gri', default=lba_paths.common('LBA_GRI.HQR'))
     ap.add_argument('--idx', type=int, default=0)
     args = ap.parse_args()
     main(args.gri, args.idx)

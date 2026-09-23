@@ -41,6 +41,9 @@ Il record k del fotogramma pilota il gruppo k del corpo. Quello del gruppo 0 non
 entra nella posa: e' la rotazione maestra, che agisce sul Beta dell'ATTORE
 (OBJECT.C:1718) e quindi passa da un'altra strada.
 """
+import os as _os, sys as _sys
+_sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
+import lba_paths
 import os, sys, struct
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -213,7 +216,7 @@ if __name__ == '__main__':
     from hqr_decompress import parse_offsets, extract_entry
 
     path = sys.argv[1] if len(sys.argv) > 1 else \
-        r'I:\GOG\Little Big Adventure\Common\ANIM.HQR'
+        lba_paths.common('ANIM.HQR')
     with open(path, 'rb') as f:
         data = f.read()
     offs = parse_offsets(data)

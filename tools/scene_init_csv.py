@@ -23,12 +23,15 @@ Layout (verified S20 + reference_lba_scene_init.md):
                                 wire Twinsen body switch via ANIM_STATE flag in game
                                 logic, not via SCENE.HQR data.)
 """
+import os as _os, sys as _sys
+_sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
+import lba_paths
 import os, sys, csv
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from hqr_decompress import parse_offsets, extract_entry
 
-SCENE_HQR = r'd:\Homebrew5\JagLBA\extracted\SCENE.HQR'
-OUT_CSV   = r'd:\Homebrew5\JagLBA\extracted\scene_init_inventory.csv'
+SCENE_HQR = lba_paths.repo(r'extracted\SCENE.HQR')
+OUT_CSV   = lba_paths.repo(r'extracted\scene_init_inventory.csv')
 
 def s16(b, p):
     v = b[p] | (b[p+1] << 8)

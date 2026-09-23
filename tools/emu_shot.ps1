@@ -33,7 +33,20 @@ param(
 )
 
 $ErrorActionPreference = "Stop"
-$emu = "D:\Homebrew5\JagFF4\BigPEmuDEV\BigPEmuDev.exe"
+# BIGPEMU_DIR: environment first, then local.cfg (see local.cfg.example).
+function Get-LocalSetting([string]$key) {
+    $v = [Environment]::GetEnvironmentVariable($key)
+    if ($v) { return $v }
+    $cfg = Join-Path (Split-Path -Parent $PSScriptRoot) "local.cfg"
+    if (Test-Path $cfg) {
+        foreach ($l in Get-Content $cfg) {
+            if ($l -match "^\s*$key\s*=\s*(.+?)\s*$") { return $Matches[1].Trim('"') }
+        }
+    }
+    throw "$key is not set: copy local.cfg.example to local.cfg"
+}
+$bigpemu = Get-LocalSetting "BIGPEMU_DIR"
+$emu = Join-Path $bigpemu "BigPEmuDev.exe"
 
 $romPath = (Resolve-Path $Rom).Path
 $outPath = Join-Path (Get-Location) $Out

@@ -15,6 +15,9 @@ Output answers:
   - Q3.C: which ramps are "body palette" (need to stay alive) vs "scene only"?
 """
 
+import os as _os, sys as _sys
+_sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
+import lba_paths
 import os, sys, math, struct
 from collections import Counter
 
@@ -194,7 +197,7 @@ def analyze_all_bodies(body_data, body_offs):
 
 
 def main():
-    GOG = r'I:\GOG\Little Big Adventure\Common'
+    GOG = lba_paths.COMMON
     pal_path  = os.path.join(GOG, 'RESS.HQR')
     body_path = os.path.join(GOG, 'BODY.HQR')
 

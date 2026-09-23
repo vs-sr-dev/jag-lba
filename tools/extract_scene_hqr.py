@@ -15,10 +15,13 @@ we glue the cluster runs from each disk in order.
 Usage:
   python extract_scene_hqr.py
 """
+import os as _os, sys as _sys
+_sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
+import lba_paths
 import os, sys, struct, glob
 
-DISK_DIR = r'd:\Homebrew5\JagLBA\000644_little_big_adventure'
-OUT_DIR  = r'd:\Homebrew5\JagLBA\extracted'
+DISK_DIR = lba_paths.repo(r'000644_little_big_adventure')
+OUT_DIR  = lba_paths.repo(r'extracted')
 
 def parse_boot(boot):
     bps   = int.from_bytes(boot[11:13], 'little')

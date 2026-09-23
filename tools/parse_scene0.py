@@ -4,11 +4,14 @@
 Reads the LBA1 scene struct stream-style and prints every field. Layout
 follows TwinE / OpenLBA reverse-engineered scene loader for LBA1.
 """
+import os as _os, sys as _sys
+_sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
+import lba_paths
 import sys, os, struct
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from hqr_decompress import parse_offsets, extract_entry, hexdump
 
-SCENE_HQR = r'd:\Homebrew5\JagLBA\extracted\SCENE.HQR'
+SCENE_HQR = lba_paths.repo(r'extracted\SCENE.HQR')
 
 with open(SCENE_HQR, 'rb') as f:
     data = f.read()

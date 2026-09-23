@@ -16,6 +16,9 @@ Exit nonzero if any check fails.
 Usage:
   python tools/cart_verify_all.py [path_to_scene_all.bin]
 """
+import os as _os, sys as _sys
+_sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
+import lba_paths
 import sys, struct, argparse
 
 
@@ -283,7 +286,7 @@ def spot_check_brick_0(data, h):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument('cart', nargs='?', default=r'd:\Homebrew5\JagLBA\cart\scene_all.bin')
+    ap.add_argument('cart', nargs='?', default=lba_paths.repo(r'cart\scene_all.bin'))
     args = ap.parse_args()
 
     with open(args.cart, 'rb') as f:

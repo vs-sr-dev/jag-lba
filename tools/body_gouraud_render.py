@@ -14,6 +14,9 @@ Used by D3 (visual back-to-back vs Jaguar). Renders both flat and gouraud bucket
 Pattern bucket (mat 0..6) drawn flat with coul1 only (~2.3% of all body polys).
 """
 
+import os as _os, sys as _sys
+_sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
+import lba_paths
 import os, sys, math, struct, argparse
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
@@ -179,7 +182,7 @@ def render(body_path, body_idx, out_path, light, mode, xc, yc, do_cull):
     img = Image.frombytes('P', (WIDTH, HEIGHT), flat)
 
     # Build palette: load RESS_PAL slot 0 from RESS.HQR.
-    GOG = r'I:\GOG\Little Big Adventure\Common'
+    GOG = lba_paths.COMMON
     with open(os.path.join(GOG, 'RESS.HQR'), 'rb') as f:
         ress = f.read()
     ress_offs = parse_offsets(ress)
@@ -196,7 +199,7 @@ def render(body_path, body_idx, out_path, light, mode, xc, yc, do_cull):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument('--body-hqr', default=r'I:\GOG\Little Big Adventure\Common\BODY.HQR')
+    ap.add_argument('--body-hqr', default=lba_paths.common('BODY.HQR'))
     ap.add_argument('--body-idx', type=int, default=0)
     ap.add_argument('--out-dir', default='build')
     ap.add_argument('--lx', type=float, default=0.5774)

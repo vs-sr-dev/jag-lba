@@ -15,6 +15,15 @@ rem precedente, cioe' farebbe fallire le sonde per un motivo che non c'entra.
 rem ==========================================================================
 setlocal
 
+rem Le impostazioni di QUESTA macchina stanno in local.cfg (non tracciato,
+rem vedi local.cfg.example): LBA1_DIR, la tua copia del gioco (il repository
+rem e' BYOA), e JAG_INC, la cartella con jaguar.inc per RMAC. Una variabile
+rem d'ambiente gia' definita vince sul file.
+if exist local.cfg for /f "usebackq eol=# tokens=1,* delims==" %%a in ("local.cfg") do if not defined %%a set "%%a=%%b"
+if not defined LBA1_DIR (echo LBA1_DIR non definito: copia local.cfg.example in local.cfg & exit /b 1)
+if not defined JAG_INC (echo JAG_INC non definito: copia local.cfg.example in local.cfg & exit /b 1)
+if not exist "%JAG_INC%\jaguar.inc" (echo JAG_INC=%JAG_INC% non contiene jaguar.inc & exit /b 1)
+
 echo [1/5] mappa di memoria
 python tools\memory_map.py
 if errorlevel 1 (echo MEMORY MAP ERROR & exit /b 1)
@@ -88,7 +97,7 @@ if not exist engine_c\engine_blob.bin (echo C BUILD: nessun output & exit /b 1)
 
 echo [4/5] assembly RMAC
 if not exist build mkdir build
-rmac -fb -fr -iD:\Homebrew\Jaguar\include\ -iinclude\ -lbuild\main_v6.lst -o build\main_v6_raw.abs src\main_v6.s
+rmac -fb -fr -i"%JAG_INC%"\ -iinclude\ -lbuild\main_v6.lst -o build\main_v6_raw.abs src\main_v6.s
 if errorlevel 1 (echo ASSEMBLER ERROR & exit /b 1)
 
 echo [5/5] packer cartuccia
@@ -103,7 +112,7 @@ echo [6/6] l'altro bersaglio
 python tools\alt_target.py build\_main_v6_alt.s
 if errorlevel 1 (echo ALT TARGET ERROR & exit /b 1)
 for /f %%h in ('python tools\alt_target.py --hw') do set ALT_HW=%%h
-rmac -fb -fr -iD:\Homebrew\Jaguar\include\ -iinclude\ -lbuild\main_v6_alt.lst -o build\main_v6_alt_raw.abs build\_main_v6_alt.s
+rmac -fb -fr -i"%JAG_INC%"\ -iinclude\ -lbuild\main_v6_alt.lst -o build\main_v6_alt_raw.abs build\_main_v6_alt.s
 if errorlevel 1 (echo ASSEMBLER ERROR ALT & exit /b 1)
 python tools\cart_build.py --hw %ALT_HW% --code build\main_v6_alt_raw.abs
 if errorlevel 1 (echo PACK ERROR ALT & exit /b 1)

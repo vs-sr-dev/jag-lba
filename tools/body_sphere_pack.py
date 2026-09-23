@@ -12,6 +12,9 @@ Output format (big-endian, Jaguar 68k native):
 Body 0 = 2 + 5*8 = 42 bytes. Per body the tool emits both .bin and .inc.
 """
 
+import os as _os, sys as _sys
+_sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
+import lba_paths
 import os, sys, struct, argparse
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -96,7 +99,7 @@ def emit_disk_lut_inc(out_path):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument('--body-hqr', default=r'I:\GOG\Little Big Adventure\Common\BODY.HQR')
+    ap.add_argument('--body-hqr', default=lba_paths.common('BODY.HQR'))
     ap.add_argument('--body-idx', type=int, default=0)
     ap.add_argument('--out-dir', default='extracted/BODY_PACK')
     args = ap.parse_args()

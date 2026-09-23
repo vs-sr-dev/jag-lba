@@ -11,6 +11,9 @@ Pipeline:
 Also tests: post-RLE LZSS (zlib L9) on top, to see if there's residual compressible
 structure left.
 """
+import os as _os, sys as _sys
+_sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
+import lba_paths
 import sys, os, zlib, argparse
 import numpy as np
 from collections import Counter
@@ -122,7 +125,7 @@ def main(brk_path, ress_path):
 
 if __name__ == '__main__':
     ap = argparse.ArgumentParser()
-    ap.add_argument('--brk', default=r'I:\GOG\Little Big Adventure\Common\LBA_BRK.HQR')
-    ap.add_argument('--ress', default=r'I:\GOG\Little Big Adventure\Common\RESS.HQR')
+    ap.add_argument('--brk', default=lba_paths.common('LBA_BRK.HQR'))
+    ap.add_argument('--ress', default=lba_paths.common('RESS.HQR'))
     args = ap.parse_args()
     main(args.brk, args.ress)
