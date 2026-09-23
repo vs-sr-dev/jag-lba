@@ -20,6 +20,30 @@
 
 #include "mem_map.h"
 
+/* ===== I NOMI CHE IL FORK USA CON UN ALTRO SIGNIFICATO (S51) =====
+ * Il contratto 32X ha dato alle nostre arene e al nostro HQR i nomi di LBA1,
+ * ma non la semantica: il `LoadMalloc` del fork carica un FILE, il suo
+ * `Size_HQM_Memory` e' una variabile, il suo `HQR_Get` prende un puntatore a
+ * un pool LRU. Col motore trapiantato (engine_c/fork) le due versioni stanno
+ * nello stesso binario, e un nome con due significati e' un difetto che il
+ * linker non vede se i tipi per caso combaciano.
+ *
+ * Quindi le nostre si rinominano QUI, dove ogni nostro file passa e nessun
+ * file del fork passa mai: il sorgente resta leggibile, il simbolo diventa
+ * nostro. Lo stesso per l'input, che nel fork appartiene a GLOBAL.C e che
+ * noi riempiamo dal pad. Vedi engine_c/fork/JAGUAR_PORT.md, sezione 2. */
+#define Malloc           Jag_Malloc
+#define LoadMalloc       Jag_LoadMalloc
+#define LoadMallocPhrase Jag_LoadMallocPhrase
+#define Free             Jag_Free
+#define HQR_Get          Jag_HQR_Get
+#define HQM_Free_All     Jag_HQM_Free_All
+#define Size_HQM_Memory  Jag_Size_HQM_Memory
+#define MyJoy            Jag_MyJoy
+#define MyFire           Jag_MyFire
+#define MyKey            Jag_MyKey
+#define LastFire         Jag_LastFire
+
 /* ===== Tipi di LBA1 (larghezze di DEFINES.H) =====
  * m68k-elf-gcc senza -mshort da' le stesse larghezze del Watcom DOS386 e
  * dell'sh-elf del porting 32X: int e long a 32 bit, short a 16. */
@@ -168,6 +192,7 @@ typedef enum {
 const void *HQR_Get (hqr_id_t id, int index);
 ULONG       HQR_Size(hqr_id_t id, int index);
 int         HQR_Slots(hqr_id_t id);     /* voci dichiarate, 0 = archivio assente */
+int         HQR_WasFresh(void);         /* l'ultima HQR_Get ha appena prodotto la voce (S51) */
 
 /* La voce espansa DOVE DICE IL CHIAMANTE, senza passare dalle arene ne' dalla
  * cache. Torna i byte scritti, 0 se la voce non c'e' o non ci sta in `cap`.
@@ -230,6 +255,9 @@ void TheEnd(WORD code, const char *msg);
 #define TE_HQR_CACHE     0x106      /* troppe voci compresse vive insieme    */
 #define TE_BODY_BIG      0x107      /* corpo oltre la capienza di BODY_WORK  */
 #define TE_ANIM_BAD      0x108      /* gruppo o fotogramma che l'archivio non ha */
+#define TE_VBL_DEAD      0x109      /* un'attesa del VBL non e' mai finita: interrupt video fermo */
+#define TE_FORK_FILE     0x10A      /* il fork ha chiesto un file che la cartuccia non ha */
+#define TE_JAG_TODO      0x10B      /* un pezzo del giunto col fork non ancora scritto: il nome e' a schermo */
 
 /* ===== SCENA (M2) =====
  * `T_ZONE` e' la struct di COMMON.H:240-255, verbatim: 12 WORD. La si decodifica
@@ -452,14 +480,14 @@ typedef struct {
 } T_OBJET;
 
 extern T_OBJET ListObjet[MAX_OBJETS];
-extern WORD    NbObjets;
+extern LONG    NbObjets;      /* LONG come GLOBAL.C del fork: vedi sotto */
 
 /* I corpi caricati, come upstream: `Body` di T_OBJET e' un indice QUI, non uno
  * slot di BODY.HQR. Tenerlo cosi' invece di mettere lo slot dentro `Body` non
  * e' una scelta di stile: p_anim.c e object.c del porting 32X scrivono
  * `PtrBody[ptrobj->Body]`, e da M4 arrivano loro. */
 extern UBYTE  *PtrBody[MAX_BODYS];
-extern WORD    NbBodys;
+extern LONG    NbBodys;
 
 /* Lo slot di BODY.HQR da cui viene PtrBody[i]. Upstream non ne ha bisogno
  * perche' marca la cache scrivendo il bit 15 dentro la fiche; qui la fiche sta
@@ -506,6 +534,9 @@ void  Bg_ScrollTo(long nvx, long nvy);
  * collisione di una cella; la seconda guarda anche sopra la testa. */
 UBYTE Grid_ColBrick(LONG xw, LONG yw, LONG zw);
 UBYTE Grid_ColBrickFull(LONG xw, LONG yw, LONG zw, LONG ymax);
+/* S51: lettura grezza per l'API GRILLE del fork (engine_c/port/jag_grille.c). */
+UWORD Grid_Cell(LONG xm, LONG ym, LONG zm);
+UBYTE Grid_BlockByte(int block, ULONG off);
 /* La cella che l'ULTIMA interrogazione ha guardato. Globali come in upstream:
  * ReajustPos le legge per sapere di quale cella sta calcolando la rampa. */
 extern LONG XMap, YMap, ZMap;

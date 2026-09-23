@@ -68,7 +68,10 @@
  * attori della scena, che sono ~23. 64 e' largo, e sforare e' un TheEnd
  * parlante invece di una decompressione ripetuta che si mangia l'arena in
  * silenzio. */
-#define HQR_CACHE_MAX   64
+/* S51: col motore trapiantato passano di qui anche le animazioni, gli sprite
+ * e gli oggetti dell'inventario di tutti gli attori (engine_c/port/jag_hqr.c),
+ * non solo SCENE/GRID/BLL e i corpi. 256 voci sono 2 KB di tabella. */
+#define HQR_CACHE_MAX   256
 
 typedef struct {
     UWORD       id;
@@ -77,6 +80,11 @@ typedef struct {
 } T_HQRCACHE;
 
 static T_HQRCACHE cache[HQR_CACHE_MAX];
+/* 1 se l'ultima HQR_Get ha appena prodotto la voce, 0 se era gia' pronta.
+ * E' la semantica di HQR_Flag nel fork: dopo un caricamento vero, GAMEMENU e
+ * INCRUST chiamano PatchObjet sulla voce, e rifarlo su una voce gia' patchata
+ * la guasterebbe. */
+static int hqr_fresh;
 static int        cache_n;
 
 static const unsigned char *const cart = (const unsigned char *)JAG_ROM_DATA;
@@ -240,9 +248,11 @@ static const void *expand_entry(hqr_id_t id, int index, ULONG off)
     int   ctype, i;
     UBYTE *dst;
 
+    hqr_fresh = 0;
     for (i = 0; i < cache_n; i++)
         if (cache[i].id == (UWORD)id && cache[i].index == (UWORD)index)
             return cache[i].ptr;
+    hqr_fresh = 1;
 
     orig  = LE32u(h);
     comp  = LE32u(h + 4);
@@ -288,7 +298,13 @@ const void *HQR_Get(hqr_id_t id, int index)
         return 0;
     if (arch_flags(id) & ARCH_FLAG_LZSS)
         return expand_entry(id, index, off);
+    hqr_fresh = 0;
     return (const void *)(cart + off);
+}
+
+int HQR_WasFresh(void)
+{
+    return hqr_fresh;
 }
 
 /* La voce espansa a un indirizzo dato. Nessuna arena, nessuna cache: chi

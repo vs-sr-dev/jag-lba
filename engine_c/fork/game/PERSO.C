@@ -1392,6 +1392,7 @@ void InitProgram()
 
 /*══════════════════════════════════════════════════════════════════════════*/
 
+#ifndef PORT_JAG /* PORT: the Jaguar's TheEnd (engine_c/hal_panic.c) draws the code on screen and stops; this one printf()s memory stats and exits to DOS */
 void TheEnd(WORD num, UBYTE *error)
 {
 #ifdef DEBUG_TOOLS
@@ -1449,6 +1450,7 @@ void TheEnd(WORD num, UBYTE *error)
 	}
 	RestoreDiskEnv();
 }
+#endif /* !PORT_JAG */
 
 
 // #ifdef DEBUG_TOOLS

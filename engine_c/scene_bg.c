@@ -1202,6 +1202,42 @@ UBYTE Grid_ColBrickFull(LONG xw, LONG yw, LONG zw, LONG ymax)
     return al;
 }
 
+/* ---------------------------------------------------------------------------
+ * GLI ACCESSORI GREZZI PER IL FORK (S51).
+ *
+ * `GetShadow` e `WorldCodeBrick` di GRILLE.C leggono il cubo e la libreria dei
+ * blocchi direttamente, e scrivono globali del motore trapiantato (Nxw,
+ * ShadowCol, ReajustPos). Il cubo e la libreria stanno qui dentro, i globali
+ * di la': quindi qui si espone solo la LETTURA, e le due funzioni vivono in
+ * engine_c/port/jag_grille.c, trascritte riga per riga.
+ *
+ * Con i controlli di confine che l'originale non aveva: GetShadow indirizza il
+ * cubo senza guardare se la cella esiste, e sul PC una lettura fuori dal
+ * buffer tornava un byte qualunque; qui torna "cella vuota".
+ * ------------------------------------------------------------------------- */
+
+/* La cella come UWORD: blocco nel byte basso, posizione nel blocco (o codice,
+ * se il blocco e' zero) nel byte alto. */
+UWORD Grid_Cell(LONG xm, LONG ym, LONG zm)
+{
+    if (xm < 0 || xm >= CUBE_X || zm < 0 || zm >= CUBE_Z
+        || ym < 0 || ym >= CUBE_Y)
+        return 0;
+    return cube[((ULONG)(zm * CUBE_X + xm) * CUBE_Y) + ym];
+}
+
+/* Il byte `off` della voce del blocco `block` (base 1, come nel cubo), contato
+ * dall'inizio della voce BLL: +0..+2 intestazione, poi quattro byte per cella.
+ * Zero fuori dalla voce. */
+UBYTE Grid_BlockByte(int block, ULONG off)
+{
+    if (block < 1 || block > bll_count)
+        return 0;
+    if (off >= 3 + bll_cells[block - 1] * 4)
+        return 0;
+    return (UBYTE)bll_ptr[block - 1][off];
+}
+
 
 void Bg_Measure(void)
 {

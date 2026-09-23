@@ -130,9 +130,9 @@ static int host_pose_desc[33 * 4];
 
 /* Lo stato che il motore vero riempie, qui riempito dal dump. */
 T_OBJET  ListObjet[MAX_OBJETS];
-WORD     NbObjets;
+LONG     NbObjets;
 UBYTE   *PtrBody[MAX_BODYS];
-WORD     NbBodys;
+LONG     NbBodys;
 T_SCENE  Scene;
 T_BGSTAT BgStat;
 static WORD hqr_slot[MAX_BODYS];

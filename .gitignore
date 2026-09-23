@@ -47,6 +47,8 @@ build/
 *.exe
 *.log
 __pycache__/
+engine_c/obj_fork/
+engine_c/obj_fork_log.txt
 
 # -- Third-party and upstream reference -------------------------------------
 # A pristine copy of lba1-classic-community is kept locally to diff against;

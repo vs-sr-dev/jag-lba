@@ -58,10 +58,10 @@
 #define EXTRA_GIVE_NOTHING 0x0080   /* COMMON.H, ripulito da LoadScene */
 
 T_OBJET ListObjet[MAX_OBJETS];
-WORD    NbObjets;
+LONG    NbObjets;
 
 UBYTE  *PtrBody[MAX_BODYS];
-WORD    NbBodys;
+LONG    NbBodys;
 
 /* Slot di BODY.HQR di ogni PtrBody[]. Vedi hal.h: upstream marca la cache
  * scrivendo il bit 15 dentro la fiche, noi non possiamo sporcare una voce che
