@@ -1150,6 +1150,16 @@ ViHandler:
 
     move.w  #C_VIDENA|C_VIDCLR, INT1
     move.w  #0, INT2
+
+; S51: the C side's per-interrupt hook (engine_vbl, blob+12). The transplanted
+; engine busy-waits on TimerRef, Key, Fire and Joy, so time and the pad have to
+; move by themselves, as the DOS timer and keyboard IRQs moved them. engine_vbl
+; does nothing until the fork takes over (a null pointer in C .bss, cleared
+; before interrupts are ever enabled). d0-d1/a0-a1 are the registers the C ABI
+; may clobber; the rest it saves itself.
+    movem.l d1/a0-a1, -(sp)
+    jsr     C_ENTRY_VBL
+    movem.l (sp)+, d1/a0-a1
     movem.l (sp)+, d0-d2
     rte
 

@@ -1321,6 +1321,9 @@ void Bg_EnterAt(long x, long y, long z)
     entry_z = z;
 }
 
+#if !defined(JAG_FORK) || !JAG_FORK
+/* Il percorso di S50: con il fork collegato, LoadScene qui sotto sarebbe il
+ * SUO (DISKFUNC.C), che fa un'altra cosa. Vedi engine_main.c, JAG_FORK. */
 int Bg_Build(int numscene)
 {
     /* L'ARENA PER-CUBO MUORE QUI, ed e' il posto in cui muore anche upstream
@@ -1359,6 +1362,7 @@ int Bg_Build(int numscene)
     Bg_Show(Scene.CamGX, Scene.CamGY, Scene.CamGZ);
     return 1;
 }
+#endif
 
 /* ---------------------------------------------------------------------------
  * BG_BUILD IN DUE (S51), per il motore trapiantato.

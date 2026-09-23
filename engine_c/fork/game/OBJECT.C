@@ -2590,6 +2590,14 @@ void DrawZV(T_OBJET *ptr)
 /*──────────────────────────────────────────────────────────────────────────*/
 
 void AffScene(LONG flagflip)
+#ifdef PORT_JAG
+{
+	/* PORT: the Jaguar renderer (engine_c/port/jag_render.c). The fork's body
+	 * of this function is the specification its later versions follow. */
+	Jag_AffScene(flagflip);
+}
+void AffScene_Fork(LONG flagflip)
+#endif
 {
 	LONG n, c, cmpt;
 	LONG xmin, ymin, xmax, ymax, dx, dy;

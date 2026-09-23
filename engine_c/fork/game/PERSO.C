@@ -1557,8 +1557,12 @@ void lba_main(int argc, UBYTE *argv[]) /* PORT: was main(); SDL wrapper in platf
 
 	// presentation
 
-#ifdef PORT_PSX_BG_VRAM
-	/* PORT: `Screen` is two things in this engine wearing one name.
+#if defined(PORT_PSX_BG_VRAM) || defined(PORT_JAG)
+	/* PORT (JAG too): the Jaguar has no 300 KB for it either, and its scene
+	 * background is restored from the bricks (scene_bg.c), never from here.
+	 * The modals' use of it comes back with the menus.
+	 *
+	 * PORT: `Screen` is two things in this engine wearing one name.
 	 *
 	 * It is the clean composed background that ClsBoxes and every modal
 	 * restore from, and it is a 300 KB scratch area that LoadUsedBrick, the
@@ -1640,7 +1644,7 @@ void lba_main(int argc, UBYTE *argv[]) /* PORT: was main(); SDL wrapper in platf
 	 *
 	 * This is a promise as much as a saving: when voices arrive they go to
 	 * the SPU, not here. */
-#ifdef PORT_PSX
+#if defined(PORT_PSX) || defined(PORT_JAG) /* JAG: no voices on the floppy */
 	BufSpeak = DosMalloc(64 * 1024 + 34, NULL);
 #else
 	BufSpeak = DosMalloc(256 * 1024 + 34, NULL);
@@ -1863,6 +1867,11 @@ void lba_main(int argc, UBYTE *argv[]) /* PORT: was main(); SDL wrapper in platf
 	/* PORT: M5 runs the engine's own MainLoop on a fixed cube, with neither
 	 * the menu nor the introduction in front of it. platform/psx/psx_m5.c. */
 	PORT_M5_Game();
+#elif defined(PORT_JAG)
+	/* PORT: the Jaguar's front-end (front_menu.c) has already shown the logo
+	 * and the main menu and the player chose New game: straight into it.
+	 * engine_c/port/jag_game.c. */
+	Jag_M5Game();
 #else
 	Load_HQR(PATH_RESSOURCE "ress.hqr", Screen, RESS_MENU_PCR);
 	CopyScreen(Screen, Log);

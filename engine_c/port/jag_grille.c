@@ -137,15 +137,13 @@ void AffGrille(void)
     Bg_Redraw();
 }
 
-/* ---- loading a cube: bring-up step 3 ---------------------------------------- *
- * InitGrille is where ChangeCube hands over to scene_bg.c (Bg_Build), and
- * that hand-over needs the camera and the palette settled first. Loud until
- * it is written. */
+/* ---- loading a cube --------------------------------------------------------- */
 LONG InitGrille(UWORD numcube)
 {
-    (void)numcube;
-    JAG_TODO("InitGrille");
-    return 0;
+    /* ChangeCube has already emptied the per-room arena (HQM_Free_All) and
+     * loaded the scene; the camera is set after this, and the first
+     * AffScene(TRUE) shows the room (Bg_Show). */
+    return Bg_LoadRoom((int)numcube);
 }
 
 void FreeGrille(void)

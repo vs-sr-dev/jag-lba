@@ -12,6 +12,12 @@
 #          marsdev-32x:latest "sh build_fork.sh"
 set -e
 
+# MODE: "test" (default) links obj_fork/fork_test.elf with the fork's entry
+# points as roots and reports; "blob" builds THE engine blob (engine_blob.bin)
+# with the fork inside and JAG_FORK=1 on our side, and fails on any missing
+# symbol. build_v6.bat calls "blob" when JAG_FORK=1.
+MODE=${1:-test}
+
 BIN=/marsdev/mars/m68k-elf/bin
 LIBGCC=$("$BIN/m68k-elf-gcc" -m68000 -print-libgcc-file-name)
 LIBC=$("$BIN/m68k-elf-gcc" -m68000 -print-file-name=libc.a)
@@ -79,9 +85,11 @@ cc port/jag_layout_fork.c $O/port_jag_layout_fork.o
 JAG_CFLAGS="-m68000 -O2 -fomit-frame-pointer -ffreestanding -fno-builtin \
     -fno-tree-loop-distribute-patterns -ffunction-sections -fdata-sections \
     -Wall -Wextra -I."
+[ "$MODE" = blob ] && JAG_CFLAGS="$JAG_CFLAGS -DJAG_FORK=1"
 JAG="hal_debug hal_mem hal_time hal_input hal_hqr hal_panic scene_bg \
      body_draw sprite_draw front_menu engine_main"
-PORT="jag_video jag_sys jag_hqr jag_stubs jag_config jag_libc jag_grille jag_layout_ours"
+PORT="jag_video jag_sys jag_hqr jag_stubs jag_config jag_libc jag_grille jag_layout_ours \
+      jag_anim jag_scene jag_render jag_game"
 JOBJS=""
 for n in $JAG; do
     "$BIN/m68k-elf-gcc" $JAG_CFLAGS -c $n.c -o $O/jag_$n.o 2> $O/jag_$n.err \
@@ -98,6 +106,20 @@ cat $O/jag_*.err $O/port_*.err 2>/dev/null | grep -A2 "warning" | head -40 || tr
 "$BIN/m68k-elf-as" -m68000 crt0.s -o $O/crt0.o
 
 "$BIN/m68k-elf-size" -t $OBJS | tail -1
+
+if [ "$MODE" = blob ]; then
+    # THE blob. The roots are the entry table's (engine_init, engine_frame,
+    # engine_vbl); --gc-sections drops what nothing reaches, including the
+    # S50 game path that JAG_FORK leaves uncalled.
+    "$BIN/m68k-elf-ld" -T jag_engine.ld --gc-sections         -Map=engine_blob.map $O/crt0.o $JOBJS $OBJS "$LIBC" "$LIBGCC"         -o engine_blob.elf
+    "$BIN/m68k-elf-objcopy" -O binary engine_blob.elf engine_blob.bin
+    "$BIN/m68k-elf-nm" -n engine_blob.elf > engine_blob.sym
+    "$BIN/m68k-elf-objdump" -d engine_blob.elf > engine_blob.lst
+    head -3 engine_blob.sym
+    "$BIN/m68k-elf-size" engine_blob.elf
+    ls -l engine_blob.bin
+    exit 0
+fi
 
 # The test link. --noinhibit-exec writes the ELF even with errors, so the size
 # is measurable while the seam is still open; the errors are the seam.

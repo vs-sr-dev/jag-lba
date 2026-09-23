@@ -73,8 +73,16 @@ rem senza che il Jaguar c'entri niente.
 docker run --rm -v "%CD%:/work" -w /work marsdev-32x:latest "gcc -O2 -Wall -Iengine_c -o /tmp/host_front engine_c/host_front.c && /tmp/host_front cart/data_v6.bin"
 if errorlevel 1 (echo SONDE DEL FRONT-END CADUTE SU PC & exit /b 1)
 
-echo [3/5] blob C dell'engine
-docker run --rm -v "%CD%:/work" -w /work/engine_c marsdev-32x:latest "sh build_engine.sh"
+rem S51: JAG_FORK=1 costruisce il blob col motore trapiantato dentro
+rem (engine_c/build_fork.sh blob, engine_c/fork/JAGUAR_PORT.md); 0 ricostruisce
+rem il blob di S50 (build_engine.sh), per un A/B col percorso vecchio.
+if "%JAG_FORK%"=="" set JAG_FORK=1
+echo [3/5] blob C dell'engine (JAG_FORK=%JAG_FORK%)
+if "%JAG_FORK%"=="1" (
+  docker run --rm -v "%CD%:/work" -w /work/engine_c marsdev-32x:latest "sh build_fork.sh blob"
+) else (
+  docker run --rm -v "%CD%:/work" -w /work/engine_c marsdev-32x:latest "sh build_engine.sh"
+)
 if errorlevel 1 (echo C BUILD ERROR & exit /b 1)
 if not exist engine_c\engine_blob.bin (echo C BUILD: nessun output & exit /b 1)
 

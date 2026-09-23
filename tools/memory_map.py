@@ -738,6 +738,7 @@ def gen_cart_inc():
     out.append("; Tabella di entry del blob C: jmp abs.l = 6 byte per voce.\n")
     out.append("%-20s EQU $%06X        ; engine_init() -> d0 = magic\n" % ("C_ENTRY_INIT", cb))
     out.append("%-20s EQU $%06X        ; engine_frame()\n" % ("C_ENTRY_FRAME", cb + 6))
+    out.append("%-20s EQU $%06X        ; engine_vbl(), from ViHandler (S51)\n" % ("C_ENTRY_VBL", cb + 12))
     out.append("%-20s EQU $900DF00D\n" % "C_ENGINE_MAGIC")
     return "".join(out)
 

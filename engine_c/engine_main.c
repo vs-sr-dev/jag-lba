@@ -160,6 +160,37 @@
 #include "body_expect.h"
 #include "menu_expect.h"
 
+/* ---------------------------------------------------------------------------
+ * IL MOTORE TRAPIANTATO (S51), JAG_FORK=1.
+ *
+ * Con JAG_FORK il gioco dopo "New game" e' quello del fork (engine_c/fork,
+ * port/jag_game.c:Jag_ForkStart), che non torna mai: il suo MainLoop e le
+ * sue finestre modali sono cicli bloccanti. Il percorso di gioco di S42-S50
+ * qui sotto (Bg_Build, Game_Frame, le sonde dei passi) resta compilato solo
+ * senza JAG_FORK: con il fork collegato, i suoi nomi (LoadScene, InitAnim,
+ * SearchBody...) si risolverebbero IN SILENZIO nelle funzioni omonime del
+ * fork, che fanno altro. Meglio non esserci che esserci sbagliati.
+ *
+ * engine_vbl e' l'ingresso blob+12 che ViHandler chiama a ogni interrupt:
+ * vuoto finche' Jag_VblHook e' zero (.bss, azzerata prima che gli interrupt
+ * si accendano), il tempo e il pad del fork dopo (port/jag_sys.c:Jag_Vbl).
+ * ------------------------------------------------------------------------- */
+#ifndef JAG_FORK
+#define JAG_FORK 0
+#endif
+
+void (*Jag_VblHook)(void);
+
+void engine_vbl(void)
+{
+    if (Jag_VblHook)
+        Jag_VblHook();
+}
+
+#if JAG_FORK
+void Jag_ForkStart(void);
+#endif
+
 /* Sonde di sezione. Restano da M0: sono la rete che fa fallire il boot in modo
  * parlante quando il linker script e' sbagliato, invece di lasciare che diventi
  * un guasto misterioso tre milestone piu' avanti.
@@ -959,7 +990,9 @@ ULONG engine_init(void)
 
     HQR_Init();
     hqr_mask = hqr_probe(hqr_got);
+#if !JAG_FORK
     sc_mask  = scene_probe(sc_got);
+#endif
     sc_tail  = (ULONG)(Scene.tail - (long)(UWORD)Scene.NbBrickTrack * 6);
 
     /* Il fondo NON si costruisce qui. Vedi engine_frame. */
@@ -1120,6 +1153,11 @@ void engine_frame(void)
         return;                 /* la stanza comincia dal quadro dopo */
     }
 
+#if JAG_FORK
+    Jag_ForkStart();            /* non torna */
+    (void)prev;
+}
+#else
     if (!bg_built) {
         ULONG t0 = JAG_HAL_VBL_TICK;
         bg_built = 1;
@@ -1479,3 +1517,4 @@ void engine_frame(void)
      * MyKey ha prodotto SC_1. */
     Dbg_Value(14, ((ULONG)PadKeysSeen << 16) | PadKeys);
 }
+#endif /* !JAG_FORK */

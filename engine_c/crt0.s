@@ -9,6 +9,7 @@
 | ABI verso RMAC - tabella di entry a offset FISSI (jmp abs.l = 6 byte):
 |   blob+0 : _c_init()      -> d0 = JAG_ENGINE_MAGIC, oppure codice d'errore
 |   blob+6 : engine_frame()
+|   blob+12: engine_vbl()     once per video interrupt, from ViHandler (S51)
 | Gli offset sono dichiarati in include/cart_map.inc (C_ENTRY_INIT/C_ENTRY_FRAME),
 | generato dallo stesso master Python del linker script.
 |
@@ -21,6 +22,7 @@
 entry_table:
 	jmp	_c_init
 	jmp	engine_frame
+	jmp	engine_vbl
 
 	.text
 	.global _c_init

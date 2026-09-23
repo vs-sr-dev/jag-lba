@@ -70,4 +70,12 @@ void Jag_AnimSnap(short numobj);
 /* A body from the cartridge, JBD, into PtrBody[] (port/jag_scene.c). */
 long Jag_LoadBody(short hqrbody, long slot);
 
+/* The renderer and the game start (port/jag_render.c, port/jag_game.c). */
+void Jag_AffScene(long flagflip);
+void Jag_M5Game(void);
+
+/* The Jaguar's own front-end (front_menu.c) shows the Adeline logo and the
+ * main menu; lba_main's copies of them are skipped. */
+#define SKIP_INTRO 1
+
 #endif /* JAG_COMPAT_H */
