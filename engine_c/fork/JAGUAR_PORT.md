@@ -120,6 +120,7 @@ Each step ends with a build that runs; the visible ones are marked.
 |---|------|------|-----|
 | 1 | `LIB_MENU/MENUFUNC.C` | `PORT_JAG` added to the `Message()` duplicate guard | PERSO.C defines its own, as on SDL/NDS/PSX |
 | 2 | `game/PERSO.C` | `TheEnd` under `#ifndef PORT_JAG` | ours (`hal_panic.c`) draws the code on screen and stops; this one printf()s and exits to DOS |
+| 3 | `game/DEFINES.H` | `T_OBJET` gets `AnimSrcFrame`, `AnimMemoTicks`, `PtrPoseSrc` at the end, under `PORT_JAG` | the animation state lives in the actor on the Jaguar; `port/jag_layout.h` proves both definitions equal (size, key offsets, `MAX_*`), checked on both sides with `_Static_assert` and seen to fail on a broken offset |
 
 ## Found while building the seam (2026-09-23), not yet acted on
 

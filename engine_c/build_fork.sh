@@ -68,6 +68,8 @@ for n in $LIBSYS;    do cc $F/LIB_SYS/$n.C  $O/sys_$n.o;  done
 for n in $LIBSVGA;   do cc $F/LIB_SVGA/$n.C $O/svga_$n.o; done
 for n in $LIBMENU;   do cc $F/LIB_MENU/$n.C $O/menu_$n.o; done
 for n in $TRANSLATE; do cc $F/translate/$n.c $O/tr_$n.o;  done
+# The fork's half of the layout invariant (port/jag_layout.h).
+cc port/jag_layout_fork.c $O/port_jag_layout_fork.o
 
 # The Jaguar side, minus the three files the fork replaces (JAGUAR_PORT.md,
 # bring-up step 3): scene_load.c, scene_walk.c, object_move.c. Compiled HERE
@@ -79,7 +81,7 @@ JAG_CFLAGS="-m68000 -O2 -fomit-frame-pointer -ffreestanding -fno-builtin \
     -Wall -Wextra -I."
 JAG="hal_debug hal_mem hal_time hal_input hal_hqr hal_panic scene_bg \
      body_draw sprite_draw front_menu engine_main"
-PORT="jag_video jag_sys jag_hqr jag_stubs jag_config jag_libc jag_grille"
+PORT="jag_video jag_sys jag_hqr jag_stubs jag_config jag_libc jag_grille jag_layout_ours"
 JOBJS=""
 for n in $JAG; do
     "$BIN/m68k-elf-gcc" $JAG_CFLAGS -c $n.c -o $O/jag_$n.o 2> $O/jag_$n.err \

@@ -267,6 +267,15 @@ typedef struct
 	/* B*/ WORD FlagAnim; /* type d'anim en cours (dans flags?) */
 
 	UBYTE CodeJeu; // brick spéciale sample ou action
+#ifdef PORT_JAG
+	/* PORT: the animation state, which LBA1 keeps inside the BODY buffer and
+	 * the Jaguar keeps in the actor (the cartridge bodies are JBD and shared;
+	 * engine_c/body_draw.c:pose_load reads these). Same fields, same order as
+	 * engine_c/hal.h; engine_c/port/jag_layout.h checks it on both sides. */
+	WORD AnimSrcFrame;
+	ULONG AnimMemoTicks;
+	WORD *PtrPoseSrc;
+#endif
 
 } T_OBJET;
 
