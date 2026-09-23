@@ -63,6 +63,16 @@ def main():
     ap.add_argument('--sym', default=os.path.join(REPO, 'engine_c',
                                                   'engine_blob.sym'))
     ap.add_argument('--out', required=True)
+    # --actors N: every 60 frames, one HUD line per four actors among the
+    # first N whose OffsetTrack is not -1: index, track offset, X, Z and
+    # Flags (+96; INVISIBLE 0x0200, SPRITE_3D 0x0400 in COMMON.H).
+    # Offsets are T_OBJET's (port/jag_layout.h): PosObjX +26, PosObjZ +30,
+    # OffsetTrack +70; 134 bytes an actor.
+    ap.add_argument('--actors', type=int, default=0)
+    # --poke SYM[+OFF]:W=VALUE@FRAME, comma separated: writes a byte, word or
+    # long (B/W/L) once at FRAME. A bench trick, e.g. NumObjFollow:W=3@4300 to
+    # make the fork's camera follow actor 3 instead of the hero.
+    ap.add_argument('--poke', default='')
     a = ap.parse_args()
 
     presses = []
@@ -87,6 +97,21 @@ def main():
                 v *= int(f, 0)
             off += v
         watch.append((name, syms[m.group(1)] + off))
+
+    pokes = []
+    for item in filter(None, [s.strip() for s in a.poke.split(',')]):
+        m = re.match(r'^([A-Za-z_][A-Za-z0-9_]*)((?:[+][0-9xXa-fA-F*]+)*):([BWL])=(-?[0-9xXa-fA-F]+)@(\d+)$', item)
+        if not m or m.group(1) not in syms:
+            raise SystemExit('emu_drive: bad poke %r' % item)
+        off = 0
+        for term in filter(None, m.group(2).split('+')):
+            v = 1
+            for f in term.split('*'):
+                v *= int(f, 0)
+            off += v
+        size = {'B': 8, 'W': 16, 'L': 32}[m.group(3)]
+        val = int(m.group(4), 0) & ((1 << size) - 1)
+        pokes.append((int(m.group(5)), syms[m.group(1)] + off, size, val))
 
     emu_pad = hal_addr('EMU_PAD')
 
@@ -114,6 +139,8 @@ def main():
     w('            bits |= kPress[i][2];')
     w('    if (sFrame > 60)')
     w('        bigpemu_jag_write32(EMU_PAD, bits);')
+    for frame, addr, size, val in pokes:
+        w('    if (sFrame == %d) bigpemu_jag_write%d(0x%08X, 0x%X);' % (frame, size, addr, val))
     w('    if (sFrame > 60 && (sFrame % 30) == 0) {')
     w('        printf_notify("f=%u cal=%08X pad=%08X", (unsigned)sFrame,'
       ' (unsigned)bigpemu_jag_read32(0x802000), (unsigned)bits);')
@@ -124,6 +151,23 @@ def main():
                          for _, ad in grp)
         w('        printf_notify("%s", %s);' % (fmt, args))
     w('    }')
+    if a.actors:
+        # One HUD line per tracked actor, straight printf_notify: the script
+        # VM's sprintf garbles arguments past the second (S51: every actor
+        # came out x0000 z0000 fA7AB), printf_notify has held three.
+        lo = syms['ListObjet']
+        w('    if (sFrame > 60 && (sFrame % 60) == 15) {')
+        w('        uint32_t k;')
+        w('        for (k = 0; k < %d; k++) {' % a.actors)
+        w('            uint32_t o = 0x%08X + k * 134;' % lo)
+        w('            uint32_t trk = bigpemu_jag_read16(o + 70);')
+        w('            if (trk == 0xFFFF) continue;')
+        w('            printf_notify("act %X trk %X", (unsigned)k, (unsigned)trk);')
+        w('            printf_notify("   xy %08X  z_ %08X  flags %08X",')
+        w('                (unsigned)bigpemu_jag_read32(o + 26), (unsigned)bigpemu_jag_read32(o + 30),')
+        w('                (unsigned)bigpemu_jag_read32(o + 96));')
+        w('        }')
+        w('    }')
     w('    return 0;')
     w('}')
     w('void bigp_init()')

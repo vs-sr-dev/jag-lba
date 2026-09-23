@@ -19,6 +19,8 @@ param(
     [string]$Press = "",
     [string]$Watch = "",
     [string]$Sym   = "",
+    [int]$Actors   = 0,
+    [string]$Poke  = "",
     [string]$Shots = "40",
     [string]$Tag   = "run"
 )
@@ -37,6 +39,8 @@ $args1 = @((Join-Path $root "tools\emu_drive.py"), "--out", $src)
 if ($Press) { $args1 += @("--press", $Press) }
 if ($Watch) { $args1 += @("--watch", $Watch) }
 if ($Sym)   { $args1 += @("--sym", $Sym) }
+if ($Actors) { $args1 += @("--actors", "$Actors") }
+if ($Poke)  { $args1 += @("--poke", $Poke) }
 & python @args1
 if ($LASTEXITCODE -ne 0) { throw "emu_drive.py failed" }
 
