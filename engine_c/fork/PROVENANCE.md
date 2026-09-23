@@ -13,3 +13,11 @@ The import commit touches nothing. Every Jaguar change after it is a separate
 commit, so `git log -- engine_c/fork` is the full list of what differs from
 the PSX tree. Fixes carried over from HS-LBA @ 913e41b get their own commits
 too, each naming the HS file and line.
+
+The three ports named above are public:
+[PSX-LBA](https://github.com/vs-sr-dev/psx-lba),
+[DS-LBA](https://github.com/vs-sr-dev/ds-lba),
+[HS-LBA](https://github.com/vs-sr-dev/hs-lba). The engine itself is
+[lba1-classic-community](https://github.com/2point21/lba1-classic-community)
+(GPL-2.0), from 2.21's
+[source release](https://github.com/2point21/lba1-classic).

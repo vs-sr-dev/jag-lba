@@ -141,7 +141,7 @@ checked when this README was written.
 | `engine_c/*.c` | the Jaguar renderer: background (`scene_bg.c`), bodies (`body_draw.c`), sprites and doors, front-end |
 | `src/` | 68000 boot and interrupt code, and the GPU/DSP kernels (RMAC) |
 | `tools/` | cartridge packer, reference renderers and parsers used as oracles, the life-script disassembler, emulator drivers |
-| `docs/` | design notes and the per-session development diaries (`todo_sNN.md`, in Italian) |
+| `docs/` | [`skeleton_design.md`](docs/skeleton_design.md): the architecture decisions the code cites by number (3.1-3.7) and the milestones up to S30, with the measurements taken on real hardware |
 
 ---
 
@@ -162,8 +162,13 @@ reads it from your copy.
   for releasing its source code.
 - The **[lba1-classic-community](https://github.com/2point21/lba1-classic-community)**
   contributors, for the maintained engine and the C translations of its
-  assembly modules. The engine was imported through its DS and PSX ports;
-  see [`engine_c/fork/PROVENANCE.md`](engine_c/fork/PROVENANCE.md).
+  assembly modules.
+- The engine reached the Jaguar through this project's sibling ports, whose
+  fixes and 2 MB memory diet it inherits: [ds-lba](https://github.com/vs-sr-dev/ds-lba)
+  (Nintendo DS), [psx-lba](https://github.com/vs-sr-dev/psx-lba)
+  (PlayStation), from which it was imported, and
+  [hs-lba](https://github.com/vs-sr-dev/hs-lba) (Mattel HyperScan). See
+  [`engine_c/fork/PROVENANCE.md`](engine_c/fork/PROVENANCE.md).
 - **Zerosquare**, for the interlaced video recipe for real hardware.
 - **tursilion/makefastboot** (BSD), which `tools/cart_header.py` follows
   for the cartridge boot header.

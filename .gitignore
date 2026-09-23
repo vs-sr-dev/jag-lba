@@ -70,3 +70,7 @@ tools/_makefastboot_ref.cpp
 # Paths to your game copy, the Jaguar SDK header and the emulator
 # (local.cfg.example documents them).
 local.cfg
+
+# -- Development diaries -------------------------------------------------------
+# Per-session working notes (Italian), kept locally, not published.
+docs/todo_s*.md
