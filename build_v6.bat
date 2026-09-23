@@ -6,6 +6,7 @@ rem   2. impacchetta le risorse HQR e genera engine_c/hqr_expect.h
 rem   3. compila il blob C dell'engine (Docker marsdev-32x, m68k-elf-gcc)
 rem   4. assembla il lato RMAC
 rem   5. impacchetta la cartuccia agli offset fissi
+rem   6. assembla e impacchetta anche l'ALTRO bersaglio (ferro/BigPEmu)
 rem
 rem L'ordine 2 prima di 3 non e' casuale: il packer HQR calcola i valori attesi
 rem delle sonde di M1 e li scrive in engine_c/hqr_expect.h, che il blob C
@@ -85,6 +86,19 @@ if errorlevel 1 (echo ASSEMBLER ERROR & exit /b 1)
 echo [5/5] packer cartuccia
 python tools\cart_build.py
 if errorlevel 1 (echo PACK ERROR & exit /b 1)
+
+rem [6/6] L'ALTRO bersaglio (S51). Da una copia del sorgente con TARGET_HW
+rem rovesciato, cosi' ogni build lascia sia la ROM per il ferro sia quella per
+rem BigPEmu, e la seconda si puo' provare sull'emulatore senza toccare il
+rem sorgente. Il blob C e i dati sono gli stessi: cambia solo il lato RMAC.
+echo [6/6] l'altro bersaglio
+python tools\alt_target.py build\_main_v6_alt.s
+if errorlevel 1 (echo ALT TARGET ERROR & exit /b 1)
+for /f %%h in ('python tools\alt_target.py --hw') do set ALT_HW=%%h
+rmac -fb -fr -iD:\Homebrew\Jaguar\include\ -iinclude\ -lbuild\main_v6_alt.lst -o build\main_v6_alt_raw.abs build\_main_v6_alt.s
+if errorlevel 1 (echo ASSEMBLER ERROR ALT & exit /b 1)
+python tools\cart_build.py --hw %ALT_HW% --code build\main_v6_alt_raw.abs
+if errorlevel 1 (echo PACK ERROR ALT & exit /b 1)
 
 echo.
 rem Il nome della ROM lo decide TARGET_HW in src\main_v6.s: _hw.j64 oppure

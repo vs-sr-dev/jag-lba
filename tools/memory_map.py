@@ -147,6 +147,12 @@ HAL_FIELDS = [
     ("SPR_LIVE_DATA_B", 0x58, 4, "long: copia viva di SPR_DATA_B"),
     ("SPR_LIVE_PH0LO",  0x5C, 4, "long: copia viva di OP_SPR_PH0LO"),
     ("SPR_LIVE_PH1LO",  0x60, 4, "long: copia viva di OP_SPR_PH1LO"),
+    # S51: il canale d'ingresso dell'EMULATORE. Uno script di BigPEmu ci scrive
+    # i pulsanti (word bassa, bit PAD_*) e il tastierino (word alta, bit di
+    # PadKeys), e Hal_ReadPad li somma a quelli veri. Serve a guidare il gioco
+    # da uno script - logo, menu, un giro a piedi - senza mandare tasti al
+    # desktop dell'utente. engine_init la azzera: sul ferro nessuno la scrive.
+    ("EMU_PAD",         0x64, 4, "long: pulsanti dello script BigPEmu, OR sul pad (0 sul ferro)"),
 ]
 # Il joypad NON e' qui. Leggerlo e' superficie HAL, e il blob C puo' arrivare a
 # $F14000 come a qualunque altro indirizzo: farlo in C evita due campi in piu'

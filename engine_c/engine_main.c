@@ -943,6 +943,10 @@ ULONG engine_init(void)
 
     marker_slot = 0;
 
+    /* Il canale dell'emulatore parte vuoto: la DRAM al boot non e' zero, e un
+     * bit rimasto su sarebbe un pulsante fantasma premuto per sempre. */
+    JAG_HAL_EMU_PAD = 0;
+
     /* Prima cosa in assoluto: i due indici della diagnostica. Da M2 la CLUT
      * diventa la palette di LBA1, ma se la palette non si caricasse resterebbe
      * la rampa di grigi del lato RMAC, dove l'indice 2 e' quasi nero - cioe'

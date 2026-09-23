@@ -51,6 +51,8 @@ public class W {
     [DllImport("user32.dll")] public static extern bool GetClientRect(IntPtr h, out R r);
     [DllImport("user32.dll")] public static extern bool ClientToScreen(IntPtr h, ref P p);
     [DllImport("user32.dll")] public static extern void keybd_event(byte vk, byte scan, uint flags, IntPtr extra);
+    [DllImport("user32.dll")] public static extern IntPtr GetForegroundWindow();
+    [DllImport("user32.dll")] public static extern bool PrintWindow(IntPtr h, IntPtr hdc, uint flags);
     public struct R { public int L, T, Rt, B; }
     public struct P { public int X, Y; }
 }
@@ -93,9 +95,25 @@ if ($held.Count -gt 0) {
     Start-Sleep -Milliseconds 500
 }
 
+# S51: MAI copiare lo schermo alla cieca. Windows puo' rifiutare
+# SetForegroundWindow a un processo in secondo piano, e allora CopyFromScreen
+# fotografa quel che sta SOPRA l'emulatore - in S51 ha catturato il desktop
+# dell'utente. Prima PrintWindow (il contenuto lo chiede alla finestra stessa,
+# PW_RENDERFULLCONTENT = 2 per le finestre DirectX); la copia dallo schermo
+# resta solo come ripiego, e solo se la finestra in primo piano E' BigPEmu.
 $bmp = New-Object System.Drawing.Bitmap($r.Rt, $r.B)
 $g = [System.Drawing.Graphics]::FromImage($bmp)
-$g.CopyFromScreen($o.X, $o.Y, 0, 0, $bmp.Size)
+$hdc = $g.GetHdc()
+$ok = [W]::PrintWindow($h, $hdc, 3)   # PW_CLIENTONLY | PW_RENDERFULLCONTENT
+$g.ReleaseHdc($hdc)
+if (-not $ok) {
+    if ([W]::GetForegroundWindow() -ne $h) {
+        foreach ($vk in $held) { [W]::keybd_event($vk, 0, 2, [IntPtr]::Zero) }
+        Stop-Process -Id $p.Id -Force
+        throw "PrintWindow fallita e BigPEmu non e' in primo piano: niente cattura"
+    }
+    $g.CopyFromScreen($o.X, $o.Y, 0, 0, $bmp.Size)
+}
 $bmp.Save($outPath, [System.Drawing.Imaging.ImageFormat]::Png)
 $g.Dispose(); $bmp.Dispose()
 

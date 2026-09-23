@@ -54,6 +54,16 @@ def read_target_hw():
 
 def main():
     hw = read_target_hw()
+    # S51: build_v6.bat assembla anche l'ALTRO bersaglio, da una copia del
+    # sorgente con TARGET_HW rovesciato, e lo impacchetta con --hw e --code.
+    # Il sorgente resta l'unico padrone del proprio valore: qui si dice solo
+    # quale ROM si sta scrivendo, perche' il nome del file lo deve dire.
+    if "--hw" in sys.argv:
+        hw = int(sys.argv[sys.argv.index("--hw") + 1])
+    blobs = list(BLOBS)
+    if "--code" in sys.argv:
+        code = sys.argv[sys.argv.index("--code") + 1]
+        blobs = [(n, code if n == "ROM_CODE" else r, q) for n, r, q in blobs]
     out = os.path.join(REPO, "build",
                        "jaglba_v6_%s.j64" % ("ferro" if hw else "emu"))
     if "--out" in sys.argv:
@@ -65,7 +75,7 @@ def main():
     write_boot_header(cart, mm.cart_region("ROM_CODE")[0])
 
     print("cart_build: layout V6")
-    for name, rel, required in BLOBS:
+    for name, rel, required in blobs:
         addr, off, size = mm.cart_region(name)
         path = os.path.join(REPO, rel)
         if not os.path.isfile(path):

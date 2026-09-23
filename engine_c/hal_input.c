@@ -141,6 +141,15 @@ void Hal_ReadPad(void)
     if (r3 & 0x02) keys |= 1u << 9;    /* '9' */
     if (r3 & 0x01) keys |= 1u << 11;   /* '#' */
 
+    /* Il canale dell'emulatore (S51, HAL_FIELDS EMU_PAD): pulsanti nella word
+     * bassa, tastierino nell'alta. Sommati PRIMA dei fronti, cosi' uno script
+     * che preme e rilascia produce gli stessi PadEdge di un pollice. */
+    {
+        ULONG emu = JAG_HAL_EMU_PAD;
+        state |= (UWORD)emu;
+        keys  |= (UWORD)(emu >> 16);
+    }
+
     PadState = state;
     PadEdge  = (UWORD)(state & ~prev);
     PadKeys  = keys;
