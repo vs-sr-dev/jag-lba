@@ -1426,10 +1426,16 @@ void Bg_Show(WORD cgx, WORD cgy, WORD cgz)
     Scene.CamGY = cgy;
     Scene.CamGZ = cgz;
 
-    if (bg_shown) {
-        Bg_ScrollTo(nvx, nvy);
-        return;
-    }
+    /* UN PASSO DI CAMERA E' UN FONDO RIFATTO, come nell'originale: AffScene
+     * (TRUE) fa Cls + AffGrille, e la port GBA misura lo stesso (4,4 fps sui
+     * quadri di scatto). Lo scorrimento col Blitter (Bg_ScrollTo) e' una
+     * ottimizzazione NOSTRA che S42 aveva lasciato non verificata, e col fork
+     * - che muove la camera davvero - ha mostrato attori a righe, frammenti di
+     * muro e fasce vuote. Torna quando lo si mette a punto, nel lavoro sulle
+     * prestazioni; fino ad allora si ridisegna, che e' corretto per costruzione.
+     * Anche a camera ferma: AffScene(TRUE) arriva pure dopo le finestre modali
+     * (dialoghi, menu), che hanno disegnato sopra il fondo, e l'originale li'
+     * ridisegna sempre. */
 
     BgStat.camgx = cgx;
     BgStat.camgz = cgz;
@@ -1884,7 +1890,9 @@ void Bg_ScrollTo(long nvx, long nvy)
 
     /* Salto piu' grande dello schermo: non c'e' niente da conservare, e la
      * copia costerebbe senza risparmiare. */
-    if (adx >= JAG_BG_W || ady >= JAG_BG_H) {
+    /* S51: la soglia verticale e' l'altezza VISIBILE (DOS_CLIP_Y1, 480), non
+     * JAG_BG_H: vedi le bande qui sotto. */
+    if (adx >= JAG_BG_W || ady >= DOS_CLIP_Y1) {
         render(nvx, nvy);
         return;
     }
@@ -1929,12 +1937,21 @@ void Bg_ScrollTo(long nvx, long nvy)
         band[nb].x1 = JAG_BG_W - 1; band[nb].y1 = JAG_BG_H - 1;
         nb++;
     }
+    /* S51, LA BANDA DI SOTTO PARTE DA 480, NON DA 592. Solo le prime
+     * DOS_CLIP_Y1 righe del fondo sono un'immagine intera: le 112 sotto hanno
+     * soltanto le code delle tessere ancorate in fondo (render taglia a 480).
+     * Salendo, la copia porta quelle righe nel visibile; la banda contata dal
+     * fondo del buffer le lasciava li', e a ogni scatto successivo la
+     * spazzatura risaliva verso il centro dello schermo. Non si vedeva prima
+     * del fork perche' la camera della cella non scorreva mai (S42: "camera
+     * NON verificata"). Si ridisegna da 480+dy fino in fondo al buffer, cosi'
+     * anche le righe sotto il visibile tornano coerenti per il prossimo passo. */
     if (dy > 0) {
         band[nb].x0 = 0; band[nb].y0 = 0;
         band[nb].x1 = JAG_BG_W - 1; band[nb].y1 = (WORD)(dy - 1);
         nb++;
     } else if (dy < 0) {
-        band[nb].x0 = 0; band[nb].y0 = (WORD)(JAG_BG_H + dy);
+        band[nb].x0 = 0; band[nb].y0 = (WORD)(DOS_CLIP_Y1 + dy);
         band[nb].x1 = JAG_BG_W - 1; band[nb].y1 = JAG_BG_H - 1;
         nb++;
     }

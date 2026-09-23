@@ -4149,8 +4149,15 @@ void Body_DrawAll(void)
      * `spr_on` lo azzera ogni attore, quindi a fine passata varrebbe l'esito
      * dell'ULTIMO invece che quello dell'eroe.
      *
-     * A HEIGHT zero l'oggetto e' spento senza toccare la catena della lista. */
-    if (!(spr_why & SPR_WHY_ON))
+     * A HEIGHT zero l'oggetto e' spento senza toccare la catena della lista.
+     *
+     * S51: `spr_why == -1` va detto a parte. La sentinella "l'eroe non e' mai
+     * passato da draw_actor" ha TUTTI i bit accesi, SPR_WHY_ON compreso, quindi
+     * il solo test sul bit lasciava lo sprite acceso con l'ultima posa proprio
+     * nel caso per cui questo spegnimento esiste. In S50 non si vedeva perche'
+     * la camera seguiva sempre l'eroe; col fork la sposta chiunque (LM_CAM_FOLLOW,
+     * NumObjFollow) e Twinsen restava a mezz'aria sopra un'altra stanza. */
+    if (spr_why == -1 || !(spr_why & SPR_WHY_ON))
         JAG_HAL_OP_SPR_PH0LO =
             ((ULONG)JAG_HAL_VDB_VAL << 3)
             | ((((ULONG)JAG_OP_TAIL_STOP >> 3) & 0xFFUL) << 24);
