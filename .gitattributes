@@ -1,0 +1,6 @@
+# The shell scripts run inside the Linux build container: CRLF breaks them.
+# The batch files run on Windows and want CRLF. Everything else is normalised.
+* text=auto
+*.sh  text eol=lf
+*.bat text eol=crlf
+*.cmd text eol=crlf

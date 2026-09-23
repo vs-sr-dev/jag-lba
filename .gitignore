@@ -1,0 +1,65 @@
+# -- Game data --------------------------------------------------------------
+# This repository is BYOA: not one byte of LBA1 lives here. Everything below
+# is produced from your own copy of the game by the build, and must never be
+# committed. The directory rules cover where the tools put things; the
+# extension rules catch a stray copy anywhere else in the tree.
+000644_little_big_adventure/
+extracted/
+cart/
+assets/
+
+*.hqr
+*.HQR
+*.img
+*.IMG
+*.vox
+*.VOX
+*.voc
+*.VOC
+*.fla
+*.FLA
+*.mp3
+*.wav
+
+# Headers the build regenerates from the game data at every run (the probe
+# expectations digest the real archives, sintab.h is P_SINTAB.C, the maps and
+# the linker script come from tools/memory_map.py). A fresh clone gets them
+# from build_v6.bat, before the C is compiled.
+engine_c/*_expect.h
+engine_c/sintab.h
+engine_c/mem_map.h
+engine_c/jag_engine.ld
+include/dram_map.inc
+include/cart_map.inc
+tools/scene_inventory.csv
+
+# -- Build output -----------------------------------------------------------
+build/
+*.o
+*.elf
+*.bin
+*.abs
+*.j64
+*.rom
+*.lst
+*.prn
+*.sym
+*.exe
+*.log
+__pycache__/
+
+# -- Third-party and upstream reference -------------------------------------
+# A pristine copy of lba1-classic-community is kept locally to diff against;
+# it is not ours to redistribute here.
+lba1-classic-community-main/
+# Flare netlists, JagStudio, the Atari TRM text, makefastboot's source.
+ref/
+tools/jagstudio/
+tools/TRM_text.txt
+tools/_makefastboot_ref.cpp
+
+# -- Local ------------------------------------------------------------------
+*.jpeg
+*.png
+*.webp
+.claude/
