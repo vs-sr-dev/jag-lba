@@ -1323,9 +1323,6 @@ void Bg_EnterAt(long x, long y, long z)
 
 int Bg_Build(int numscene)
 {
-    const le_byte *grid;
-    ULONG t0, t;
-
     /* L'ARENA PER-CUBO MUORE QUI, ed e' il posto in cui muore anche upstream
      * (ChangeCube, OBJECT.C:518). Fino a M2 nessuno la liberava e non si
      * notava: le uniche voci decompresse erano scena, griglia e BLL, e tre
@@ -1356,14 +1353,38 @@ int Bg_Build(int numscene)
         entry_set = 0;
     }
     Scene_Derive();
-    BgStat.camgx = Scene.CamGX;
-    BgStat.camgz = Scene.CamGZ;
-    BgStat.vx = (WORD)(-(long)(Scene.CamGX - Scene.CamGZ) * ISO_X + CAM_CX);
-    BgStat.vy = (WORD)(-(long)(Scene.CamGX + Scene.CamGZ) * ISO_Y + CAM_CY
-                       + (long)Scene.CamGY * ISO_GY);
+
+    if (!Bg_LoadRoom(numscene))
+        return 0;
+    Bg_Show(Scene.CamGX, Scene.CamGY, Scene.CamGZ);
+    return 1;
+}
+
+/* ---------------------------------------------------------------------------
+ * BG_BUILD IN DUE (S51), per il motore trapiantato.
+ *
+ * Il fork carica e disegna in due momenti diversi: ChangeCube chiama
+ * InitGrille (OBJECT.C:540) PRIMA di fissare la camera (StartXCube, :597), e
+ * il fondo compare solo col primo AffScene(TRUE). Bg_Build faceva tutte e due
+ * le cose insieme, quindi si taglia qui: Bg_LoadRoom e' InitGrille, Bg_Show e'
+ * il fondo di AffScene(TRUE). Bg_Build resta la loro composizione, con le
+ * stesse righe e nello stesso ordine di prima (le due funzioni sono il suo
+ * corpo spostato, non una copia), cosi' il percorso vecchio non cambia.
+ *
+ * `bg_shown` a zero dopo un caricamento: il primo Bg_Show disegna tutto, i
+ * successivi scorrono (Bg_ScrollTo), che e' la differenza fra un cambio di
+ * stanza e un passo di camera.
+ * ------------------------------------------------------------------------- */
+static int bg_shown;
+
+int Bg_LoadRoom(int numscene)
+{
+    const le_byte *grid;
+    ULONG t0, t;
 
     /* Stanza nuova: la memoria di dov'erano gli sprite non vale piu'. */
     Sprite_ForgetBoxes();
+    bg_shown = 0;
 
     grid = (const le_byte *)HQR_Get(HQR_GRID, numscene);
     bll_base = (const le_byte *)HQR_Get(HQR_BLL, numscene);
@@ -1385,16 +1406,41 @@ int Bg_Build(int numscene)
     t = JAG_HAL_VBL_TICK; BgStat.t_mark = (UWORD)(t - t0); t0 = t;
 
     BgStat.worklen = decode_bricks();            stage(2);
-    t = JAG_HAL_VBL_TICK; BgStat.t_brick = (UWORD)(t - t0); t0 = t;
+    t = JAG_HAL_VBL_TICK; BgStat.t_brick = (UWORD)(t - t0);
+    return 1;
+}
 
+/* La camera in CELLE (StartX/Y/ZCube del fork, CamGX/GY/GZ nostri: la stessa
+ * formula, OBJECT.C:597-599 contro scene_walk.c). */
+void Bg_Show(WORD cgx, WORD cgy, WORD cgz)
+{
+    long nvx = -(long)(cgx - cgz) * ISO_X + CAM_CX;
+    long nvy = -(long)(cgx + cgz) * ISO_Y + CAM_CY + (long)cgy * ISO_GY;
+    ULONG t0;
+
+    Scene.CamGX = cgx;
+    Scene.CamGY = cgy;
+    Scene.CamGZ = cgz;
+
+    if (bg_shown) {
+        Bg_ScrollTo(nvx, nvy);
+        return;
+    }
+
+    BgStat.camgx = cgx;
+    BgStat.camgz = cgz;
+    BgStat.vx = (WORD)nvx;
+    BgStat.vy = (WORD)nvy;
+
+    t0 = JAG_HAL_VBL_TICK;
     render(BgStat.vx, BgStat.vy);   /* l'azzeramento cancella i quadratini */
-    t = JAG_HAL_VBL_TICK; BgStat.t_render = (UWORD)(t - t0);
+    BgStat.t_render = (UWORD)(JAG_HAL_VBL_TICK - t0);
 
     Bg_Measure();
+    bg_shown = 1;
 
     /* Il fondo c'e': BG smette di dire "sto caricando". Vedi JAG_BG_REG. */
     HW_W(JAG_BG_REG) = 0x0000;
-    return 1;
 }
 
 

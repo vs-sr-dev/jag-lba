@@ -99,6 +99,14 @@ void InitObject(WORD numobj)
 
 	ptrobj->OffsetTrack = -1;
 	ptrobj->OffsetLife = 0;
+#ifdef PORT_JAG
+	/* PORT: the three animation fields appended to T_OBJET. After a
+	 * ChangeCube PtrPoseSrc would still point into the per-room arena that
+	 * HQM_Free_All just gave back: a stale pose photograph. */
+	ptrobj->AnimSrcFrame = 0;
+	ptrobj->AnimMemoTicks = 0;
+	ptrobj->PtrPoseSrc = 0;
+#endif
 }
 
 /*──────────────────────────────────────────────────────────────────────────*/
@@ -1061,7 +1069,13 @@ void InitBody(UBYTE gennewbody,
 
 			if (M_Xmin == -32000)
 			{
+#ifdef PORT_JAG
+				/* PORT: the cartridge's bodies are JBD (tools/body_digest.py):
+				 * the same six words, big-endian, at +28 instead of +2. */
+				ptr = (WORD *)(PtrBody[ptrobj->Body] + 28);
+#else
 				ptr = (WORD *)(PtrBody[ptrobj->Body] + 2);
+#endif
 
 				x0 = *ptr++;
 				x1 = *ptr++;
@@ -1101,7 +1115,9 @@ void InitBody(UBYTE gennewbody,
 
 			if ((oldbody != -1) AND(ptrobj->Anim != -1))
 			{
+#ifndef PORT_JAG /* PORT: the animation state is the actor's, not the body's */
 				CopyInterAnim(PtrBody[oldbody], PtrBody[ptrobj->Body]);
+#endif
 			}
 		}
 	}
@@ -1258,15 +1274,23 @@ WORD InitAnim(UBYTE gennewanim,
 		*/
 		if (ptrobj->Anim == -1)
 		{
+#ifdef PORT_JAG
+			Jag_AnimReset(ptrobj);   /* PORT: port/jag_anim.c */
+#else
 			SetAnimObjet(0,
 						 HQR_Get(HQR_Anims, newanim),
 						 PtrBody[ptrobj->Body]);
+#endif
 		}
 		else
 		{
+#ifdef PORT_JAG
+			Jag_AnimSnap(numobj);    /* PORT: port/jag_anim.c */
+#else
 			PtrBufferAnim += StockInterAnim(PtrBufferAnim, PtrBody[ptrobj->Body]);
 			if (PtrBufferAnim > BufferAnim + 5000 - 512)
 				PtrBufferAnim = BufferAnim;
+#endif
 		}
 
 		ptrobj->Anim = newanim;
@@ -1745,7 +1769,11 @@ void DoAnim(WORD numobj)
 		{
 			numanim = APtObj->Anim;
 
+#ifdef PORT_JAG
+			flag = Jag_SetInterDepObjet(APtObj);   /* PORT: port/jag_anim.c */
+#else
 			flag = SetInterDepObjet(APtObj->Frame, ptranim, ptrbody);
+#endif
 
 			if (AnimMasterRot)
 				APtObj->WorkFlags |= ANIM_MASTER_ROT;

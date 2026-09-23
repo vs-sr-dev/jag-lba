@@ -635,6 +635,10 @@ typedef struct {
 extern T_BGSTAT BgStat;
 
 int  Bg_Build(int numscene);    /* 0 = scena o risorsa mancante */
+/* S51: Bg_Build in two, for the transplanted engine: InitGrille loads,
+ * AffScene(TRUE) shows. Camera in cells (StartX/Y/ZCube). */
+int  Bg_LoadRoom(int numscene);
+void Bg_Show(WORD cgx, WORD cgy, WORD cgz);
 
 /* Rimisura il framebuffer e riscrive riquadro, conteggio e somme dentro
  * BgStat. Bg_Build la chiama gia' per conto suo; esiste come funzione perche'

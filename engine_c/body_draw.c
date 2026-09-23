@@ -3807,10 +3807,8 @@ void Body_AnimTick(void)
 
     for (n = 0; n < NbObjets; n++) {
         T_OBJET *o = &ListObjet[n];
-        const le_byte *anim, *fd;
-        UWORD nbf, nba, stride;
-        ULONG elapsed;
-        WORD tot, cur;
+        const le_byte *anim;
+        UWORD nbf;
         WORD msrot, stepbeta, stepx, stepy, stepz;
         LONG nxw, nyw, nzw;
         int arrived;

@@ -78,8 +78,16 @@ foreach ($s in ($Shots.Split(",") | ForEach-Object { [double]$_.Trim() })) {
     $p.Refresh()
     $h = $p.MainWindowHandle
     if ($h -eq [IntPtr]::Zero) { Stop-Process -Id $p.Id -Force; throw "no BigPEmu window" }
+    # The window may not be sized yet (seen in S51: a 0x0 client area makes
+    # the Bitmap constructor throw). Wait for it, a bounded while.
     $r = New-Object W2+R
-    [void][W2]::GetClientRect($h, [ref]$r)
+    $tries = 0
+    do {
+        [void][W2]::GetClientRect($h, [ref]$r)
+        if ($r.Rt -gt 0 -and $r.B -gt 0) { break }
+        Start-Sleep -Milliseconds 250; $p.Refresh(); $h = $p.MainWindowHandle
+    } while (++$tries -lt 40)
+    if ($r.Rt -le 0 -or $r.B -le 0) { Stop-Process -Id $p.Id -Force; throw "BigPEmu window has no area" }
     $bmp = New-Object System.Drawing.Bitmap($r.Rt, $r.B)
     $g = [System.Drawing.Graphics]::FromImage($bmp)
     $hdc = $g.GetHdc()

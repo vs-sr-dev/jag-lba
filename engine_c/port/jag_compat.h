@@ -61,4 +61,13 @@ void PORT_Diag(const char *fmt, ...);
 void PORT_ActorBegin(void);
 void PORT_ActorEnd(void);
 
+/* The animation calls with the state in the actor (port/jag_anim.c). The
+ * fork's T_OBJET is not declared yet at this point, hence void*: same ABI. */
+long Jag_SetInterDepObjet(void *obj);
+void Jag_AnimReset(void *obj);
+void Jag_AnimSnap(short numobj);
+
+/* A body from the cartridge, JBD, into PtrBody[] (port/jag_scene.c). */
+long Jag_LoadBody(short hqrbody, long slot);
+
 #endif /* JAG_COMPAT_H */

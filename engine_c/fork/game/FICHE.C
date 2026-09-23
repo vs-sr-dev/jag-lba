@@ -633,8 +633,16 @@ WORD SearchBody(UBYTE numbody, WORD numobj)
 				{
 
 					// Text( 10,120, "%FSearchBody new %d", hqrbody ) ;
+#ifdef PORT_JAG
+					/* PORT: JBD from the cartridge, expanded into the per-room
+					 * arena at a phrase boundary for the GPU; also records the
+					 * HQR slot, which the renderer's probes read
+					 * (port/jag_scene.c). */
+					Jag_LoadBody(hqrbody, NbBodys);
+#else
 					HQRM_Load(PATH_RESSOURCE "body.hqr", hqrbody, (void **)&PtrBody[NbBodys]);
 					CHECK_MEMORY
+#endif
 
 					/*					PtrBody[NbBodys]
 											= LoadMalloc_HQR(
@@ -644,7 +652,9 @@ WORD SearchBody(UBYTE numbody, WORD numobj)
 					if (!PtrBody[NbBodys])
 						TheEnd(NOT_ENOUGH_MEM, "Body.HQR in HQ_Mem");
 
+#ifndef PORT_JAG /* PORT: JBD needs no patching, and patching would wreck it */
 					PatchObjet(PtrBody[NbBodys]);
+#endif
 					hqrbody = NbBodys;
 					NbBodys++;
 					// Text( 10,130, "%FNbBodys %d", NbBodys ) ;
