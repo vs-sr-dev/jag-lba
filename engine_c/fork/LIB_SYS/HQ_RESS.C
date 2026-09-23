@@ -1,0 +1,752 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <fcntl.h>
+
+#include "ADELINE.H"
+#include "LIB_SYS.H"
+#include "LIB_SAMP/LIB_WAVE.H"
+
+#ifdef PORT_PSX_BG_VRAM
+extern UBYTE *Screen;
+extern UBYTE *Log;
+#endif
+
+#define RECOVER_AREA 500
+
+/*══════════════════════════════════════════════════════════════════════════*
+	█   █ █▀▀▀█       █▀▀▀█ █▀▀▀▀ ██▀▀▀ ██▀▀▀ █▀▀▀█ █   █ █▀▀▀█ █▀▀▀▀ █▀▀▀▀
+	██▀▀█ ██ ▄█       ██▀█▀ ██▀▀  ▀▀▀▀█ ▀▀▀▀█ ██  █ ██  █ ██▀█▀ ██    ██▀▀
+	▀▀  ▀ ▀▀▀▀  ▀▀▀▀▀ ▀▀  ▀ ▀▀▀▀▀ ▀▀▀▀▀ ▀▀▀▀▀ ▀▀▀▀▀ ▀▀▀▀▀ ▀▀  ▀ ▀▀▀▀▀ ▀▀▀▀▀
+ *══════════════════════════════════════════════════════════════════════════*/
+/*──────────────────────────────────────────────────────────────────────────*/
+
+WORD HQR_Flag = FALSE;
+
+#pragma pack(push, 1) /* PORT: on-disk struct, Watcom packed to 10 bytes; GCC would pad to 12 */
+typedef struct
+{
+	ULONG SizeFile;
+	ULONG CompressedSizeFile;
+	WORD CompressMethod; /* 0 stored */
+						 /* 1 LZS */
+} T_HEADER;
+#pragma pack(pop)
+
+void Expand(void *ptrsourcecomp, void *ptrblocdest, ULONG sizefile);
+void PORT_Diag(const char *fmt, ...); /* PORT: nds_sys.c, tees to the SD log */
+
+/*══════════════════════════════════════════════════════════════════════════*
+		█   █ █▀▀▀█ █▀▀▀█       █     █▀▀▀█ █▀▀▀█ █▀▀▀▄
+		██▀▀█ ██ ▄█ ██▀█▀       ██    ██  █ ██▀▀█ ██  █
+		▀▀  ▀ ▀▀▀▀  ▀▀  ▀ ▀▀▀▀▀ ▀▀▀▀▀ ▀▀▀▀▀ ▀▀  ▀ ▀▀▀▀
+ *══════════════════════════════════════════════════════════════════════════*/
+/*──────────────────────────────────────────────────────────────────────────*/
+
+void *LoadMalloc_HQR(UBYTE *name, UWORD index)
+{
+	FILE *handle;
+	UWORD nbbloc;
+	ULONG buffer;
+	ULONG seekindex;
+	UBYTE *ptrbloc;
+	UBYTE *ptrdecomp;
+	T_HEADER header;
+
+	handle = OpenRead(name);
+	if (!handle)
+		return 0L;
+
+	Read(handle, &buffer, 4L);
+	nbbloc = (UWORD)(buffer / 4L);
+
+	if (index >= nbbloc)
+	{
+		Close(handle);
+		return 0L;
+	}
+
+	Seek(handle, index * 4L, SEEK_START);
+	Read(handle, &seekindex, 4L);
+
+	Seek(handle, seekindex, SEEK_START);
+	Read(handle, &header, sizeof(header));
+
+	ptrbloc = Malloc(header.SizeFile + RECOVER_AREA);
+	if (!ptrbloc)
+	{
+		Close(handle);
+		return 0L;
+	}
+
+	switch (header.CompressMethod)
+	{
+	case 0: /* Stored */
+		Read(handle, ptrbloc, header.SizeFile);
+		break;
+
+	case 1: /* LZS */
+		ptrdecomp = ptrbloc + header.SizeFile - header.CompressedSizeFile + RECOVER_AREA;
+		Read(handle, ptrdecomp, header.CompressedSizeFile);
+		Expand(ptrdecomp, ptrbloc, header.SizeFile);
+		break;
+
+	default:
+		Free(ptrbloc);
+		Close(handle);
+		return 0L; /* UnKnown version */
+	}
+
+	Mshrink(ptrbloc, header.SizeFile);
+	Close(handle);
+
+	return ptrbloc;
+}
+
+/*──────────────────────────────────────────────────────────────────────────*/
+
+ULONG Load_HQR(UBYTE *name, void *ptrdest, UWORD index)
+{
+	FILE *handle;
+	UWORD nbbloc;
+	ULONG buffer;
+	ULONG seekindex;
+	UBYTE *ptrdecomp;
+	T_HEADER header;
+#ifdef PORT_PSX_BG_VRAM
+	int tobackground = 0;
+#endif
+
+#ifdef PORT_PSX_BG_VRAM
+	/* PORT: ten call sites load a 640x480 .PCR into `Screen` and then do
+	 * CopyScreen(Screen, Log) -- the menu, the three intro paintings, the
+	 * bumpers, Sendell. On this machine Screen is a 64 KB scratch buffer and
+	 * the background it used to be is in VRAM, so the picture goes into Log
+	 * (the only 640x480 buffer there is) and the background copy follows it.
+	 * The CopyScreen(Screen, Log) that comes next then reads the picture back
+	 * out of VRAM and the call sites do not have to know any of this.
+	 * PERSO.C, psx_video.c. */
+	if (ptrdest == (void *)Screen)
+	{
+		ptrdest = Log;
+		tobackground = 1;
+	}
+#endif
+
+	handle = OpenRead(name);
+	if (!handle)
+		return 0L;
+
+	Read(handle, &buffer, 4L);
+	nbbloc = (UWORD)(buffer / 4L);
+
+	if (index >= nbbloc)
+	{
+		Close(handle);
+		return 0L;
+	}
+
+	Seek(handle, index * 4L, SEEK_START);
+	Read(handle, &seekindex, 4L);
+
+	Seek(handle, seekindex, SEEK_START);
+	Read(handle, &header, sizeof(header));
+
+	switch (header.CompressMethod)
+	{
+	case 0: /* Stored */
+		Read(handle, ptrdest, header.SizeFile);
+		break;
+
+	case 1: /* LZS */
+		ptrdecomp = (UBYTE *)ptrdest + header.SizeFile - header.CompressedSizeFile + RECOVER_AREA;
+		Read(handle, ptrdecomp, header.CompressedSizeFile);
+		Expand(ptrdecomp, ptrdest, header.SizeFile);
+		break;
+
+	default:
+		Close(handle);
+		return 0L; /* UnKnown version */
+	}
+
+	Close(handle);
+
+#ifdef PORT_PSX_BG_VRAM
+	if (tobackground)
+		PORT_BgStoreAll();
+#endif
+
+	return header.SizeFile;
+}
+
+/*──────────────────────────────────────────────────────────────────────────*/
+
+ULONG Size_HQR(char *name, UWORD index)
+{
+	FILE *handle;
+	UWORD nbbloc;
+	ULONG buffer;
+	ULONG seekindex;
+	UBYTE *ptrdecomp;
+	T_HEADER header;
+
+	handle = OpenRead(name);
+	if (!handle)
+		return 0;
+
+	Read(handle, &buffer, 4);
+	nbbloc = (UWORD)(buffer / 4);
+
+	if (index >= nbbloc)
+	{
+		Close(handle);
+		return 0;
+	}
+
+	Seek(handle, index * 4, SEEK_START);
+	Read(handle, &seekindex, 4);
+
+	if (seekindex)
+	{
+		Seek(handle, seekindex, SEEK_START);
+		Read(handle, &header, sizeof(T_HEADER));
+
+		Close(handle);
+
+		return header.SizeFile;
+	}
+	else
+	{
+		Close(handle);
+		return 0;
+	}
+}
+
+/*══════════════════════════════════════════════════════════════════════════*
+	  █   █ █▀▀▀█ █▀▀▀█       █▄ ▄█ █▀▀▀█ █     █     █▀▀▀█ █▀▀▀▀
+	  ██▀▀█ ██ ▄█ ██▀█▀       ██▀ █ ██▀▀█ ██    ██    ██  █ ██
+	  ▀▀  ▀ ▀▀▀▀  ▀▀  ▀ ▀▀▀▀▀ ▀▀  ▀ ▀▀  ▀ ▀▀▀▀▀ ▀▀▀▀▀ ▀▀▀▀▀ ▀▀▀▀▀
+ *══════════════════════════════════════════════════════════════════════════*/
+/*──────────────────────────────────────────────────────────────────────────*/
+
+T_HQR_HEADER *HQR_Init_Ressource(char *hqrname,
+								 ULONG maxsize,
+								 UWORD maxindex)
+{
+	T_HQR_HEADER *header;
+	void *buffer;
+
+	if (!FileSize(hqrname))
+		return 0; // fichier ok ?
+
+	header = Malloc(sizeof(T_HQR_HEADER) +
+					sizeof(T_HQR_BLOC) * maxindex);
+
+	if (!header)
+		return 0; // mem ok ?
+
+	buffer = Malloc(maxsize + RECOVER_AREA);
+	if (!buffer)
+		return 0; // mem ok ?
+
+	strcpy(header->Name, hqrname);
+	header->MaxSize =
+		header->FreeSize = maxsize;
+	header->MaxIndex = maxindex;
+	header->NbIndex = 0;
+	header->Buffer = buffer;
+
+	return header; // header
+}
+
+/*──────────────────────────────────────────────────────────────────────────*/
+
+void HQR_Reset_Ressource(T_HQR_HEADER *header)
+{
+	header->FreeSize = header->MaxSize;
+	header->NbIndex = 0;
+}
+
+/*──────────────────────────────────────────────────────────────────────────*/
+
+LONG HQR_Change_Ressource(T_HQR_HEADER *header, char *newhqrname)
+{
+	if (!FileSize(newhqrname))
+		return FALSE; // fichier ok ?
+
+	strcpy(header->Name, newhqrname);
+
+	header->FreeSize = header->MaxSize;
+	header->NbIndex = 0;
+
+	return TRUE;
+}
+
+/*──────────────────────────────────────────────────────────────────────────*/
+
+void HQR_Free_Ressource(T_HQR_HEADER *header)
+{
+	if (header)
+	{
+		Free(header->Buffer);
+		Free(header);
+	}
+}
+
+/*──────────────────────────────────────────────────────────────────────────*/
+
+UWORD HQR_Del_Bloc(T_HQR_HEADER *header, WORD index)
+{
+	UWORD n;
+	T_HQR_BLOC *ptrbloc;
+	ULONG delsize;
+	UBYTE *ptr, *ptrs, *ptrd;
+
+	ptr = (UBYTE *)(header) + sizeof(T_HQR_HEADER);
+	ptrbloc = (T_HQR_BLOC *)(ptr);
+	delsize = ptrbloc[index].Size;
+
+	if (index < (header->NbIndex - 1))
+	{
+		// shift buffer
+		ptrd = header->Buffer + ptrbloc[index].Offset;
+		ptrs = ptrd + delsize;
+		memmove(ptrd,
+				ptrs,
+				((header->Buffer + header->MaxSize) - ptrs));
+
+		// shift index table
+
+		ptrd = (UBYTE *)&ptrbloc[index];
+		ptrs = ptrd + sizeof(T_HQR_BLOC);
+		memmove(ptrd,
+				ptrs,
+				(header->MaxIndex - (index + 1)) * sizeof(T_HQR_BLOC));
+
+		// shift index value
+
+		for (n = index; n < (header->NbIndex - 1); n++)
+		{
+			ptrbloc[n].Offset -= delsize;
+		}
+	}
+
+	header->NbIndex--;
+	header->FreeSize += delsize;
+
+	return delsize;
+}
+
+/*──────────────────────────────────────────────────────────────────────────*/
+
+/* PORT: a cache can only ever hand back a pointer inside its own buffer.
+ * When one does not, the header's own bookkeeping has been corrupted, and
+ * the caller dereferences the result immediately — that is where the guru
+ * meditations landed (an animation "pointer" of 9). Catch it at the source
+ * instead: name the resource, dump the header, and fail the call, which
+ * every caller already handles. The check is two compares. */
+static void *HQR_Sane(T_HQR_HEADER *header, void *p, WORD index, const char *how)
+{
+	UBYTE *b = (UBYTE *)p;
+
+	if (b >= header->Buffer && b < header->Buffer + header->MaxSize)
+		return p;
+
+	PORT_Diag("[HQR] %s: %s returned %p OUTSIDE buffer for index %d\n",
+		   header->Name, how, p, (int)index);
+	PORT_Diag("[HQR]   Buffer=%p MaxSize=%lu FreeSize=%lu NbIndex=%u MaxIndex=%u\n",
+		   (void *)header->Buffer, (unsigned long)header->MaxSize,
+		   (unsigned long)header->FreeSize, (unsigned)header->NbIndex,
+		   (unsigned)header->MaxIndex);
+	return 0;
+}
+
+void *HQR_Get(T_HQR_HEADER *header, WORD index)
+{
+	UWORD n, oldest;
+	ULONG time, testtime;
+	UBYTE *ptr;
+	T_HQR_BLOC *ptrbloc;
+	ULONG size;
+	ULONG offset;
+
+#ifdef PORT_PSX_HQR_TRACE
+	/* PORT: a miss here is an OpenRead, two Seeks and a Close against a CD,
+	 * in the middle of whatever frame asked for the resource -- and the
+	 * first frame of every animation is one. Time the three steps apart, so
+	 * that what is left after the probe went away is attributed and not
+	 * guessed at. */
+	unsigned long t0 = 0, t_open = 0, t_index = 0;
+#endif
+
+	// ressources
+	FILE *handle;
+	UWORD nbbloc;
+	ULONG buffer;
+	ULONG seekindex;
+	UBYTE *ptrdecomp;
+	T_HEADER lzssheader;
+
+	if (index < 0)
+		return 0;
+
+	if ((ptrbloc = HQR_GiveIndex(
+			 index,
+			 header->NbIndex,
+			 (UBYTE *)header + sizeof(T_HQR_HEADER))) != 0)
+	{ // existing index
+		ptrbloc->Time = TimerRef;
+
+		HQR_Flag = FALSE; // marque non chargement ressource
+
+		return HQR_Sane(header, header->Buffer + ptrbloc->Offset, index,
+						"cache hit");
+	}
+	else // need load
+	{
+		//		SaveTimer() ;
+#ifdef PORT_PSX_HQR_TRACE
+		t0 = PORT_Micros();
+#endif
+
+		/* PORT: `size = Size_HQR(header->Name, index)` stood here. It opened
+		 * the archive, walked it to this entry's LZSS header and returned a
+		 * size that the twenty lines below then read again and overwrote --
+		 * a whole CD open, two seeks and a close for a number nobody used.
+		 * On a disc that is not free: a miss on Anim.hqr measured 401 ms,
+		 * of which the probe was 200. The first frame of every animation is
+		 * a miss, and that is the stutter. docs/M8-NOTES.md. */
+
+		// load and expand hqr bloc
+
+		handle = OpenRead(header->Name);
+		if (!handle)
+			return 0;
+#ifdef PORT_PSX_HQR_TRACE
+		t_open = PORT_Micros();
+#endif
+
+		Read(handle, &buffer, 4);
+		nbbloc = (UWORD)(buffer / 4);
+
+		if (index >= nbbloc)
+		{
+			Close(handle);
+			return 0;
+		}
+
+		Seek(handle, index * 4, SEEK_START);
+		Read(handle, &seekindex, 4);
+
+		if (!seekindex)
+		{
+			Close(handle);
+			return 0;
+		}
+
+		Seek(handle, seekindex, SEEK_START);
+		Read(handle, &lzssheader, sizeof(T_HEADER));
+
+		// taille decompacte
+		size = lzssheader.SizeFile;
+#ifdef PORT_PSX_HQR_TRACE
+		t_index = PORT_Micros();
+#endif
+
+		if (!size)
+		{
+			Close(handle);
+			return 0;
+		}
+
+		size = (size + 3) & ~3UL; /* PORT: keep pool entries 4-aligned (ARM reads anim/body data as WORDs) */
+
+		// gestion mémoire
+
+		time = TimerRef;
+
+		ptr = (UBYTE *)(header) + sizeof(T_HQR_HEADER);
+		ptrbloc = (T_HQR_BLOC *)(ptr);
+
+		// check if enough space for bloc or index
+
+		while ((size > header->FreeSize) OR(header->NbIndex >= header->MaxIndex))
+		{
+			/* PORT: nothing left to evict and it still does not fit — this
+			 * entry is bigger than the whole pool. The original spun on and
+			 * called HQR_Del_Bloc(header, 0) against an EMPTY table: that
+			 * read a garbage Size, skipped the shift (index < NbIndex-1 is
+			 * false), then did NbIndex-- from 0 -> 65535 and added the
+			 * garbage to FreeSize. Every later HQR_Get then computed
+			 * `ptr = Buffer + MaxSize - FreeSize` outside the buffer and
+			 * handed out wild pointers while scribbling over the heap.
+			 * Fail the load cleanly instead; callers already handle 0. */
+			if (header->NbIndex == 0)
+			{
+				Close(handle);
+				return 0;
+			}
+
+			// delete oldest bloc
+			oldest = 0;
+			testtime = 0;
+
+			for (n = 0; n < header->NbIndex; n++)
+			{
+				if ((time - ptrbloc[n].Time) > testtime)
+				{
+					/* PORT: was ptrbloc[oldest].Time — the running maximum
+					 * lagged one candidate behind, so the victim was not
+					 * the least recently used and the pool thrashed. */
+					testtime = time - ptrbloc[n].Time;
+					oldest = n;
+				}
+			}
+			HQR_Del_Bloc(header, oldest);
+		}
+
+		// space size ok, load it
+
+		ptr = header->Buffer + header->MaxSize - header->FreeSize;
+
+		//		Load_HQR( header->Name, ptr, index ) ;
+
+		switch (lzssheader.CompressMethod)
+		{
+		case 0: /* Stored */
+			Read(handle, ptr, lzssheader.SizeFile);
+			break;
+
+		case 1: /* LZS */
+			ptrdecomp = (UBYTE *)ptr + lzssheader.SizeFile - lzssheader.CompressedSizeFile + RECOVER_AREA;
+			Read(handle, ptrdecomp, lzssheader.CompressedSizeFile);
+			Expand(ptrdecomp, ptr, lzssheader.SizeFile);
+			break;
+
+		default:
+			Close(handle);
+			return 0; /* UnKnown version */
+		}
+
+		Close(handle);
+
+		HQR_Flag = TRUE; // indicate loaded
+
+		ptrbloc[header->NbIndex].Index = index;
+		ptrbloc[header->NbIndex].Time = TimerRef;
+		ptrbloc[header->NbIndex].Offset = header->MaxSize - header->FreeSize;
+		ptrbloc[header->NbIndex].Size = size;
+
+		header->NbIndex++;
+		header->FreeSize -= size;
+
+		//		RestoreTimer() ;
+
+#ifdef PORT_PSX_HQR_TRACE
+		{
+			unsigned long now = PORT_Micros();
+
+			PORT_Diag("[HQR] miss %s[%d] %lu bytes -- open %lu us, index %lu "
+					  "us, payload %lu us, total %lu us\n", header->Name,
+					  (int)index, size, t_open - t0, t_index - t_open,
+					  now - t_index, now - t0);
+		}
+#endif
+
+		return HQR_Sane(header, ptr, index, "fresh load");
+	}
+}
+
+/*──────────────────────────────────────────────────────────────────────────*/
+
+UWORD HQR_Del_Bloc_Sample(T_HQR_HEADER *header, WORD index)
+{
+	UWORD n;
+	T_HQR_BLOC *ptrbloc;
+	ULONG delsize;
+	UBYTE *ptr, *ptrs, *ptrd;
+
+	ptr = (UBYTE *)(header) + sizeof(T_HQR_HEADER);
+	ptrbloc = (T_HQR_BLOC *)(ptr);
+	delsize = ptrbloc[index].Size;
+
+	if (index < (header->NbIndex - 1))
+	{
+		// shift buffer
+		ptrd = header->Buffer + ptrbloc[index].Offset;
+		ptrs = ptrd + delsize;
+		/*		memmove(ptrd,
+					ptrs,
+					((header->Buffer+header->MaxSize) - ptrs) ) ;
+		*/
+		WaveMove(ptrd,
+				 ptrs,
+				 ((header->Buffer + header->MaxSize) - ptrs));
+
+		// shift index table
+
+		ptrd = (UBYTE *)&ptrbloc[index];
+		ptrs = ptrd + sizeof(T_HQR_BLOC);
+		memmove(ptrd,
+				ptrs,
+				(header->MaxIndex - (index + 1)) * sizeof(T_HQR_BLOC));
+
+		// shift index value
+
+		for (n = index; n < (header->NbIndex - 1); n++)
+		{
+			ptrbloc[n].Offset -= delsize;
+		}
+	}
+
+	header->NbIndex--;
+	header->FreeSize += delsize;
+
+	return delsize;
+}
+
+/*──────────────────────────────────────────────────────────────────────────*/
+
+void *HQR_GetSample(T_HQR_HEADER *header, WORD index)
+{
+	UWORD n, oldest;
+	ULONG time, testtime;
+	UBYTE *ptr;
+	T_HQR_BLOC *ptrbloc;
+	ULONG size;
+	ULONG offset;
+
+	// ressources
+	FILE *handle;
+	UWORD nbbloc;
+	ULONG buffer;
+	ULONG seekindex;
+	UBYTE *ptrdecomp;
+	T_HEADER lzssheader;
+
+	if (index < 0)
+		return 0;
+
+	if ((ptrbloc = HQR_GiveIndex(
+			 index,
+			 header->NbIndex,
+			 (UBYTE *)header + sizeof(T_HQR_HEADER))) != 0)
+	{ // existing index
+		ptrbloc->Time = TimerRef;
+
+		HQR_Flag = FALSE; // marque non chargement ressource
+
+		return HQR_Sane(header, header->Buffer + ptrbloc->Offset, index,
+						"cache hit");
+	}
+	else // need load
+	{
+		//		SaveTimer() ;
+		size = Size_HQR(header->Name, index);
+
+		// load and expand hqr bloc
+
+		handle = OpenRead(header->Name);
+		if (!handle)
+			return 0;
+
+		Read(handle, &buffer, 4);
+		nbbloc = (UWORD)(buffer / 4);
+
+		if (index >= nbbloc)
+		{
+			Close(handle);
+			return 0;
+		}
+
+		Seek(handle, index * 4, SEEK_START);
+		Read(handle, &seekindex, 4);
+
+		if (!seekindex)
+		{
+			Close(handle);
+			return 0;
+		}
+
+		Seek(handle, seekindex, SEEK_START);
+		Read(handle, &lzssheader, sizeof(T_HEADER));
+
+		// taille decompacte
+		size = lzssheader.SizeFile;
+
+		if (!size)
+		{
+			Close(handle);
+			return 0;
+		}
+
+		size = (size + 3) & ~3UL; /* PORT: keep pool entries 4-aligned (see HQR_Get) */
+
+		// gestion mémoire
+
+		time = TimerRef;
+
+		ptr = (UBYTE *)(header) + sizeof(T_HQR_HEADER);
+		ptrbloc = (T_HQR_BLOC *)(ptr);
+
+		// check if enough space for bloc or index
+
+		while ((size > header->FreeSize) OR(header->NbIndex >= header->MaxIndex))
+		{
+			// delete oldest bloc
+			oldest = 0;
+			testtime = 0;
+
+			for (n = 0; n < header->NbIndex; n++)
+			{
+				if ((time - ptrbloc[n].Time) > testtime)
+				{
+					testtime = time - ptrbloc[oldest].Time;
+					oldest = n;
+				}
+			}
+			// méthode violente (attendre réflexions désagréables...)
+			WaveStopOne(ptrbloc[oldest].Index);
+
+			HQR_Del_Bloc_Sample(header, oldest);
+		}
+
+		// space size ok, load it
+
+		ptr = header->Buffer + header->MaxSize - header->FreeSize;
+
+		//		Load_HQR( header->Name, ptr, index ) ;
+
+		switch (lzssheader.CompressMethod)
+		{
+		case 0: /* Stored */
+			Read(handle, ptr, lzssheader.SizeFile);
+			break;
+
+		case 1: /* LZS */
+			ptrdecomp = (UBYTE *)ptr + lzssheader.SizeFile - lzssheader.CompressedSizeFile + RECOVER_AREA;
+			Read(handle, ptrdecomp, lzssheader.CompressedSizeFile);
+			Expand(ptrdecomp, ptr, lzssheader.SizeFile);
+			break;
+
+		default:
+			Close(handle);
+			return 0; /* UnKnown version */
+		}
+
+		Close(handle);
+
+		HQR_Flag = TRUE; // indicate loaded
+
+		ptrbloc[header->NbIndex].Index = index;
+		ptrbloc[header->NbIndex].Time = TimerRef;
+		ptrbloc[header->NbIndex].Offset = header->MaxSize - header->FreeSize;
+		ptrbloc[header->NbIndex].Size = size;
+
+		header->NbIndex++;
+		header->FreeSize -= size;
+
+		//		RestoreTimer() ;
+
+		return HQR_Sane(header, ptr, index, "fresh load");
+	}
+}
