@@ -248,6 +248,34 @@ WORD LoadScene(WORD numscene)
 	NbBrickTrack = GET_WORD;
 	ListBrickTrack = (T_TRACK *)PtrSce;
 
+#ifdef PORT_JAG
+	/* PORT: ListZone and ListBrickTrack are read as structs of NATIVE WORDs
+	 * from the scene stream, which is little-endian: on the 68000 every zone
+	 * box and every track point would be byte-swapped garbage. Swapped in
+	 * place, once: the stream is a fresh DRAM copy for every ChangeCube
+	 * (ClearScene -> HQM_Free_All empties the arena that caches it). Found
+	 * because the hero's life script dresses him as a prisoner only inside
+	 * zone 3 (scene 0, life offset 36), and he never was. */
+	{
+		UBYTE *p;
+		LONG n;
+
+		if (!HasLoadedListZoneOnSave)
+			for (p = (UBYTE *)ListZone, n = NbZones * 12; n > 0; n--, p += 2)
+			{
+				UBYTE t = p[0];
+				p[0] = p[1];
+				p[1] = t;
+			}
+		for (p = (UBYTE *)ListBrickTrack, n = NbBrickTrack * 3; n > 0; n--, p += 2)
+		{
+			UBYTE t = p[0];
+			p[0] = p[1];
+			p[1] = t;
+		}
+	}
+#endif
+
 	HasLoadedListZoneOnSave = 0;
 
 	return TRUE;

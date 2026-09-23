@@ -124,6 +124,7 @@ Each step ends with a build that runs; the visible ones are marked.
 | 4 | `game/OBJECT.C` | anim calls to `port/jag_anim.c` (`SetInterDepObjet`, `SetAnimObjet`, `StockInterAnim`; `CopyInterAnim` dropped); `InitBody` ZV at JBD `+28`; `InitObject` clears our three fields; `AffScene` forwards to `Jag_AffScene` (the fork's body kept as `AffScene_Fork`) | section 4 and 5 |
 | 5 | `game/FICHE.C` | `SearchBody` loads JBD through `Jag_LoadBody`, no `PatchObjet` | the cartridge's bodies are JBD |
 | 6 | `game/PERSO.C` | `Screen` and `BufSpeak` at 64 KB (as PSX); `lba_main` ends in `Jag_M5Game` | 2 MB; the front-end already showed logo and menu |
+| 7 | `game/DISKFUNC.C` | `LoadScene` byte-swaps `ListZone` and `ListBrickTrack` in place | read as structs of native WORDs from LE data; found by the hero's life script (prisoner clothes only inside zone 3) |
 
 ## Found while building the seam (2026-09-23), not yet acted on
 

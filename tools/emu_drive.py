@@ -75,9 +75,18 @@ def main():
     syms = load_sym(a.sym)
     watch = []
     for name in filter(None, [s.strip() for s in a.watch.split(',')]):
-        if name not in syms:
+        # "sym", or "sym+OFF" with OFF decimal or 0x hex: a field inside a
+        # struct or an array element (ListObjet+134*3+0x1A).
+        m = re.match(r'^([A-Za-z_][A-Za-z0-9_]*)((?:[+][0-9xXa-fA-F*]+)*)$', name)
+        if not m or m.group(1) not in syms:
             raise SystemExit('emu_drive: %s not in %s' % (name, a.sym))
-        watch.append((name, syms[name]))
+        off = 0
+        for term in filter(None, m.group(2).split('+')):
+            v = 1
+            for f in term.split('*'):
+                v *= int(f, 0)
+            off += v
+        watch.append((name, syms[m.group(1)] + off))
 
     emu_pad = hal_addr('EMU_PAD')
 
@@ -110,7 +119,7 @@ def main():
       ' (unsigned)bigpemu_jag_read32(0x802000), (unsigned)bits);')
     for i in range(0, len(watch), 3):
         grp = watch[i:i + 3]
-        fmt = '  '.join('%s=%%08X' % n for n, _ in grp)
+        fmt = '  '.join('%s=%%08X' % n.replace('ListObjet', 'LO') for n, _ in grp)
         args = ', '.join('(unsigned)bigpemu_jag_read32(0x%08X)' % ad
                          for _, ad in grp)
         w('        printf_notify("%s", %s);' % (fmt, args))
