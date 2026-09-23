@@ -1,0 +1,43 @@
+# The m68k-elf toolchain JagLBA's C engine is built with (m68k-elf-gcc 15.2
+# + newlib), in Docker. build_v6.bat expects an image called marsdev-32x.
+#
+# Build context = a checkout of marsdev (https://github.com/andwn/marsdev):
+#
+#   git clone https://github.com/andwn/marsdev
+#   docker build -f docker/Dockerfile.marsdev -t marsdev-32x marsdev
+#
+# The image also builds the SH toolchain (it is shared with a 32X project);
+# JagLBA only uses the m68k half and the image's host gcc.
+
+FROM debian:bookworm-slim AS build_env
+
+ARG DEBIAN_FRONTEND=noninteractive
+
+ENV MARS_BUILD_DIR=/marsdev/build
+ENV MARS_INSTALL_DIR=/marsdev/mars
+ENV HOME=/marsdev
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        git build-essential texinfo wget ca-certificates \
+        libgmp-dev libmpfr-dev libmpc-dev xz-utils bzip2 file && \
+    apt-get clean && rm -rf /var/lib/apt/lists/* && \
+    mkdir -p $MARS_BUILD_DIR $MARS_INSTALL_DIR/bin
+
+COPY ./ $MARS_BUILD_DIR
+WORKDIR $MARS_BUILD_DIR
+
+# m68k cross + newlib (so we have memcpy/memset/etc. for free)
+RUN make -j$(nproc) m68k-toolchain-newlib
+
+# sh cross + newlib
+RUN make -j$(nproc) sh-toolchain-newlib
+
+# Install (writes mars.sh and copies build dir to install dir)
+RUN make install
+
+# Strip sources / build leftovers to keep image lean
+RUN rm -rf $MARS_BUILD_DIR
+
+ENTRYPOINT ["/bin/bash", "-lc"]
+CMD ["source /marsdev/mars/mars.sh && exec bash"]
