@@ -12,6 +12,9 @@
 
 #include "translate.h"
 
+#ifdef PORT_JAG
+extern UBYTE *Screen;
+#endif
 #ifdef PORT_PSX_BG_VRAM
 extern UBYTE *Screen;
 extern UBYTE *Log;
@@ -28,6 +31,16 @@ void CopyBlock(LONG x0, LONG y0, LONG x1, LONG y1, void *src,
 	UBYTE *pDest;
 	LONG width, lines;
 
+#ifdef PORT_JAG
+	/* PORT: `Screen` is 64 KB here and the full-screen snapshot it stands for
+	 * (300 KB) has no DRAM yet: copying into it trampled the fork's heap
+	 * (JAGUAR_PORT.md #11). Skipped and counted until it has a home. */
+	if (src == (void *)Screen || dst == (void *)Screen)
+	{
+		Jag_ScreenSkips++;
+		return;
+	}
+#endif
 #ifdef PORT_PSX_BG_VRAM
 	/* PORT: `Screen`, the clean background, is in VRAM on this machine --
 	 * see psx_video.c. ClsBoxes restores dirty boxes out of it every frame

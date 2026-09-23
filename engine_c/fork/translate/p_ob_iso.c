@@ -763,6 +763,10 @@ unsigned long PORT_Micros(void);
 PORT_FASTCODE LONG AffObjetIso(LONG xwr, LONG ywr, LONG zwr,
                  LONG palpha, LONG pbeta, LONG pgamma, void *ptrobj)
 {
+#ifdef PORT_JAG
+	if (JAG_IS_JBD(ptrobj))
+		return 0;
+#endif
 	UBYTE *esi;
 	WORD *edi;
 	UWORD cx;

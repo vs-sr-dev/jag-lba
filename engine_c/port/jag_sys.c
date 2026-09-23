@@ -51,15 +51,28 @@ static void pad_to_dos(void)
     if (s & PAD_LEFT)   joy |= J_LEFT;
     if (s & PAD_RIGHT)  joy |= J_RIGHT;
 
-    if (s & PAD_A)      fire |= F_SPACE;    /* action / talk            */
-    if (s & PAD_B)      fire |= F_CTRL;     /* weapon / throw           */
-    if (s & PAD_C)      fire |= F_SHIFT;    /* the behaviour's action   */
-    if (s & PAD_OPTION) fire |= F_RETURN;   /* inventory                */
+    /* S52: the layout follows what the fork TESTS, not the DOS keycaps
+     * (hal_input.c's was provisional until the engine ran). On the PC:
+     * Space = the behaviour's action (OBJECT.C:2255), W = talk/act in any
+     * behaviour (ActionNormal, :2247), Alt = magic ball (:2316), Shift =
+     * inventory (PERSO.C:565), Ctrl = behaviour menu (:750), Return =
+     * recentre the camera (:850), F5-F8 = the four behaviours (:761),
+     * 1-4 = weapons (:788-826), Esc = the game menu. */
+    if (s & PAD_A)      fire |= F_SPACE;    /* the behaviour's action   */
+    if (s & PAD_B)      fire |= F_ALT;      /* magic ball               */
+    if (s & PAD_OPTION) fire |= F_SHIFT;    /* inventory                */
+    if (k & (1u << 10)) fire |= F_CTRL;     /* '*': behaviour menu      */
+    if (k & (1u << 11)) fire |= F_RETURN;   /* '#': recentre camera     */
 
-    if (k & (1u << 1))       key = SC_1;
-    else if (k & (1u << 2))  key = SC_2;
-    else if (k & (1u << 3))  key = SC_3;
-    else if (k & (1u << 4))  key = SC_4;
+    if (s & PAD_C)           key = SC_W;    /* talk / act, any behaviour */
+    else if (k & (1u << 1))  key = SC_F5;   /* '1'..'4': normal, athletic, */
+    else if (k & (1u << 2))  key = SC_F6;   /*   aggressive, discreet      */
+    else if (k & (1u << 3))  key = SC_F7;
+    else if (k & (1u << 4))  key = SC_F8;
+    else if (k & (1u << 5))  key = SC_1;    /* '5'..'8': weapons 1-4     */
+    else if (k & (1u << 6))  key = SC_2;
+    else if (k & (1u << 7))  key = SC_3;
+    else if (k & (1u << 8))  key = SC_4;
     else if (s & PAD_PAUSE)  key = SC_ESC;
 
     Joy = joy;

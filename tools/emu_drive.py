@@ -85,6 +85,11 @@ def main():
     syms = load_sym(a.sym)
     watch = []
     for name in filter(None, [s.strip() for s in a.watch.split(',')]):
+        # "0xADDR": an absolute address, for what has no symbol (a pixel of
+        # BG_FB, an OP list slot).
+        if re.match(r'^0[xX][0-9a-fA-F]+$', name):
+            watch.append((name, int(name, 16)))
+            continue
         # "sym", or "sym+OFF" with OFF decimal or 0x hex: a field inside a
         # struct or an array element (ListObjet+134*3+0x1A).
         m = re.match(r'^([A-Za-z_][A-Za-z0-9_]*)((?:[+][0-9xXa-fA-F*]+)*)$', name)

@@ -2,6 +2,12 @@
 #include "lib_sys/adeline.h"
 #include "lib_svga/lib_svga.h"
 
+#ifdef PORT_JAG
+#define FONT_OFF(n) JAG_BANK_OFF(PtrFont, n) /* JAGUAR_PORT.md #12 */
+#else
+#define FONT_OFF(n) (font_offsets[n])
+#endif
+
 static void *PtrFont = 0;
 static LONG DxFont = 0;
 static LONG InterLeave = 1;
@@ -36,7 +42,7 @@ LONG SizeFont(void *chaine) {
         if (c == 32) {
             width += InterSpace;
         } else {
-            glyph_data = (UBYTE *)PtrFont + font_offsets[c];
+            glyph_data = (UBYTE *)PtrFont + FONT_OFF(c);
             width += InterLeave + glyph_data[0];
         }
     }
@@ -69,7 +75,7 @@ LONG CarFont(LONG xcar, LONG ycar, LONG car) {
     }
 
     font_offsets = (LONG *)PtrFont;
-    glyph_data = (UBYTE *)PtrFont + font_offsets[car];
+    glyph_data = (UBYTE *)PtrFont + FONT_OFF(car);
     width = glyph_data[0];
     
     AffMask(car, xcar, ycar, PtrFont);
@@ -98,7 +104,7 @@ void Font(LONG xfont, LONG yfont, void *chaine) {
         if (c == 32) {
             x += InterSpace;
         } else {
-            glyph_data = (UBYTE *)PtrFont + font_offsets[c];
+            glyph_data = (UBYTE *)PtrFont + FONT_OFF(c);
             DxFont = glyph_data[0];
             
             AffMask(c, x, y, PtrFont);

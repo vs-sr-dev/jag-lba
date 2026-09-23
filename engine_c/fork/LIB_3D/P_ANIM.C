@@ -265,6 +265,10 @@ WORD GetBouclageAnim(UBYTE *ptranim)
 
 LONG SetAnimObjet(WORD numframe, UBYTE *ptranim, UBYTE *ptrobj)
 {
+#ifdef PORT_JAG
+	if (JAG_IS_JBD(ptrobj))
+		return 0;
+#endif
     WORD nbFrames;
     WORD nbGroupsAnim;
     size_t frameStride;
@@ -324,6 +328,10 @@ LONG SetAnimObjet(WORD numframe, UBYTE *ptranim, UBYTE *ptrobj)
 
 LONG SetInterAnimObjet(WORD framedest, UBYTE *ptranimdest, UBYTE *ptrobj)
 {
+#ifdef PORT_JAG
+	if (JAG_IS_JBD(ptrobj))
+		return 0;
+#endif
     WORD nbGroupsAnim;
     size_t frameStride;
     UBYTE *framePtr;
@@ -472,6 +480,10 @@ LONG SetInterAnimObjet(WORD framedest, UBYTE *ptranimdest, UBYTE *ptrobj)
 
 LONG SetInterAnimObjet2(WORD framedest, UBYTE *ptranimdest, UBYTE *ptrobj)
 {
+#ifdef PORT_JAG
+	if (JAG_IS_JBD(ptrobj))
+		return 0;
+#endif
     WORD nbGroupsAnim;
     size_t frameStride;
     UBYTE *framePtr;

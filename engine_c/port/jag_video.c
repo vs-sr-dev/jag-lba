@@ -40,6 +40,10 @@ static WORD MemoClipXmin, MemoClipYmin, MemoClipXmax, MemoClipYmax;
  * needs the current state back (nobody yet, but the PSX port found one). */
 UBYTE PORT_PalRGB[768];
 
+/* S52: copies to or from `Screen` the fork asked for and did not get
+ * (JAGUAR_PORT.md #11). Only a probe: read it from BigPEmu. */
+long Jag_ScreenSkips = 0;
+
 void Jag_VideoInit(void)
 {
     int y;

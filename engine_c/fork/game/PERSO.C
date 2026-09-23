@@ -265,6 +265,28 @@ void InitGame(int argc, UBYTE *argv[])
  *══════════════════════════════════════════════════════════════════════════*/
 /*──────────────────────────────────────────────────────────────────────────*/
 
+#ifdef PORT_JAG
+/* PORT: one intro slide. Straight into Log: Screen is 64 KB here (as on
+ * PSX) and a slide is 640x480, so the DOS path through Screen would write
+ * 300 KB into it. A slide the cartridge does not carry yet (the full-screen
+ * RESS entries are pruned, tools/hqr_pack.py KEEP_SLIDES) leaves black with
+ * the game palette, so the intro's TEXT still reads (JAGUAR_PORT.md #9). */
+static void IntroSlide(LONG pcr, LONG pal, LONG fade)
+{
+	if (!Load_HQR(PATH_RESSOURCE "ress.hqr", Log, pcr)
+			OR !Load_HQR(PATH_RESSOURCE "ress.hqr", PalettePcx, pal))
+	{
+		Cls();
+		memcpy(PalettePcx, PtrPal, 768);
+	}
+	Flip();
+	if (fade)
+		FadeToPal(PalettePcx);
+	else
+		Palette(PalettePcx);
+}
+#endif
+
 void Introduction()
 {
 	StopMusicCD();
@@ -277,11 +299,15 @@ void Introduction()
 		memoflagdisplaytext = FlagDisplayText;
 		FlagDisplayText = TRUE;
 
+#ifdef PORT_JAG
+		IntroSlide(RESS_TWINSUN_PCR, RESS_TWINSUN_PAL, TRUE);
+#else
 		Load_HQR(PATH_RESSOURCE "ress.hqr", Screen, RESS_TWINSUN_PCR);
 		CopyScreen(Screen, Log);
 		Load_HQR(PATH_RESSOURCE "ress.hqr", PalettePcx, RESS_TWINSUN_PAL);
 		Flip();
 		FadeToPal(PalettePcx);
+#endif
 
 		FlagMessageShade = FALSE;
 		FlecheForcee = TRUE;
@@ -294,22 +320,30 @@ void Introduction()
 			goto fin_intro;
 
 		SetBlackPal();
+#ifdef PORT_JAG
+		IntroSlide(RESS_INTRO_2_PCR, RESS_INTRO_2_PAL, FALSE);
+#else
 		Load_HQR(PATH_RESSOURCE "ress.hqr", Screen, RESS_INTRO_2_PCR);
 		CopyScreen(Screen, Log);
 		Load_HQR(PATH_RESSOURCE "ress.hqr", PalettePcx, RESS_INTRO_2_PAL);
 		Flip();
 		Palette(PalettePcx);
+#endif
 
 		Dial(151);
 		if (Key == K_ESC)
 			goto fin_intro;
 
 		SetBlackPal();
+#ifdef PORT_JAG
+		IntroSlide(RESS_INTRO_3_PCR, RESS_INTRO_3_PAL, FALSE);
+#else
 		Load_HQR(PATH_RESSOURCE "ress.hqr", Screen, RESS_INTRO_3_PCR);
 		CopyScreen(Screen, Log);
 		Load_HQR(PATH_RESSOURCE "ress.hqr", PalettePcx, RESS_INTRO_3_PAL);
 		Flip();
 		Palette(PalettePcx);
+#endif
 
 		FlecheForcee = FALSE;
 		Dial(152);

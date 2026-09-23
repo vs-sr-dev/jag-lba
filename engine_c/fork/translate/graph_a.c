@@ -12,6 +12,12 @@
 
 #include "translate.h"
 
+#ifdef PORT_JAG
+#define BANK_OFF(b, n) JAG_BANK_OFF(b, n) /* JAGUAR_PORT.md #12 */
+#else
+#define BANK_OFF(b, n) (((ULONG *)(b))[n])
+#endif
+
 static UBYTE BufferClip[512];
 
 /* ASM: AffGraph */
@@ -27,7 +33,7 @@ PORT_FASTCODE void AffGraph(LONG numbrick, LONG xbrick, LONG ybrick, void *bankb
 	UBYTE op, cl;
 	LONG n;
 
-	pData = (UBYTE *)bankbrick + ((ULONG *)bankbrick)[numbrick];
+	pData = (UBYTE *)bankbrick + BANK_OFF(bankbrick, numbrick);
 
 	x = xbrick + pData[2];      /* Hot X */
 	y = ybrick + pData[3];      /* Hot Y */
@@ -192,7 +198,7 @@ void GetDxDyGraph(LONG num, LONG *dx, LONG *dy, void *bankgraph)
 {
 	UBYTE *pData;
 
-	pData = (UBYTE *)bankgraph + ((ULONG *)bankgraph)[num];
+	pData = (UBYTE *)bankgraph + BANK_OFF(bankgraph, num);
 	*dx = (LONG)pData[0];
 	*dy = (LONG)pData[1];
 }

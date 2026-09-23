@@ -78,4 +78,26 @@ void Jag_M5Game(void);
  * main menu; lba_main's copies of them are skipped. */
 #define SKIP_INTRO 1
 
+/* PORT: the cartridge's bodies are JBD (S43), not LBA1's format: 'JD' at +0
+ * (tools/body_digest.py). P_ANIM and the software renderer read LBA bodies
+ * only, and P_ANIM writes its state INTO the body: a JBD reaching them hangs
+ * or corrupts it (the behaviour menu did, JAGUAR_PORT.md #10). They refuse
+ * it; a JBD body outside a scene is our pipeline's job. */
+#define JAG_IS_JBD(p) ((p) && ((unsigned char *)(p))[0] == 0x4A && ((unsigned char *)(p))[1] == 0x44)
+
+/* Copies to or from `Screen` skipped (S_SCREEN.C, s_block.c): see
+ * JAGUAR_PORT.md #11. Defined in jag_video.c; a probe for BigPEmu. */
+extern long Jag_ScreenSkips;
+
+/* Offset n of an Adeline graphic bank (font, sprites extra, masks): a table
+ * of little-endian LONGs at its head. The fork's translations read it as
+ * native LONGs - right on x86 and ARM, byte-reversed on the 68000: every
+ * word came out wider than a line (GetNextLine divided by zero) and
+ * AffGraph drew from wild pointers (JAGUAR_PORT.md #12). */
+#define JAG_BANK_OFF(bank, n) \
+    ((unsigned long)((const unsigned char *)(bank))[4 * (n)] \
+     | ((unsigned long)((const unsigned char *)(bank))[4 * (n) + 1] << 8) \
+     | ((unsigned long)((const unsigned char *)(bank))[4 * (n) + 2] << 16) \
+     | ((unsigned long)((const unsigned char *)(bank))[4 * (n) + 3] << 24))
+
 #endif /* JAG_COMPAT_H */

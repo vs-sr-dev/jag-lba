@@ -138,7 +138,37 @@ PER_SCENE = ('GRID', 'BLL')
 # LBA1 (menu, opzioni, comportamenti), e quando serviranno i dialoghi di gioco
 # saranno altri slot con la stessa identica struttura. Gli indici restano
 # quelli originali, come per tutti gli altri archivi.
-TEXT_KEEP = {0, 1}
+#
+# S52: entrano i dialoghi che la cella chiede. Una coppia (ordine, stringhe)
+# per file di testo, file = voce/2 (MESSAGE.C:ListFileText, inglese = lingua
+# 0): 2 GAM (inventario, comportamenti, messaggi di gioco), 3 l'isola 0
+# (Citadel, START_FILE_ISLAND + Island). Adeline le ha salvate NON compresse
+# (ctype 0, 22 KB in due): ricompresse col nostro LZSS pesano 12 KB, e il
+# margine della cartuccia e' 18,7. Vedi recompress_text.
+TEXT_KEEP = {0, 1, 4, 5, 6, 7}
+
+
+def recompress_text(pairs):
+    """TEXT: ogni voce depositata nella forma PIU' CORTA fra l'originale e il
+    nostro LZSS (tipo 1 o 2, il migliore). Il testo inglese di LBA1 e' quasi
+    tutto salvato in chiaro, e compresso si dimezza. Il roundtrip col
+    decompressore vero - lo stesso trascritto in engine_c/hal_hqr.c - e' la
+    prova, voce per voce; il payload LOGICO non cambia."""
+    out = []
+    for stored, lg in pairs:
+        if lg is None:
+            out.append((stored, lg))
+            continue
+        best = stored
+        for ct in (1, 2):
+            c = lzss.compress_lzss(lg, ct)
+            if lzss.decompress_lzss(c, len(lg), ct) != lg:
+                raise SystemExit('hqr_pack: roundtrip LZSS ROTTO sul testo')
+            e = struct.pack('<IIH', len(lg), len(c), ct) + c
+            if len(e) < len(best):
+                best = e
+        out.append((best, lg))
+    return out
 
 # ---------------------------------------------------------------------------
 # COME OGNI ARCHIVIO STA NEL CONTENITORE (S30, modo --compress)
@@ -355,6 +385,8 @@ def build(scenes=None, compress=False):
             store = 'lzss'
         drop = drop_fullscreen_slides if (compress and name == 'RESS') else None
         pairs = load_archive(path, keep, store, drop)
+        if name == 'TEXT' and store == 'lzss':
+            pairs = recompress_text(pairs)
         # S43: i corpi si PRE-DIGERISCONO (tools/body_digest.py, che documenta
         # formato e ragioni). Il payload LOGICO diventa il blob JBD - ed e' su
         # quello che si calcolano le attese di M1, quindi il 68000 e' misurato

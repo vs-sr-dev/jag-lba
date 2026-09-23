@@ -17,6 +17,12 @@
  *---------------------------------------------------------------------------*/
 #include "translate.h"
 
+#ifdef PORT_JAG
+#define BANK_OFF(b, n) JAG_BANK_OFF(b, n) /* JAGUAR_PORT.md #12 */
+#else
+#define BANK_OFF(b, n) (((ULONG *)(b))[n])
+#endif
+
 /* ASM: CalcGraphMsk — build the mask of brick num into ptmask,
    returns the size in bytes of the generated mask. */
 LONG CalcGraphMsk(LONG num, void *bank, void *mask)
@@ -31,7 +37,7 @@ LONG CalcGraphMsk(LONG num, void *bank, void *mask)
 	UBYTE nbdata;             /* ah — 8 bit accumulator, wraps like the ASM */
 	UBYTE op, cl;
 
-	pSrc = (UBYTE *)bank + ((ULONG *)bank)[num];
+	pSrc = (UBYTE *)bank + BANK_OFF(bank, num);
 	pDest = (UBYTE *)mask;
 	pStart = pDest;
 
@@ -121,7 +127,7 @@ LONG SizeGraphMsk(LONG num, void *bank)
 	UBYTE nbdata;
 	UBYTE op, cl;
 
-	pSrc = (UBYTE *)bank + ((ULONG *)bank)[num];
+	pSrc = (UBYTE *)bank + BANK_OFF(bank, num);
 
 	size = 4;                       /* DX, DY, Hot X, Hot Y */
 	nbline = pSrc[1];

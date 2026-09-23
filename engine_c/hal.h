@@ -119,6 +119,11 @@ extern WORD LastFire;
 #define SC_3     0x04
 #define SC_4     0x05
 #define SC_ESC   0x01
+#define SC_W     44         /* LIB_SYS.H K_W: the fork tests this code */
+#define SC_F5    63
+#define SC_F6    64
+#define SC_F7    65
+#define SC_F8    66
 
 void Hal_ReadPad(void);
 

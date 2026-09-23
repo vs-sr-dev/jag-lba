@@ -548,10 +548,14 @@ Discarded input sections
  .text          0x00000000        0x0 obj_fork/game_PERSO.o
  .data          0x00000000        0x0 obj_fork/game_PERSO.o
  .bss           0x00000000        0x0 obj_fork/game_PERSO.o
+ .text.IntroSlide
+                0x00000000       0xa6 obj_fork/game_PERSO.o
  .text.isObjectInAnimation
                 0x00000000       0x24 obj_fork/game_PERSO.o
+ .rodata.Introduction.str1.1
+                0x00000000        0x7 obj_fork/game_PERSO.o
  .text.Introduction
-                0x00000000      0x21c obj_fork/game_PERSO.o
+                0x00000000      0x160 obj_fork/game_PERSO.o
  .text.InitProgram
                 0x00000000       0x18 obj_fork/game_PERSO.o
  .comment       0x00000000       0x13 obj_fork/game_PERSO.o
@@ -570,7 +574,7 @@ Discarded input sections
  .text.GetAngleGroupe
                 0x00000000       0xaa obj_fork/l3d_P_ANIM.o
  .text.SetInterAnimObjet2
-                0x00000000      0x2ae obj_fork/l3d_P_ANIM.o
+                0x00000000      0x2cc obj_fork/l3d_P_ANIM.o
  .text.SetInterDepObjet
                 0x00000000      0x2bc obj_fork/l3d_P_ANIM.o
  .text.CopyInterAnim
@@ -725,9 +729,9 @@ Discarded input sections
  .data          0x00000000        0x0 obj_fork/tr_graphmsk.o
  .bss           0x00000000        0x0 obj_fork/tr_graphmsk.o
  .text.CalcGraphMsk
-                0x00000000       0xc4 obj_fork/tr_graphmsk.o
+                0x00000000       0xec obj_fork/tr_graphmsk.o
  .text.SizeGraphMsk
-                0x00000000       0x90 obj_fork/tr_graphmsk.o
+                0x00000000       0xb8 obj_fork/tr_graphmsk.o
  .comment       0x00000000       0x13 obj_fork/tr_graphmsk.o
  .text          0x00000000        0x0 obj_fork/tr_mask_a.o
  .data          0x00000000        0x0 obj_fork/tr_mask_a.o
@@ -973,7 +977,7 @@ RAM              0x00153000         0x00076000         rw
 Linker script and memory map
 
 
-.text           0x00812000    0x26cfa
+.text           0x00812000    0x26f9c
  *(.entry)
  .entry         0x00812000       0x12 obj_fork/crt0.o
                 0x00812000                entry_table
@@ -1199,1322 +1203,1323 @@ Linker script and memory map
  .text.CopyBlockPhys
                 0x00818dd0        0x2 obj_fork/port_jag_video.o
                 0x00818dd0                CopyBlockPhys
- .text.Jag_Vbl  0x00818dd2      0x176 obj_fork/port_jag_sys.o
+ .text.Jag_Vbl  0x00818dd2      0x22a obj_fork/port_jag_sys.o
                 0x00818dd2                Jag_Vbl
  .text.GetAscii
-                0x00818f48        0x4 obj_fork/port_jag_sys.o
-                0x00818f48                GetAscii
+                0x00818ffc        0x4 obj_fork/port_jag_sys.o
+                0x00818ffc                GetAscii
  .text.archive_of
-                0x00818f4c       0xd6 obj_fork/port_jag_hqr.o
+                0x00819000       0xd6 obj_fork/port_jag_hqr.o
  .text.HQR_Init_Ressource
-                0x00819022       0x2a obj_fork/port_jag_hqr.o
-                0x00819022                HQR_Init_Ressource
- .text.HQR_Get  0x0081904c       0x54 obj_fork/port_jag_hqr.o
-                0x0081904c                HQR_Get
+                0x008190d6       0x2a obj_fork/port_jag_hqr.o
+                0x008190d6                HQR_Init_Ressource
+ .text.HQR_Get  0x00819100       0x54 obj_fork/port_jag_hqr.o
+                0x00819100                HQR_Get
  .text.HQR_GetSample
-                0x008190a0        0xa obj_fork/port_jag_hqr.o
-                0x008190a0                HQR_GetSample
+                0x00819154        0xa obj_fork/port_jag_hqr.o
+                0x00819154                HQR_GetSample
  .text.HQR_Reset_Ressource
-                0x008190aa        0x2 obj_fork/port_jag_hqr.o
-                0x008190aa                HQR_Reset_Ressource
+                0x0081915e        0x2 obj_fork/port_jag_hqr.o
+                0x0081915e                HQR_Reset_Ressource
  .text.Size_HQR
-                0x008190ac       0x34 obj_fork/port_jag_hqr.o
-                0x008190ac                Size_HQR
+                0x00819160       0x34 obj_fork/port_jag_hqr.o
+                0x00819160                Size_HQR
  .text.Load_HQR
-                0x008190e0       0x5e obj_fork/port_jag_hqr.o
-                0x008190e0                Load_HQR
+                0x00819194       0x5e obj_fork/port_jag_hqr.o
+                0x00819194                Load_HQR
  .text.LoadMalloc_HQR
-                0x0081913e       0x6c obj_fork/port_jag_hqr.o
-                0x0081913e                LoadMalloc_HQR
+                0x008191f2       0x6c obj_fork/port_jag_hqr.o
+                0x008191f2                LoadMalloc_HQR
  .text.HQRM_Load
-                0x008191aa       0x62 obj_fork/port_jag_hqr.o
-                0x008191aa                HQRM_Load
+                0x0081925e       0x62 obj_fork/port_jag_hqr.o
+                0x0081925e                HQRM_Load
  .text.HQM_Init_Memory
-                0x0081920c       0x14 obj_fork/port_jag_hqr.o
-                0x0081920c                HQM_Init_Memory
+                0x008192c0       0x14 obj_fork/port_jag_hqr.o
+                0x008192c0                HQM_Init_Memory
  .text.HQM_Free_All
-                0x00819220        0x6 obj_fork/port_jag_hqr.o
-                0x00819220                HQM_Free_All
+                0x008192d4        0x6 obj_fork/port_jag_hqr.o
+                0x008192d4                HQM_Free_All
  .text.WavePlay
-                0x00819226        0x4 obj_fork/port_jag_stubs.o
-                0x00819226                WavePlay
+                0x008192da        0x4 obj_fork/port_jag_stubs.o
+                0x008192da                WavePlay
  .text.WaveStop
-                0x0081922a        0x2 obj_fork/port_jag_stubs.o
-                0x0081922a                WaveStop
+                0x008192de        0x2 obj_fork/port_jag_stubs.o
+                0x008192de                WaveStop
  .text.WaveStopOne
-                0x0081922c        0x2 obj_fork/port_jag_stubs.o
-                0x0081922c                WaveStopOne
+                0x008192e0        0x2 obj_fork/port_jag_stubs.o
+                0x008192e0                WaveStopOne
  .text.WaveInList
-                0x0081922e        0x4 obj_fork/port_jag_stubs.o
-                0x0081922e                WaveInList
+                0x008192e2        0x4 obj_fork/port_jag_stubs.o
+                0x008192e2                WaveInList
  .text.WavePause
-                0x00819232        0x4 obj_fork/port_jag_stubs.o
-                0x00819232                WavePause
+                0x008192e6        0x4 obj_fork/port_jag_stubs.o
+                0x008192e6                WavePause
  .text.WaveContinue
-                0x00819236        0x2 obj_fork/port_jag_stubs.o
-                0x00819236                WaveContinue
+                0x008192ea        0x2 obj_fork/port_jag_stubs.o
+                0x008192ea                WaveContinue
  .text.WaveGiveInfo0
-                0x00819238       0x28 obj_fork/port_jag_stubs.o
-                0x00819238                WaveGiveInfo0
+                0x008192ec       0x28 obj_fork/port_jag_stubs.o
+                0x008192ec                WaveGiveInfo0
  .text.MixerChangeVolume
-                0x00819260        0x2 obj_fork/port_jag_stubs.o
-                0x00819260                MixerChangeVolume
- .text.MixerGetVolume
-                0x00819262       0x56 obj_fork/port_jag_stubs.o
-                0x00819262                MixerGetVolume
- .text.MixerGetInfo
-                0x008192b8       0x50 obj_fork/port_jag_stubs.o
-                0x008192b8                MixerGetInfo
- .text.PlayMidi
-                0x00819308        0x2 obj_fork/port_jag_stubs.o
-                0x00819308                PlayMidi
- .text.StopMidi
-                0x0081930a        0x2 obj_fork/port_jag_stubs.o
-                0x0081930a                StopMidi
- .text.IsMidiPlaying
-                0x0081930c        0x4 obj_fork/port_jag_stubs.o
-                0x0081930c                IsMidiPlaying
- .text.FadeMidiDown
-                0x00819310        0x2 obj_fork/port_jag_stubs.o
-                0x00819310                FadeMidiDown
- .text.VolumeMidi
-                0x00819312        0x2 obj_fork/port_jag_stubs.o
-                0x00819312                VolumeMidi
- .text.DoLoopMidi
                 0x00819314        0x2 obj_fork/port_jag_stubs.o
-                0x00819314                DoLoopMidi
- .text.InitCDR  0x00819316        0x4 obj_fork/port_jag_stubs.o
-                0x00819316                InitCDR
- .text.StopCDR  0x0081931a        0x2 obj_fork/port_jag_stubs.o
-                0x0081931a                StopCDR
+                0x00819314                MixerChangeVolume
+ .text.MixerGetVolume
+                0x00819316       0x56 obj_fork/port_jag_stubs.o
+                0x00819316                MixerGetVolume
+ .text.MixerGetInfo
+                0x0081936c       0x50 obj_fork/port_jag_stubs.o
+                0x0081936c                MixerGetInfo
+ .text.PlayMidi
+                0x008193bc        0x2 obj_fork/port_jag_stubs.o
+                0x008193bc                PlayMidi
+ .text.StopMidi
+                0x008193be        0x2 obj_fork/port_jag_stubs.o
+                0x008193be                StopMidi
+ .text.IsMidiPlaying
+                0x008193c0        0x4 obj_fork/port_jag_stubs.o
+                0x008193c0                IsMidiPlaying
+ .text.FadeMidiDown
+                0x008193c4        0x2 obj_fork/port_jag_stubs.o
+                0x008193c4                FadeMidiDown
+ .text.VolumeMidi
+                0x008193c6        0x2 obj_fork/port_jag_stubs.o
+                0x008193c6                VolumeMidi
+ .text.DoLoopMidi
+                0x008193c8        0x2 obj_fork/port_jag_stubs.o
+                0x008193c8                DoLoopMidi
+ .text.InitCDR  0x008193ca        0x4 obj_fork/port_jag_stubs.o
+                0x008193ca                InitCDR
+ .text.StopCDR  0x008193ce        0x2 obj_fork/port_jag_stubs.o
+                0x008193ce                StopCDR
  .text.PlayTrackCDR
-                0x0081931c        0x4 obj_fork/port_jag_stubs.o
-                0x0081931c                PlayTrackCDR
+                0x008193d0        0x4 obj_fork/port_jag_stubs.o
+                0x008193d0                PlayTrackCDR
  .text.GetLengthTrackCDR
-                0x00819320        0x4 obj_fork/port_jag_stubs.o
-                0x00819320                GetLengthTrackCDR
+                0x008193d4        0x4 obj_fork/port_jag_stubs.o
+                0x008193d4                GetLengthTrackCDR
  .text.GetFileCDR
-                0x00819324        0x4 obj_fork/port_jag_stubs.o
-                0x00819324                GetFileCDR
+                0x008193d8        0x4 obj_fork/port_jag_stubs.o
+                0x008193d8                GetFileCDR
  .text.ReadLongCDR
-                0x00819328        0x4 obj_fork/port_jag_stubs.o
-                0x00819328                ReadLongCDR
+                0x008193dc        0x4 obj_fork/port_jag_stubs.o
+                0x008193dc                ReadLongCDR
  .text.InitAdelineSystem
-                0x0081932c        0x2 obj_fork/port_jag_stubs.o
-                0x0081932c                InitAdelineSystem
+                0x008193e0        0x2 obj_fork/port_jag_stubs.o
+                0x008193e0                InitAdelineSystem
  .text.DosMalloc
-                0x0081932e       0x24 obj_fork/port_jag_stubs.o
-                0x0081932e                DosMalloc
+                0x008193e2       0x24 obj_fork/port_jag_stubs.o
+                0x008193e2                DosMalloc
  .text.OpenRead
-                0x00819352        0x4 obj_fork/port_jag_stubs.o
-                0x00819352                OpenRead
+                0x00819406        0x4 obj_fork/port_jag_stubs.o
+                0x00819406                OpenRead
  .text.OpenWrite
-                0x00819356        0x4 obj_fork/port_jag_stubs.o
-                0x00819356                OpenWrite
- .text.Close    0x0081935a        0x2 obj_fork/port_jag_stubs.o
-                0x0081935a                Close
- .text.Read     0x0081935c        0x4 obj_fork/port_jag_stubs.o
-                0x0081935c                Read
- .text.Write    0x00819360        0x4 obj_fork/port_jag_stubs.o
-                0x00819360                Write
- .text.Seek     0x00819364        0x4 obj_fork/port_jag_stubs.o
-                0x00819364                Seek
- .text.Delete   0x00819368        0x4 obj_fork/port_jag_stubs.o
-                0x00819368                Delete
- .text.Exists   0x0081936c        0x4 obj_fork/port_jag_stubs.o
-                0x0081936c                Exists
+                0x0081940a        0x4 obj_fork/port_jag_stubs.o
+                0x0081940a                OpenWrite
+ .text.Close    0x0081940e        0x2 obj_fork/port_jag_stubs.o
+                0x0081940e                Close
+ .text.Read     0x00819410        0x4 obj_fork/port_jag_stubs.o
+                0x00819410                Read
+ .text.Write    0x00819414        0x4 obj_fork/port_jag_stubs.o
+                0x00819414                Write
+ .text.Seek     0x00819418        0x4 obj_fork/port_jag_stubs.o
+                0x00819418                Seek
+ .text.Delete   0x0081941c        0x4 obj_fork/port_jag_stubs.o
+                0x0081941c                Delete
+ .text.Exists   0x00819420        0x4 obj_fork/port_jag_stubs.o
+                0x00819420                Exists
  .text.FileSize
-                0x00819370        0x4 obj_fork/port_jag_stubs.o
-                0x00819370                FileSize
- .text.Touch    0x00819374        0x2 obj_fork/port_jag_stubs.o
-                0x00819374                Touch
- .text.AddExt   0x00819376       0x6e obj_fork/port_jag_stubs.o
-                0x00819376                AddExt
+                0x00819424        0x4 obj_fork/port_jag_stubs.o
+                0x00819424                FileSize
+ .text.Touch    0x00819428        0x2 obj_fork/port_jag_stubs.o
+                0x00819428                Touch
+ .text.AddExt   0x0081942a       0x6e obj_fork/port_jag_stubs.o
+                0x0081942a                AddExt
  .text._splitpath
-                0x008193e4       0x36 obj_fork/port_jag_stubs.o
-                0x008193e4                _splitpath
- .text.getcwd   0x0081941a       0x1a obj_fork/port_jag_stubs.o
-                0x0081941a                getcwd
+                0x00819498       0x36 obj_fork/port_jag_stubs.o
+                0x00819498                _splitpath
+ .text.getcwd   0x008194ce       0x1a obj_fork/port_jag_stubs.o
+                0x008194ce                getcwd
  .text.SYS_GetDrive
-                0x00819434        0x4 obj_fork/port_jag_stubs.o
-                0x00819434                SYS_GetDrive
+                0x008194e8        0x4 obj_fork/port_jag_stubs.o
+                0x008194e8                SYS_GetDrive
  .text.SYS_GetDiskFreeSpace
-                0x00819438        0x4 obj_fork/port_jag_stubs.o
-                0x00819438                SYS_GetDiskFreeSpace
+                0x008194ec        0x4 obj_fork/port_jag_stubs.o
+                0x008194ec                SYS_GetDiskFreeSpace
  .text.SYS_ComputeTime
-                0x0081943c        0x4 obj_fork/port_jag_stubs.o
-                0x0081943c                SYS_ComputeTime
+                0x008194f0        0x4 obj_fork/port_jag_stubs.o
+                0x008194f0                SYS_ComputeTime
  .text.SYS_FindFirst
-                0x00819440        0x4 obj_fork/port_jag_stubs.o
-                0x00819440                SYS_FindFirst
+                0x008194f4        0x4 obj_fork/port_jag_stubs.o
+                0x008194f4                SYS_FindFirst
  .text.SYS_FindNext
-                0x00819444        0x4 obj_fork/port_jag_stubs.o
-                0x00819444                SYS_FindNext
+                0x008194f8        0x4 obj_fork/port_jag_stubs.o
+                0x008194f8                SYS_FindNext
  .text.SYS_FindClose
-                0x00819448        0x2 obj_fork/port_jag_stubs.o
-                0x00819448                SYS_FindClose
+                0x008194fc        0x2 obj_fork/port_jag_stubs.o
+                0x008194fc                SYS_FindClose
  .text.PlayAnimFla
-                0x0081944a        0x2 obj_fork/port_jag_stubs.o
-                0x0081944a                PlayAnimFla
- .text.DoFire   0x0081944c        0x2 obj_fork/port_jag_stubs.o
-                0x0081944c                DoFire
- .text.lookup   0x0081944e       0x88 obj_fork/port_jag_config.o
+                0x008194fe        0x2 obj_fork/port_jag_stubs.o
+                0x008194fe                PlayAnimFla
+ .text.DoFire   0x00819500        0x2 obj_fork/port_jag_stubs.o
+                0x00819500                DoFire
+ .text.lookup   0x00819502       0x88 obj_fork/port_jag_config.o
  .text.Def_ReadString
-                0x008194d6       0x1a obj_fork/port_jag_config.o
-                0x008194d6                Def_ReadString
+                0x0081958a       0x1a obj_fork/port_jag_config.o
+                0x0081958a                Def_ReadString
  .text.Def_ReadValue
-                0x008194f0       0x82 obj_fork/port_jag_config.o
-                0x008194f0                Def_ReadValue
+                0x008195a4       0x82 obj_fork/port_jag_config.o
+                0x008195a4                Def_ReadValue
  .text.Def_ReadValue2
-                0x00819572       0x88 obj_fork/port_jag_config.o
-                0x00819572                Def_ReadValue2
+                0x00819626       0x88 obj_fork/port_jag_config.o
+                0x00819626                Def_ReadValue2
  .text.Def_WriteValue
-                0x008195fa        0x4 obj_fork/port_jag_config.o
-                0x008195fa                Def_WriteValue
- .text.Malloc   0x008195fe       0x14 obj_fork/port_jag_libc.o
-                0x008195fe                Malloc
+                0x008196ae        0x4 obj_fork/port_jag_config.o
+                0x008196ae                Def_WriteValue
+ .text.Malloc   0x008196b2       0x14 obj_fork/port_jag_libc.o
+                0x008196b2                Malloc
  .text.SmartMalloc
-                0x00819612       0x14 obj_fork/port_jag_libc.o
-                0x00819612                SmartMalloc
- .text.Free     0x00819626        0x6 obj_fork/port_jag_libc.o
-                0x00819626                Free
- .text.sbrk     0x0081962c       0x5e obj_fork/port_jag_libc.o
-                0x0081962c                sbrk
- .text.fopen    0x0081968a        0x4 obj_fork/port_jag_libc.o
-                0x0081968a                fopen
- .text.fclose   0x0081968e        0x4 obj_fork/port_jag_libc.o
-                0x0081968e                fclose
- .text.fgets    0x00819692        0x4 obj_fork/port_jag_libc.o
-                0x00819692                fgets
- .text.ultoa    0x00819696       0x9e obj_fork/port_jag_libc.o
-                0x00819696                ultoa
- .text.ltoa     0x00819734       0x58 obj_fork/port_jag_libc.o
-                0x00819734                ltoa
+                0x008196c6       0x14 obj_fork/port_jag_libc.o
+                0x008196c6                SmartMalloc
+ .text.Free     0x008196da        0x6 obj_fork/port_jag_libc.o
+                0x008196da                Free
+ .text.sbrk     0x008196e0       0x5e obj_fork/port_jag_libc.o
+                0x008196e0                sbrk
+ .text.fopen    0x0081973e        0x4 obj_fork/port_jag_libc.o
+                0x0081973e                fopen
+ .text.fclose   0x00819742        0x4 obj_fork/port_jag_libc.o
+                0x00819742                fclose
+ .text.fgets    0x00819746        0x4 obj_fork/port_jag_libc.o
+                0x00819746                fgets
+ .text.ultoa    0x0081974a       0x9e obj_fork/port_jag_libc.o
+                0x0081974a                ultoa
+ .text.ltoa     0x008197e8       0x58 obj_fork/port_jag_libc.o
+                0x008197e8                ltoa
  .text.PORT_Diag
-                0x0081978c       0x3c obj_fork/port_jag_libc.o
-                0x0081978c                PORT_Diag
+                0x00819840       0x3c obj_fork/port_jag_libc.o
+                0x00819840                PORT_Diag
  .text.WorldColBrick
-                0x008197c8        0x6 obj_fork/port_jag_grille.o
-                0x008197c8                WorldColBrick
+                0x0081987c        0x6 obj_fork/port_jag_grille.o
+                0x0081987c                WorldColBrick
  .text.WorldColBrickFull
-                0x008197ce        0x6 obj_fork/port_jag_grille.o
-                0x008197ce                WorldColBrickFull
+                0x00819882        0x6 obj_fork/port_jag_grille.o
+                0x00819882                WorldColBrickFull
  .text.WorldCodeBrick
-                0x008197d4       0x70 obj_fork/port_jag_grille.o
-                0x008197d4                WorldCodeBrick
+                0x00819888       0x70 obj_fork/port_jag_grille.o
+                0x00819888                WorldCodeBrick
  .text.DrawOverBrick
-                0x00819844       0x3e obj_fork/port_jag_grille.o
-                0x00819844                DrawOverBrick
+                0x008198f8       0x3e obj_fork/port_jag_grille.o
+                0x008198f8                DrawOverBrick
  .text.InitGrille
-                0x00819882       0x10 obj_fork/port_jag_grille.o
-                0x00819882                InitGrille
+                0x00819936       0x10 obj_fork/port_jag_grille.o
+                0x00819936                InitGrille
  .text.FreeGrille
-                0x00819892        0x2 obj_fork/port_jag_grille.o
-                0x00819892                FreeGrille
+                0x00819946        0x2 obj_fork/port_jag_grille.o
+                0x00819946                FreeGrille
  .text.InitBufferCube
-                0x00819894        0x2 obj_fork/port_jag_grille.o
-                0x00819894                InitBufferCube
+                0x00819948        0x2 obj_fork/port_jag_grille.o
+                0x00819948                InitBufferCube
  .text.IncrustGrm
-                0x00819896       0x14 obj_fork/port_jag_grille.o
-                0x00819896                IncrustGrm
+                0x0081994a       0x14 obj_fork/port_jag_grille.o
+                0x0081994a                IncrustGrm
  .text.CopyMapToCube
-                0x008198aa       0x14 obj_fork/port_jag_grille.o
-                0x008198aa                CopyMapToCube
+                0x0081995e       0x14 obj_fork/port_jag_grille.o
+                0x0081995e                CopyMapToCube
  .text.Jag_SetInterDepObjet
-                0x008198be       0xbc obj_fork/port_jag_anim.o
-                0x008198be                Jag_SetInterDepObjet
+                0x00819972       0xbc obj_fork/port_jag_anim.o
+                0x00819972                Jag_SetInterDepObjet
  .text.Jag_AnimReset
-                0x0081997a       0x18 obj_fork/port_jag_anim.o
-                0x0081997a                Jag_AnimReset
+                0x00819a2e       0x18 obj_fork/port_jag_anim.o
+                0x00819a2e                Jag_AnimReset
  .text.Jag_AnimSnap
-                0x00819992       0x42 obj_fork/port_jag_anim.o
-                0x00819992                Jag_AnimSnap
+                0x00819a46       0x42 obj_fork/port_jag_anim.o
+                0x00819a46                Jag_AnimSnap
  .text.Jag_LoadBody
-                0x008199d4       0xb2 obj_fork/port_jag_scene.o
-                0x008199d4                Jag_LoadBody
+                0x00819a88       0xb2 obj_fork/port_jag_scene.o
+                0x00819a88                Jag_LoadBody
  .text.HqrBodySlotOf
-                0x00819a86       0x24 obj_fork/port_jag_scene.o
-                0x00819a86                HqrBodySlotOf
+                0x00819b3a       0x24 obj_fork/port_jag_scene.o
+                0x00819b3a                HqrBodySlotOf
  .text.Jag_SceneFromFork
-                0x00819aaa       0x3c obj_fork/port_jag_scene.o
-                0x00819aaa                Jag_SceneFromFork
+                0x00819b5e       0x3c obj_fork/port_jag_scene.o
+                0x00819b5e                Jag_SceneFromFork
  .text.Jag_AffScene
-                0x00819ae6       0x84 obj_fork/port_jag_render.o
-                0x00819ae6                Jag_AffScene
+                0x00819b9a       0x84 obj_fork/port_jag_render.o
+                0x00819b9a                Jag_AffScene
  .text.Jag_ForkStart
-                0x00819b6a       0x36 obj_fork/port_jag_game.o
-                0x00819b6a                Jag_ForkStart
+                0x00819c1e       0x36 obj_fork/port_jag_game.o
+                0x00819c1e                Jag_ForkStart
  .text.Jag_M5Game
-                0x00819ba0       0x3e obj_fork/port_jag_game.o
-                0x00819ba0                Jag_M5Game
+                0x00819c54       0x3e obj_fork/port_jag_game.o
+                0x00819c54                Jag_M5Game
  .text.HQ_MixSample
-                0x00819bde       0x7c obj_fork/game_AMBIANCE.o
-                0x00819bde                HQ_MixSample
+                0x00819c92       0x7c obj_fork/game_AMBIANCE.o
+                0x00819c92                HQ_MixSample
  .text.HQ_StopSample
-                0x00819c5a        0x6 obj_fork/game_AMBIANCE.o
-                0x00819c5a                HQ_StopSample
+                0x00819d0e        0x6 obj_fork/game_AMBIANCE.o
+                0x00819d0e                HQ_StopSample
  .text.HQ_StopOneSample
-                0x00819c60       0x10 obj_fork/game_AMBIANCE.o
-                0x00819c60                HQ_StopOneSample
+                0x00819d14       0x10 obj_fork/game_AMBIANCE.o
+                0x00819d14                HQ_StopOneSample
  .text.GiveBalance
-                0x00819c70      0x13e obj_fork/game_AMBIANCE.o
-                0x00819c70                GiveBalance
+                0x00819d24      0x13e obj_fork/game_AMBIANCE.o
+                0x00819d24                GiveBalance
  .text.HQ_3D_MixSample
-                0x00819dae       0xc8 obj_fork/game_AMBIANCE.o
-                0x00819dae                HQ_3D_MixSample
+                0x00819e62       0xc8 obj_fork/game_AMBIANCE.o
+                0x00819e62                HQ_3D_MixSample
  .text.GereAmbiance
-                0x00819e76      0x126 obj_fork/game_AMBIANCE.o
-                0x00819e76                GereAmbiance
- .text.FadePal  0x00819f9c       0x9a obj_fork/game_AMBIANCE.o
-                0x00819f9c                FadePal
+                0x00819f2a      0x126 obj_fork/game_AMBIANCE.o
+                0x00819f2a                GereAmbiance
+ .text.FadePal  0x0081a050       0x9a obj_fork/game_AMBIANCE.o
+                0x0081a050                FadePal
  .text.FadeToBlack
-                0x0081a036       0x44 obj_fork/game_AMBIANCE.o
-                0x0081a036                FadeToBlack
+                0x0081a0ea       0x44 obj_fork/game_AMBIANCE.o
+                0x0081a0ea                FadeToBlack
  .text.FadeToPal
-                0x0081a07a       0x3a obj_fork/game_AMBIANCE.o
-                0x0081a07a                FadeToPal
+                0x0081a12e       0x3a obj_fork/game_AMBIANCE.o
+                0x0081a12e                FadeToPal
  .text.SetBlackPal
-                0x0081a0b4       0x32 obj_fork/game_AMBIANCE.o
-                0x0081a0b4                SetBlackPal
+                0x0081a168       0x32 obj_fork/game_AMBIANCE.o
+                0x0081a168                SetBlackPal
  .text.FadePalToPal
-                0x0081a0e6       0xac obj_fork/game_AMBIANCE.o
-                0x0081a0e6                FadePalToPal
+                0x0081a19a       0xac obj_fork/game_AMBIANCE.o
+                0x0081a19a                FadePalToPal
  .text.FadeToRed
-                0x0081a192       0x36 obj_fork/game_AMBIANCE.o
-                0x0081a192                FadeToRed
+                0x0081a246       0x36 obj_fork/game_AMBIANCE.o
+                0x0081a246                FadeToRed
  .text.FadeRedToPal
-                0x0081a1c8       0x36 obj_fork/game_AMBIANCE.o
-                0x0081a1c8                FadeRedToPal
+                0x0081a27c       0x36 obj_fork/game_AMBIANCE.o
+                0x0081a27c                FadeRedToPal
  .text.FadeMusicMidi
-                0x0081a1fe       0x18 obj_fork/game_AMBIANCE.o
-                0x0081a1fe                FadeMusicMidi
+                0x0081a2b2       0x18 obj_fork/game_AMBIANCE.o
+                0x0081a2b2                FadeMusicMidi
  .text.StopMusicMidi
-                0x0081a216       0x10 obj_fork/game_AMBIANCE.o
-                0x0081a216                StopMusicMidi
+                0x0081a2ca       0x10 obj_fork/game_AMBIANCE.o
+                0x0081a2ca                StopMusicMidi
  .text.GetMusicCD
-                0x0081a226       0x1e obj_fork/game_AMBIANCE.o
-                0x0081a226                GetMusicCD
+                0x0081a2da       0x1e obj_fork/game_AMBIANCE.o
+                0x0081a2da                GetMusicCD
  .text.StopMusicCD
-                0x0081a244       0x22 obj_fork/game_AMBIANCE.o
-                0x0081a244                StopMusicCD
+                0x0081a2f8       0x22 obj_fork/game_AMBIANCE.o
+                0x0081a2f8                StopMusicCD
  .text.PlayMidiFile
-                0x0081a266       0x6c obj_fork/game_AMBIANCE.o
-                0x0081a266                PlayMidiFile
+                0x0081a31a       0x6c obj_fork/game_AMBIANCE.o
+                0x0081a31a                PlayMidiFile
  .text.PlayCdTrack
-                0x0081a2d2       0x92 obj_fork/game_AMBIANCE.o
-                0x0081a2d2                PlayCdTrack
+                0x0081a386       0x92 obj_fork/game_AMBIANCE.o
+                0x0081a386                PlayCdTrack
  .text.PlayMusic
-                0x0081a364       0x48 obj_fork/game_AMBIANCE.o
-                0x0081a364                PlayMusic
+                0x0081a418       0x48 obj_fork/game_AMBIANCE.o
+                0x0081a418                PlayMusic
  .text.PlayAllMusic
-                0x0081a3ac       0xd2 obj_fork/game_AMBIANCE.o
-                0x0081a3ac                PlayAllMusic
- .text.Balance  0x0081a47e       0x5a obj_fork/game_BALANCE.o
-                0x0081a47e                Balance
+                0x0081a460       0xd2 obj_fork/game_AMBIANCE.o
+                0x0081a460                PlayAllMusic
+ .text.Balance  0x0081a532       0x5a obj_fork/game_BALANCE.o
+                0x0081a532                Balance
  .text.GetDiskEnv
-                0x0081a4d8       0x44 obj_fork/game_DISKFUNC.o
-                0x0081a4d8                GetDiskEnv
+                0x0081a58c       0x44 obj_fork/game_DISKFUNC.o
+                0x0081a58c                GetDiskEnv
  .text.LoadScene
-                0x0081a51c      0x716 obj_fork/game_DISKFUNC.o
-                0x0081a51c                LoadScene
- .text.InitFly  0x0081ac32       0x8c obj_fork/game_EXTRA.o
-                0x0081ac32                InitFly
+                0x0081a5d0      0x716 obj_fork/game_DISKFUNC.o
+                0x0081a5d0                LoadScene
+ .text.InitFly  0x0081ace6       0x8c obj_fork/game_EXTRA.o
+                0x0081ace6                InitFly
  .text.BounceExtra
-                0x0081acbe       0x90 obj_fork/game_EXTRA.o
-                0x0081acbe                BounceExtra
+                0x0081ad72       0x90 obj_fork/game_EXTRA.o
+                0x0081ad72                BounceExtra
  .text.ExtraBonus
-                0x0081ad4e      0x11c obj_fork/game_EXTRA.o
-                0x0081ad4e                ExtraBonus
+                0x0081ae02      0x11c obj_fork/game_EXTRA.o
+                0x0081ae02                ExtraBonus
  .text.ExtraExplo
-                0x0081ae6a       0x60 obj_fork/game_EXTRA.o
-                0x0081ae6a                ExtraExplo
+                0x0081af1e       0x60 obj_fork/game_EXTRA.o
+                0x0081af1e                ExtraExplo
  .text.SearchBonusKey
-                0x0081aeca       0x20 obj_fork/game_EXTRA.o
-                0x0081aeca                SearchBonusKey
+                0x0081af7e       0x20 obj_fork/game_EXTRA.o
+                0x0081af7e                SearchBonusKey
  .text.ExtraSearch
-                0x0081aeea       0xd2 obj_fork/game_EXTRA.o
-                0x0081aeea                ExtraSearch
+                0x0081af9e       0xd2 obj_fork/game_EXTRA.o
+                0x0081af9e                ExtraSearch
  .text.ExtraSearchKey
-                0x0081afbc       0xba obj_fork/game_EXTRA.o
-                0x0081afbc                ExtraSearchKey
+                0x0081b070       0xba obj_fork/game_EXTRA.o
+                0x0081b070                ExtraSearchKey
  .text.ExtraCheckObjCol
-                0x0081b076      0x102 obj_fork/game_EXTRA.o
-                0x0081b076                ExtraCheckObjCol
+                0x0081b12a      0x102 obj_fork/game_EXTRA.o
+                0x0081b12a                ExtraCheckObjCol
  .text.ExtraCheckExtraCol
-                0x0081b178       0xc0 obj_fork/game_EXTRA.o
-                0x0081b178                ExtraCheckExtraCol
+                0x0081b22c       0xc0 obj_fork/game_EXTRA.o
+                0x0081b22c                ExtraCheckExtraCol
  .text.FullWorldColBrick
-                0x0081b238      0x126 obj_fork/game_EXTRA.o
-                0x0081b238                FullWorldColBrick
+                0x0081b2ec      0x126 obj_fork/game_EXTRA.o
+                0x0081b2ec                FullWorldColBrick
  .text.InitSpecial
-                0x0081b35e      0x148 obj_fork/game_EXTRA.o
-                0x0081b35e                InitSpecial
+                0x0081b412      0x148 obj_fork/game_EXTRA.o
+                0x0081b412                InitSpecial
  .text.ClearExtra
-                0x0081b4a6       0x62 obj_fork/game_EXTRA.o
-                0x0081b4a6                ClearExtra
+                0x0081b55a       0x62 obj_fork/game_EXTRA.o
+                0x0081b55a                ClearExtra
  .text.ThrowExtra
-                0x0081b508       0xfa obj_fork/game_EXTRA.o
-                0x0081b508                ThrowExtra
+                0x0081b5bc       0xfa obj_fork/game_EXTRA.o
+                0x0081b5bc                ThrowExtra
  .text.GiveExtraBonus
-                0x0081b602      0x14a obj_fork/game_EXTRA.o
-                0x0081b602                GiveExtraBonus
+                0x0081b6b6      0x14a obj_fork/game_EXTRA.o
+                0x0081b6b6                GiveExtraBonus
  .text.ZoneGiveExtraBonus
-                0x0081b74c      0x126 obj_fork/game_EXTRA.o
-                0x0081b74c                ZoneGiveExtraBonus
+                0x0081b800      0x126 obj_fork/game_EXTRA.o
+                0x0081b800                ZoneGiveExtraBonus
  .text.GereExtras
-                0x0081b872      0xc7c obj_fork/game_EXTRA.o
-                0x0081b872                GereExtras
+                0x0081b926      0xc7c obj_fork/game_EXTRA.o
+                0x0081b926                GereExtras
  .text.ThrowMagicBall
-                0x0081c4ee      0x160 obj_fork/game_FICHE.o
-                0x0081c4ee                ThrowMagicBall
+                0x0081c5a2      0x160 obj_fork/game_FICHE.o
+                0x0081c5a2                ThrowMagicBall
  .text.GereAnimAction
-                0x0081c64e      0xa82 obj_fork/game_FICHE.o
-                0x0081c64e                GereAnimAction
+                0x0081c702      0xa82 obj_fork/game_FICHE.o
+                0x0081c702                GereAnimAction
  .text.SearchAnim
-                0x0081d0d0       0x6e obj_fork/game_FICHE.o
-                0x0081d0d0                SearchAnim
+                0x0081d184       0x6e obj_fork/game_FICHE.o
+                0x0081d184                SearchAnim
  .text.SearchBody
-                0x0081d13e      0x17c obj_fork/game_FICHE.o
-                0x0081d13e                SearchBody
+                0x0081d1f2      0x17c obj_fork/game_FICHE.o
+                0x0081d1f2                SearchBody
  .text.AddOptBox
-                0x0081d2ba      0x104 obj_fork/game_FLIPBOX.o
-                0x0081d2ba                AddOptBox
+                0x0081d36e      0x104 obj_fork/game_FLIPBOX.o
+                0x0081d36e                AddOptBox
  .text.AddPhysBox
-                0x0081d3be       0x90 obj_fork/game_FLIPBOX.o
-                0x0081d3be                AddPhysBox
+                0x0081d472       0x90 obj_fork/game_FLIPBOX.o
+                0x0081d472                AddPhysBox
  .text.FlipOptList
-                0x0081d44e       0x48 obj_fork/game_FLIPBOX.o
-                0x0081d44e                FlipOptList
+                0x0081d502       0x48 obj_fork/game_FLIPBOX.o
+                0x0081d502                FlipOptList
  .text.FlipBoxes
-                0x0081d496       0x46 obj_fork/game_FLIPBOX.o
-                0x0081d496                FlipBoxes
+                0x0081d54a       0x46 obj_fork/game_FLIPBOX.o
+                0x0081d54a                FlipBoxes
  .text.ClsBoxes
-                0x0081d4dc       0x52 obj_fork/game_FLIPBOX.o
-                0x0081d4dc                ClsBoxes
+                0x0081d590       0x52 obj_fork/game_FLIPBOX.o
+                0x0081d590                ClsBoxes
  .text.ComputeTime
-                0x0081d52e        0x6 obj_fork/game_FUNC.o
-                0x0081d52e                ComputeTime
+                0x0081d5e2        0x6 obj_fork/game_FUNC.o
+                0x0081d5e2                ComputeTime
  .text.SmallSort
-                0x0081d534       0x78 obj_fork/game_FUNC.o
-                0x0081d534                SmallSort
+                0x0081d5e8       0x78 obj_fork/game_FUNC.o
+                0x0081d5e8                SmallSort
  .text.ShadeBox
-                0x0081d5ac       0xd8 obj_fork/game_FUNC.o
-                0x0081d5ac                ShadeBox
+                0x0081d660       0xd8 obj_fork/game_FUNC.o
+                0x0081d660                ShadeBox
  .text.GetHDFreeSize
-                0x0081d684        0x6 obj_fork/game_FUNC.o
-                0x0081d684                GetHDFreeSize
+                0x0081d738        0x6 obj_fork/game_FUNC.o
+                0x0081d738                GetHDFreeSize
  .text.DrawFire.part.0
-                0x0081d68a       0x34 obj_fork/game_GAMEMENU.o
+                0x0081d73e       0x34 obj_fork/game_GAMEMENU.o
  .text.DrawFire.constprop.0
-                0x0081d6be       0x34 obj_fork/game_GAMEMENU.o
+                0x0081d772       0x34 obj_fork/game_GAMEMENU.o
  .text.Init3DGame
-                0x0081d6f2       0x4c obj_fork/game_GAMEMENU.o
-                0x0081d6f2                Init3DGame
+                0x0081d7a6       0x4c obj_fork/game_GAMEMENU.o
+                0x0081d7a6                Init3DGame
  .text.WaitReleaseSpace
-                0x0081d73e       0x24 obj_fork/game_GAMEMENU.o
-                0x0081d73e                WaitReleaseSpace
+                0x0081d7f2       0x24 obj_fork/game_GAMEMENU.o
+                0x0081d7f2                WaitReleaseSpace
  .text.GetMenuMultiTextAux
-                0x0081d762       0x4e obj_fork/game_GAMEMENU.o
-                0x0081d762                GetMenuMultiTextAux
+                0x0081d816       0x4e obj_fork/game_GAMEMENU.o
+                0x0081d816                GetMenuMultiTextAux
  .text.DrawObj3D
-                0x0081d7b0       0xca obj_fork/game_GAMEMENU.o
-                0x0081d7b0                DrawObj3D
+                0x0081d864       0xca obj_fork/game_GAMEMENU.o
+                0x0081d864                DrawObj3D
  .text.DrawCadre
-                0x0081d87a       0x64 obj_fork/game_GAMEMENU.o
-                0x0081d87a                DrawCadre
+                0x0081d92e       0x64 obj_fork/game_GAMEMENU.o
+                0x0081d92e                DrawCadre
  .text.DrawComportement
-                0x0081d8de      0x206 obj_fork/game_GAMEMENU.o
-                0x0081d8de                DrawComportement
+                0x0081d992      0x206 obj_fork/game_GAMEMENU.o
+                0x0081d992                DrawComportement
  .text.DrawInfoMenu
-                0x0081dae4      0x366 obj_fork/game_GAMEMENU.o
-                0x0081dae4                DrawInfoMenu
+                0x0081db98      0x366 obj_fork/game_GAMEMENU.o
+                0x0081db98                DrawInfoMenu
  .text.DrawMenuComportement
-                0x0081de4a      0x152 obj_fork/game_GAMEMENU.o
-                0x0081de4a                DrawMenuComportement
+                0x0081defe      0x152 obj_fork/game_GAMEMENU.o
+                0x0081defe                DrawMenuComportement
  .text.MenuComportement
-                0x0081df9c      0x268 obj_fork/game_GAMEMENU.o
-                0x0081df9c                MenuComportement
+                0x0081e050      0x268 obj_fork/game_GAMEMENU.o
+                0x0081e050                MenuComportement
  .text.Draw3dObject
-                0x0081e204       0x8e obj_fork/game_GAMEMENU.o
-                0x0081e204                Draw3dObject
+                0x0081e2b8       0x8e obj_fork/game_GAMEMENU.o
+                0x0081e2b8                Draw3dObject
  .text.DrawOneInventory
-                0x0081e292      0x14e obj_fork/game_GAMEMENU.o
-                0x0081e292                DrawOneInventory
+                0x0081e346      0x14e obj_fork/game_GAMEMENU.o
+                0x0081e346                DrawOneInventory
  .text.DrawListInventory
-                0x0081e3e0       0x88 obj_fork/game_GAMEMENU.o
-                0x0081e3e0                DrawListInventory
+                0x0081e494       0x88 obj_fork/game_GAMEMENU.o
+                0x0081e494                DrawListInventory
  .text.Inventory
-                0x0081e468      0x320 obj_fork/game_GAMEMENU.o
-                0x0081e468                Inventory
+                0x0081e51c      0x320 obj_fork/game_GAMEMENU.o
+                0x0081e51c                Inventory
  .text.DoFoundObj
-                0x0081e788      0x59a obj_fork/game_GAMEMENU.o
-                0x0081e788                DoFoundObj
+                0x0081e83c      0x59a obj_fork/game_GAMEMENU.o
+                0x0081e83c                DoFoundObj
  .text.ExtInitMcga
-                0x0081ed22       0x4c obj_fork/game_GAMEMENU.o
-                0x0081ed22                ExtInitMcga
+                0x0081edd6       0x4c obj_fork/game_GAMEMENU.o
+                0x0081edd6                ExtInitMcga
  .text.ExtInitSvga
-                0x0081ed6e       0x48 obj_fork/game_GAMEMENU.o
-                0x0081ed6e                ExtInitSvga
+                0x0081ee22       0x48 obj_fork/game_GAMEMENU.o
+                0x0081ee22                ExtInitSvga
  .text.TestRestoreModeSVGA
-                0x0081edb6       0x2a obj_fork/game_GAMEMENU.o
-                0x0081edb6                TestRestoreModeSVGA
+                0x0081ee6a       0x2a obj_fork/game_GAMEMENU.o
+                0x0081ee6a                TestRestoreModeSVGA
  .text.PlayerGameList
-                0x0081ede0      0x176 obj_fork/game_GAMEMENU.o
-                0x0081ede0                PlayerGameList
+                0x0081ee94      0x176 obj_fork/game_GAMEMENU.o
+                0x0081ee94                PlayerGameList
  .text.FindPlayerFile
-                0x0081ef56       0xf4 obj_fork/game_GAMEMENU.o
-                0x0081ef56                FindPlayerFile
+                0x0081f00a       0xf4 obj_fork/game_GAMEMENU.o
+                0x0081f00a                FindPlayerFile
  .text.SaveGameWithName
-                0x0081f04a      0x37e obj_fork/game_GAMEMENU.o
-                0x0081f04a                SaveGameWithName
+                0x0081f0fe      0x37e obj_fork/game_GAMEMENU.o
+                0x0081f0fe                SaveGameWithName
  .text.SaveGame
-                0x0081f3c8       0x28 obj_fork/game_GAMEMENU.o
-                0x0081f3c8                SaveGame
+                0x0081f47c       0x28 obj_fork/game_GAMEMENU.o
+                0x0081f47c                SaveGame
  .text.LoadGame
-                0x0081f3f0      0x3fa obj_fork/game_GAMEMENU.o
-                0x0081f3f0                LoadGame
+                0x0081f4a4      0x3fa obj_fork/game_GAMEMENU.o
+                0x0081f4a4                LoadGame
  .text.DrawOneString
-                0x0081f7ea      0x108 obj_fork/game_GAMEMENU.o
-                0x0081f7ea                DrawOneString
+                0x0081f89e      0x108 obj_fork/game_GAMEMENU.o
+                0x0081f89e                DrawOneString
  .text.DrawSingleString
-                0x0081f8f2       0x86 obj_fork/game_GAMEMENU.o
-                0x0081f8f2                DrawSingleString
+                0x0081f9a6       0x86 obj_fork/game_GAMEMENU.o
+                0x0081f9a6                DrawSingleString
  .text.DrawOneLetter
-                0x0081f978      0x112 obj_fork/game_GAMEMENU.o
-                0x0081f978                DrawOneLetter
+                0x0081fa2c      0x112 obj_fork/game_GAMEMENU.o
+                0x0081fa2c                DrawOneLetter
  .text.DrawAllLetters
-                0x0081fa8a       0x30 obj_fork/game_GAMEMENU.o
-                0x0081fa8a                DrawAllLetters
+                0x0081fb3e       0x30 obj_fork/game_GAMEMENU.o
+                0x0081fb3e                DrawAllLetters
  .text.InputPlayerName
-                0x0081faba      0x302 obj_fork/game_GAMEMENU.o
-                0x0081faba                InputPlayerName
+                0x0081fb6e      0x302 obj_fork/game_GAMEMENU.o
+                0x0081fb6e                InputPlayerName
  .text.ChoosePlayerName
-                0x0081fdbc      0x2a2 obj_fork/game_GAMEMENU.o
-                0x0081fdbc                ChoosePlayerName
+                0x0081fe70      0x2a2 obj_fork/game_GAMEMENU.o
+                0x0081fe70                ChoosePlayerName
  .text.DrawOneChoice
-                0x0082005e      0x232 obj_fork/game_GAMEMENU.o
-                0x0082005e                DrawOneChoice
+                0x00820112      0x232 obj_fork/game_GAMEMENU.o
+                0x00820112                DrawOneChoice
  .text.InfoWallCollisionDamage
-                0x00820290       0x94 obj_fork/game_GAMEMENU.o
-                0x00820290                InfoWallCollisionDamage
+                0x00820344       0x94 obj_fork/game_GAMEMENU.o
+                0x00820344                InfoWallCollisionDamage
  .text.DrawGameMenu
-                0x00820324       0xa8 obj_fork/game_GAMEMENU.o
-                0x00820324                DrawGameMenu
+                0x008203d8       0xa8 obj_fork/game_GAMEMENU.o
+                0x008203d8                DrawGameMenu
  .text.SetVolumes
-                0x008203cc       0x72 obj_fork/game_GAMEMENU.o
-                0x008203cc                SetVolumes
+                0x00820480       0x72 obj_fork/game_GAMEMENU.o
+                0x00820480                SetVolumes
  .text.DoGameMenu
-                0x0082043e      0x318 obj_fork/game_GAMEMENU.o
-                0x0082043e                DoGameMenu
+                0x008204f2      0x318 obj_fork/game_GAMEMENU.o
+                0x008204f2                DoGameMenu
  .text.VolumeOptions
-                0x00820756       0xea obj_fork/game_GAMEMENU.o
-                0x00820756                VolumeOptions
+                0x0082080a       0xea obj_fork/game_GAMEMENU.o
+                0x0082080a                VolumeOptions
  .text.SavedGameManagement
-                0x00820840      0x11a obj_fork/game_GAMEMENU.o
-                0x00820840                SavedGameManagement
+                0x008208f4      0x11a obj_fork/game_GAMEMENU.o
+                0x008208f4                SavedGameManagement
  .text.AdvancedOptions
-                0x0082095a      0x1b0 obj_fork/game_GAMEMENU.o
-                0x0082095a                AdvancedOptions
+                0x00820a0e      0x1b0 obj_fork/game_GAMEMENU.o
+                0x00820a0e                AdvancedOptions
  .text.OptionsMenu
-                0x00820b0a       0xe6 obj_fork/game_GAMEMENU.o
-                0x00820b0a                OptionsMenu
+                0x00820bbe       0xe6 obj_fork/game_GAMEMENU.o
+                0x00820bbe                OptionsMenu
  .text.QuitMenu
-                0x00820bf0      0x174 obj_fork/game_GAMEMENU.o
-                0x00820bf0                QuitMenu
+                0x00820ca4      0x174 obj_fork/game_GAMEMENU.o
+                0x00820ca4                QuitMenu
  .text.GameAskChoice
-                0x00820d64       0xc6 obj_fork/game_GAMEMENU.o
-                0x00820d64                GameAskChoice
+                0x00820e18       0xc6 obj_fork/game_GAMEMENU.o
+                0x00820e18                GameAskChoice
  .text.GameOver
-                0x00820e2a      0x28a obj_fork/game_GAMEMENU.o
-                0x00820e2a                GameOver
+                0x00820ede      0x28a obj_fork/game_GAMEMENU.o
+                0x00820ede                GameOver
  .text.CheckAuxCubeFlag
-                0x008210b4       0x50 obj_fork/game_GERELIFE.o
-                0x008210b4                CheckAuxCubeFlag
+                0x00821168       0x50 obj_fork/game_GERELIFE.o
+                0x00821168                CheckAuxCubeFlag
  .text.DoFuncLife
-                0x00821104      0x622 obj_fork/game_GERELIFE.o
-                0x00821104                DoFuncLife
- .text.DoTest   0x00821726      0x1de obj_fork/game_GERELIFE.o
-                0x00821726                DoTest
- .text.DoLife   0x00821904     0x223c obj_fork/game_GERELIFE.o
-                0x00821904                DoLife
- .text.DoTrack  0x00823b40      0xede obj_fork/game_GERETRAK.o
-                0x00823b40                DoTrack
- .text.z_sort   0x00824a1e       0x10 obj_fork/game_HOLOMAP.o
-                0x00824a1e                z_sort
+                0x008211b8      0x622 obj_fork/game_GERELIFE.o
+                0x008211b8                DoFuncLife
+ .text.DoTest   0x008217da      0x1de obj_fork/game_GERELIFE.o
+                0x008217da                DoTest
+ .text.DoLife   0x008219b8     0x223c obj_fork/game_GERELIFE.o
+                0x008219b8                DoLife
+ .text.DoTrack  0x00823bf4      0xede obj_fork/game_GERETRAK.o
+                0x00823bf4                DoTrack
+ .text.z_sort   0x00824ad2       0x10 obj_fork/game_HOLOMAP.o
+                0x00824ad2                z_sort
  .text.ComputeCoorMapping
-                0x00824a2e       0x7a obj_fork/game_HOLOMAP.o
-                0x00824a2e                ComputeCoorMapping
+                0x00824ae2       0x7a obj_fork/game_HOLOMAP.o
+                0x00824ae2                ComputeCoorMapping
  .text.ComputeCoorGlobe
-                0x00824aa8      0x126 obj_fork/game_HOLOMAP.o
-                0x00824aa8                ComputeCoorGlobe
+                0x00824b5c      0x126 obj_fork/game_HOLOMAP.o
+                0x00824b5c                ComputeCoorGlobe
  .text.ComputeGlobeProj
-                0x00824bce      0x134 obj_fork/game_HOLOMAP.o
-                0x00824bce                ComputeGlobeProj
+                0x00824c82      0x134 obj_fork/game_HOLOMAP.o
+                0x00824c82                ComputeGlobeProj
  .text.DrawHoloMap
-                0x00824d02      0x156 obj_fork/game_HOLOMAP.o
-                0x00824d02                DrawHoloMap
+                0x00824db6      0x156 obj_fork/game_HOLOMAP.o
+                0x00824db6                DrawHoloMap
  .text.DrawListPos
-                0x00824e58      0x212 obj_fork/game_HOLOMAP.o
-                0x00824e58                DrawListPos
+                0x00824f0c      0x212 obj_fork/game_HOLOMAP.o
+                0x00824f0c                DrawListPos
  .text.SearchNextArrow
-                0x0082506a       0x26 obj_fork/game_HOLOMAP.o
-                0x0082506a                SearchNextArrow
+                0x0082511e       0x26 obj_fork/game_HOLOMAP.o
+                0x0082511e                SearchNextArrow
  .text.SearchPrevArrow
-                0x00825090       0x2c obj_fork/game_HOLOMAP.o
-                0x00825090                SearchPrevArrow
+                0x00825144       0x2c obj_fork/game_HOLOMAP.o
+                0x00825144                SearchPrevArrow
  .text.SetHoloPos
-                0x008250bc       0x14 obj_fork/game_HOLOMAP.o
-                0x008250bc                SetHoloPos
+                0x00825170       0x14 obj_fork/game_HOLOMAP.o
+                0x00825170                SetHoloPos
  .text.ClrHoloPos
-                0x008250d0       0x1e obj_fork/game_HOLOMAP.o
-                0x008250d0                ClrHoloPos
+                0x00825184       0x1e obj_fork/game_HOLOMAP.o
+                0x00825184                ClrHoloPos
  .text.DrawTitle
-                0x008250ee       0xf4 obj_fork/game_HOLOMAP.o
-                0x008250ee                DrawTitle
+                0x008251a2       0xf4 obj_fork/game_HOLOMAP.o
+                0x008251a2                DrawTitle
  .text.DrawCurseur
-                0x008251e2       0x20 obj_fork/game_HOLOMAP.o
-                0x008251e2                DrawCurseur
+                0x00825296       0x20 obj_fork/game_HOLOMAP.o
+                0x00825296                DrawCurseur
  .text.InitHoloDatas
-                0x00825202      0x1ca obj_fork/game_HOLOMAP.o
-                0x00825202                InitHoloDatas
- .text.HoloMap  0x008253cc      0x4fe obj_fork/game_HOLOMAP.o
-                0x008253cc                HoloMap
+                0x008252b6      0x1ca obj_fork/game_HOLOMAP.o
+                0x008252b6                InitHoloDatas
+ .text.HoloMap  0x00825480      0x4fe obj_fork/game_HOLOMAP.o
+                0x00825480                HoloMap
  .text.DrawHoloObj
-                0x008258ca       0xd0 obj_fork/game_HOLOMAP.o
-                0x008258ca                DrawHoloObj
+                0x0082597e       0xd0 obj_fork/game_HOLOMAP.o
+                0x0082597e                DrawHoloObj
  .text.GiveTrajPtr
-                0x0082599a       0x24 obj_fork/game_HOLOMAP.o
-                0x0082599a                GiveTrajPtr
+                0x00825a4e       0x24 obj_fork/game_HOLOMAP.o
+                0x00825a4e                GiveTrajPtr
  .text.HoloTraj
-                0x008259be      0x3f6 obj_fork/game_HOLOMAP.o
-                0x008259be                HoloTraj
+                0x00825a72      0x3f6 obj_fork/game_HOLOMAP.o
+                0x00825a72                HoloTraj
  .text.InitIncrustDisp
-                0x00825db4       0x78 obj_fork/game_INCRUST.o
-                0x00825db4                InitIncrustDisp
+                0x00825e68       0x78 obj_fork/game_INCRUST.o
+                0x00825e68                InitIncrustDisp
  .text.DrawBulle
-                0x00825e2c      0x1aa obj_fork/game_INCRUST.o
-                0x00825e2c                DrawBulle
- .text.TimeBar  0x00825fd6      0x148 obj_fork/game_MESSAGE.o
-                0x00825fd6                TimeBar
+                0x00825ee0      0x1aa obj_fork/game_INCRUST.o
+                0x00825ee0                DrawBulle
+ .text.TimeBar  0x0082608a      0x148 obj_fork/game_MESSAGE.o
+                0x0082608a                TimeBar
  .text.InitLanguage
-                0x0082611e      0x134 obj_fork/game_MESSAGE.o
-                0x0082611e                InitLanguage
+                0x008261d2      0x134 obj_fork/game_MESSAGE.o
+                0x008261d2                InitLanguage
  .text.FindText
-                0x00826252       0x34 obj_fork/game_MESSAGE.o
-                0x00826252                FindText
+                0x00826306       0x34 obj_fork/game_MESSAGE.o
+                0x00826306                FindText
  .text.CalcTotalSizeFileOnHD
-                0x00826286       0x3a obj_fork/game_MESSAGE.o
-                0x00826286                CalcTotalSizeFileOnHD
+                0x0082633a       0x3a obj_fork/game_MESSAGE.o
+                0x0082633a                CalcTotalSizeFileOnHD
  .text.AddFileNameOnHD
-                0x008262c0       0x70 obj_fork/game_MESSAGE.o
-                0x008262c0                AddFileNameOnHD
+                0x00826374       0x70 obj_fork/game_MESSAGE.o
+                0x00826374                AddFileNameOnHD
  .text.InitVoiceFile
-                0x00826330       0x7e obj_fork/game_MESSAGE.o
-                0x00826330                InitVoiceFile
+                0x008263e4       0x7e obj_fork/game_MESSAGE.o
+                0x008263e4                InitVoiceFile
  .text.DeleteOlderFileHD
-                0x008263ae       0xba obj_fork/game_MESSAGE.o
-                0x008263ae                DeleteOlderFileHD
+                0x00826462       0xba obj_fork/game_MESSAGE.o
+                0x00826462                DeleteOlderFileHD
  .text.CopyFileCD_HD
-                0x00826468      0x16c obj_fork/game_MESSAGE.o
-                0x00826468                CopyFileCD_HD
+                0x0082651c      0x16c obj_fork/game_MESSAGE.o
+                0x0082651c                CopyFileCD_HD
  .text.TryCopyFileCD_HD
-                0x008265d4       0x7e obj_fork/game_MESSAGE.o
-                0x008265d4                TryCopyFileCD_HD
+                0x00826688       0x7e obj_fork/game_MESSAGE.o
+                0x00826688                TryCopyFileCD_HD
  .text.CloseFdNar
-                0x00826652       0x1a obj_fork/game_MESSAGE.o
-                0x00826652                CloseFdNar
+                0x00826706       0x1a obj_fork/game_MESSAGE.o
+                0x00826706                CloseFdNar
  .text.InitFileNar
-                0x0082666c       0xde obj_fork/game_MESSAGE.o
-                0x0082666c                InitFileNar
+                0x00826720       0xde obj_fork/game_MESSAGE.o
+                0x00826720                InitFileNar
  .text.InitSpeak
-                0x0082674a      0x162 obj_fork/game_MESSAGE.o
-                0x0082674a                InitSpeak
+                0x008267fe      0x162 obj_fork/game_MESSAGE.o
+                0x008267fe                InitSpeak
  .text.PlaySpeakVoc
-                0x008268ac      0x116 obj_fork/game_MESSAGE.o
-                0x008268ac                PlaySpeakVoc
- .text.TestSpk  0x008269c2       0x3a obj_fork/game_MESSAGE.o
-                0x008269c2                TestSpk
+                0x00826960      0x116 obj_fork/game_MESSAGE.o
+                0x00826960                PlaySpeakVoc
+ .text.TestSpk  0x00826a76       0x3a obj_fork/game_MESSAGE.o
+                0x00826a76                TestSpk
  .text.TestSpeak
-                0x008269fc       0x10 obj_fork/game_MESSAGE.o
-                0x008269fc                TestSpeak
+                0x00826ab0       0x10 obj_fork/game_MESSAGE.o
+                0x00826ab0                TestSpeak
  .text.TestSpeakFromCD
-                0x00826a0c       0x38 obj_fork/game_MESSAGE.o
-                0x00826a0c                TestSpeakFromCD
+                0x00826ac0       0x38 obj_fork/game_MESSAGE.o
+                0x00826ac0                TestSpeakFromCD
  .text.SpeakFromCD
-                0x00826a44       0xee obj_fork/game_MESSAGE.o
-                0x00826a44                SpeakFromCD
+                0x00826af8       0xee obj_fork/game_MESSAGE.o
+                0x00826af8                SpeakFromCD
  .text.IsVoiceFileOnHD
-                0x00826b32       0x7e obj_fork/game_MESSAGE.o
-                0x00826b32                IsVoiceFileOnHD
- .text.Speak    0x00826bb0       0x60 obj_fork/game_MESSAGE.o
-                0x00826bb0                Speak
+                0x00826be6       0x7e obj_fork/game_MESSAGE.o
+                0x00826be6                IsVoiceFileOnHD
+ .text.Speak    0x00826c64       0x60 obj_fork/game_MESSAGE.o
+                0x00826c64                Speak
  .text.StopSpeak
-                0x00826c10       0x34 obj_fork/game_MESSAGE.o
-                0x00826c10                StopSpeak
+                0x00826cc4       0x34 obj_fork/game_MESSAGE.o
+                0x00826cc4                StopSpeak
  .text.InitDial
-                0x00826c44       0xb4 obj_fork/game_MESSAGE.o
-                0x00826c44                InitDial
+                0x00826cf8       0xf6 obj_fork/game_MESSAGE.o
+                0x00826cf8                InitDial
  .text.ClearDial
-                0x00826cf8        0x2 obj_fork/game_MESSAGE.o
-                0x00826cf8                ClearDial
+                0x00826dee        0x2 obj_fork/game_MESSAGE.o
+                0x00826dee                ClearDial
  .text.GetNextWord
-                0x00826cfa       0x50 obj_fork/game_MESSAGE.o
-                0x00826cfa                GetNextWord
- .text.PushCar  0x00826d4a       0x6c obj_fork/game_MESSAGE.o
-                0x00826d4a                PushCar
+                0x00826df0       0x50 obj_fork/game_MESSAGE.o
+                0x00826df0                GetNextWord
+ .text.PushCar  0x00826e40       0x6c obj_fork/game_MESSAGE.o
+                0x00826e40                PushCar
  .text.AffOneCar
-                0x00826db6       0xb2 obj_fork/game_MESSAGE.o
-                0x00826db6                AffOneCar
+                0x00826eac       0xb2 obj_fork/game_MESSAGE.o
+                0x00826eac                AffOneCar
  .text.AffAllCar
-                0x00826e68       0x86 obj_fork/game_MESSAGE.o
-                0x00826e68                AffAllCar
+                0x00826f5e       0x86 obj_fork/game_MESSAGE.o
+                0x00826f5e                AffAllCar
  .text.CoulDial
-                0x00826eee       0x38 obj_fork/game_MESSAGE.o
-                0x00826eee                CoulDial
+                0x00826fe4       0x38 obj_fork/game_MESSAGE.o
+                0x00826fe4                CoulDial
  .text.TestCoulDial
-                0x00826f26       0x2a obj_fork/game_MESSAGE.o
-                0x00826f26                TestCoulDial
- .text.GetText  0x00826f50       0x44 obj_fork/game_MESSAGE.o
-                0x00826f50                GetText
+                0x0082701c       0x2a obj_fork/game_MESSAGE.o
+                0x0082701c                TestCoulDial
+ .text.GetText  0x00827046       0x44 obj_fork/game_MESSAGE.o
+                0x00827046                GetText
  .text.AffFleche
-                0x00826f94       0xba obj_fork/game_MESSAGE.o
-                0x00826f94                AffFleche
+                0x0082708a       0xba obj_fork/game_MESSAGE.o
+                0x0082708a                AffFleche
  .text.InitDialWindow
-                0x0082704e       0xf8 obj_fork/game_MESSAGE.o
-                0x0082704e                InitDialWindow
+                0x00827144       0xf8 obj_fork/game_MESSAGE.o
+                0x00827144                InitDialWindow
  .text.SecondInitDialWindow
-                0x00827146       0x60 obj_fork/game_MESSAGE.o
-                0x00827146                SecondInitDialWindow
+                0x0082723c       0x60 obj_fork/game_MESSAGE.o
+                0x0082723c                SecondInitDialWindow
  .text.NormalWinDial
-                0x008271a6       0x3a obj_fork/game_MESSAGE.o
-                0x008271a6                NormalWinDial
+                0x0082729c       0x3a obj_fork/game_MESSAGE.o
+                0x0082729c                NormalWinDial
  .text.BigWinDial
-                0x008271e0       0x38 obj_fork/game_MESSAGE.o
-                0x008271e0                BigWinDial
+                0x008272d6       0x38 obj_fork/game_MESSAGE.o
+                0x008272d6                BigWinDial
  .text.CommonOpenDial
-                0x00827218       0x8c obj_fork/game_MESSAGE.o
-                0x00827218                CommonOpenDial
+                0x0082730e       0x8c obj_fork/game_MESSAGE.o
+                0x0082730e                CommonOpenDial
  .text.OpenDial
-                0x008272a4       0x12 obj_fork/game_MESSAGE.o
-                0x008272a4                OpenDial
+                0x0082739a       0x12 obj_fork/game_MESSAGE.o
+                0x0082739a                OpenDial
  .text.OpenDialNoWindow
-                0x008272b6        0x6 obj_fork/game_MESSAGE.o
-                0x008272b6                OpenDialNoWindow
+                0x008273ac        0x6 obj_fork/game_MESSAGE.o
+                0x008273ac                OpenDialNoWindow
  .text.GetNextLine
-                0x008272bc      0x19a obj_fork/game_MESSAGE.o
-                0x008272bc                GetNextLine
+                0x008273b2      0x19a obj_fork/game_MESSAGE.o
+                0x008273b2                GetNextLine
  .text.InitEndPage
-                0x00827456       0x4a obj_fork/game_MESSAGE.o
-                0x00827456                InitEndPage
+                0x0082754c       0x4a obj_fork/game_MESSAGE.o
+                0x0082754c                InitEndPage
  .text.NextDialCar
-                0x008274a0      0x19a obj_fork/game_MESSAGE.o
-                0x008274a0                NextDialCar
+                0x00827596      0x19a obj_fork/game_MESSAGE.o
+                0x00827596                NextDialCar
  .text.CloseDial
-                0x0082763a        0x8 obj_fork/game_MESSAGE.o
-                0x0082763a                CloseDial
- .text.Dial     0x00827642      0x122 obj_fork/game_MESSAGE.o
-                0x00827642                Dial
- .text.MyDial   0x00827764       0x8e obj_fork/game_MESSAGE.o
-                0x00827764                MyDial
+                0x00827730        0x8 obj_fork/game_MESSAGE.o
+                0x00827730                CloseDial
+ .text.Dial     0x00827738      0x122 obj_fork/game_MESSAGE.o
+                0x00827738                Dial
+ .text.MyDial   0x0082785a       0x8e obj_fork/game_MESSAGE.o
+                0x0082785a                MyDial
  .text.GetMultiText
-                0x008277f2       0xa4 obj_fork/game_MESSAGE.o
-                0x008277f2                GetMultiText
+                0x008278e8       0xa4 obj_fork/game_MESSAGE.o
+                0x008278e8                GetMultiText
  .text.GetCurrentListLanguage
-                0x00827896       0x16 obj_fork/game_MESSAGE.o
-                0x00827896                GetCurrentListLanguage
+                0x0082798c       0x16 obj_fork/game_MESSAGE.o
+                0x0082798c                GetCurrentListLanguage
  .text.hasQuotationMarks
-                0x008278ac       0x1e obj_fork/game_MSG_CUST.o
-                0x008278ac                hasQuotationMarks
+                0x008279a2       0x1e obj_fork/game_MSG_CUST.o
+                0x008279a2                hasQuotationMarks
  .text.isIndexDelimitator
-                0x008278ca       0x1e obj_fork/game_MSG_CUST.o
-                0x008278ca                isIndexDelimitator
+                0x008279c0       0x1e obj_fork/game_MSG_CUST.o
+                0x008279c0                isIndexDelimitator
  .text.createSingleColumnResult
-                0x008278e8       0x48 obj_fork/game_MSG_CUST.o
-                0x008278e8                createSingleColumnResult
+                0x008279de       0x48 obj_fork/game_MSG_CUST.o
+                0x008279de                createSingleColumnResult
  .text.treatSingleColumnWithoutQuotes
-                0x00827930       0x6e obj_fork/game_MSG_CUST.o
-                0x00827930                treatSingleColumnWithoutQuotes
+                0x00827a26       0x6e obj_fork/game_MSG_CUST.o
+                0x00827a26                treatSingleColumnWithoutQuotes
  .text.readLong
-                0x0082799e       0x98 obj_fork/game_MSG_CUST.o
-                0x0082799e                readLong
+                0x00827a94       0x98 obj_fork/game_MSG_CUST.o
+                0x00827a94                readLong
  .text.CheckIfLineHasUnendedQuote
-                0x00827a36       0x7c obj_fork/game_MSG_CUST.o
-                0x00827a36                CheckIfLineHasUnendedQuote
+                0x00827b2c       0x7c obj_fork/game_MSG_CUST.o
+                0x00827b2c                CheckIfLineHasUnendedQuote
  .text.CheckIfLineHasEndingQuote
-                0x00827ab2       0x52 obj_fork/game_MSG_CUST.o
-                0x00827ab2                CheckIfLineHasEndingQuote
+                0x00827ba8       0x52 obj_fork/game_MSG_CUST.o
+                0x00827ba8                CheckIfLineHasEndingQuote
  .text.InitializeCustomMessageFile
-                0x00827b04       0x78 obj_fork/game_MSG_CUST.o
-                0x00827b04                InitializeCustomMessageFile
+                0x00827bfa       0x78 obj_fork/game_MSG_CUST.o
+                0x00827bfa                InitializeCustomMessageFile
  .text.CloseCustomMessageFile
-                0x00827b7c       0x1a obj_fork/game_MSG_CUST.o
-                0x00827b7c                CloseCustomMessageFile
+                0x00827c72       0x1a obj_fork/game_MSG_CUST.o
+                0x00827c72                CloseCustomMessageFile
  .text.fgets_dynamic
-                0x00827b96       0x8a obj_fork/game_MSG_CUST.o
-                0x00827b96                fgets_dynamic
+                0x00827c8c       0x8a obj_fork/game_MSG_CUST.o
+                0x00827c8c                fgets_dynamic
  .text.treatSingleColumnWithQuotes
-                0x00827c20      0x180 obj_fork/game_MSG_CUST.o
-                0x00827c20                treatSingleColumnWithQuotes
+                0x00827d16      0x180 obj_fork/game_MSG_CUST.o
+                0x00827d16                treatSingleColumnWithQuotes
  .text.readText
-                0x00827da0       0xb0 obj_fork/game_MSG_CUST.o
-                0x00827da0                readText
+                0x00827e96       0xb0 obj_fork/game_MSG_CUST.o
+                0x00827e96                readText
  .text.ClearCustomMessageCache
-                0x00827e50       0x6c obj_fork/game_MSG_CUST.o
-                0x00827e50                ClearCustomMessageCache
+                0x00827f46       0x6c obj_fork/game_MSG_CUST.o
+                0x00827f46                ClearCustomMessageCache
  .text.LoadCustomMessagesIntoCache
-                0x00827ebc      0x1e8 obj_fork/game_MSG_CUST.o
-                0x00827ebc                LoadCustomMessagesIntoCache
+                0x00827fb2      0x1e8 obj_fork/game_MSG_CUST.o
+                0x00827fb2                LoadCustomMessagesIntoCache
  .text.LookupCachedMessage
-                0x008280a4       0x5e obj_fork/game_MSG_CUST.o
-                0x008280a4                LookupCachedMessage
+                0x0082819a       0x5e obj_fork/game_MSG_CUST.o
+                0x0082819a                LookupCachedMessage
  .text.GetCustomizedMultiText
-                0x00828102       0x4e obj_fork/game_MSG_CUST.o
-                0x00828102                GetCustomizedMultiText
+                0x008281f8       0x4e obj_fork/game_MSG_CUST.o
+                0x008281f8                GetCustomizedMultiText
  .text.SetFadePalOnLoad.part.0
-                0x00828150       0xf0 obj_fork/game_OBJECT.o
+                0x00828246       0xf0 obj_fork/game_OBJECT.o
  .text.ReajustPos.part.0
-                0x00828240      0x2d8 obj_fork/game_OBJECT.o
+                0x00828336      0x2d8 obj_fork/game_OBJECT.o
  .text.InitObject
-                0x00828518       0xf0 obj_fork/game_OBJECT.o
-                0x00828518                InitObject
+                0x0082860e       0xf0 obj_fork/game_OBJECT.o
+                0x0082860e                InitObject
  .text.LoadFicPerso
-                0x00828608       0xf2 obj_fork/game_OBJECT.o
-                0x00828608                LoadFicPerso
+                0x008286fe       0xf2 obj_fork/game_OBJECT.o
+                0x008286fe                LoadFicPerso
  .text.InitPerso
-                0x008286fa       0x52 obj_fork/game_OBJECT.o
-                0x008286fa                InitPerso
+                0x008287f0       0x52 obj_fork/game_OBJECT.o
+                0x008287f0                InitPerso
  .text.ClearFlagsCube
-                0x0082874c       0x44 obj_fork/game_OBJECT.o
-                0x0082874c                ClearFlagsCube
+                0x00828842       0x44 obj_fork/game_OBJECT.o
+                0x00828842                ClearFlagsCube
  .text.CheckZvOnZv
-                0x00828790       0xd8 obj_fork/game_OBJECT.o
-                0x00828790                CheckZvOnZv
+                0x00828886       0xd8 obj_fork/game_OBJECT.o
+                0x00828886                CheckZvOnZv
  .text.CheckCarrier
-                0x00828868       0x6a obj_fork/game_OBJECT.o
-                0x00828868                CheckCarrier
+                0x0082895e       0x6a obj_fork/game_OBJECT.o
+                0x0082895e                CheckCarrier
  .text.CheckValidObjPos
-                0x008288d2      0x256 obj_fork/game_OBJECT.o
-                0x008288d2                CheckValidObjPos
+                0x008289c8      0x256 obj_fork/game_OBJECT.o
+                0x008289c8                CheckValidObjPos
  .text.InitSprite
-                0x00828b28       0x6e obj_fork/game_OBJECT.o
-                0x00828b28                InitSprite
+                0x00828c1e       0x6e obj_fork/game_OBJECT.o
+                0x00828c1e                InitSprite
  .text.InitAnim
-                0x00828b96      0x266 obj_fork/game_OBJECT.o
-                0x00828b96                InitAnim
+                0x00828c8c      0x266 obj_fork/game_OBJECT.o
+                0x00828c8c                InitAnim
  .text.SetComportement
-                0x00828dfc      0x1c6 obj_fork/game_OBJECT.o
-                0x00828dfc                SetComportement
+                0x00828ef2      0x1c6 obj_fork/game_OBJECT.o
+                0x00828ef2                SetComportement
  .text.RestartPerso
-                0x00828fc2       0x7e obj_fork/game_OBJECT.o
-                0x00828fc2                RestartPerso
+                0x008290b8       0x7e obj_fork/game_OBJECT.o
+                0x008290b8                RestartPerso
  .text.InitBody
-                0x00829040      0x222 obj_fork/game_OBJECT.o
-                0x00829040                InitBody
+                0x00829136      0x222 obj_fork/game_OBJECT.o
+                0x00829136                InitBody
  .text.StartInitObj
-                0x00829262      0x1de obj_fork/game_OBJECT.o
-                0x00829262                StartInitObj
+                0x00829358      0x1de obj_fork/game_OBJECT.o
+                0x00829358                StartInitObj
  .text.ChangeCube
-                0x00829440      0x50e obj_fork/game_OBJECT.o
-                0x00829440                ChangeCube
- .text.HitObj   0x0082994e      0x1b8 obj_fork/game_OBJECT.o
-                0x0082994e                HitObj
+                0x00829536      0x50e obj_fork/game_OBJECT.o
+                0x00829536                ChangeCube
+ .text.HitObj   0x00829a44      0x1b8 obj_fork/game_OBJECT.o
+                0x00829a44                HitObj
  .text.CheckObjCol
-                0x00829b06      0x6ae obj_fork/game_OBJECT.o
-                0x00829b06                CheckObjCol
+                0x00829bfc      0x6ae obj_fork/game_OBJECT.o
+                0x00829bfc                CheckObjCol
  .text.ReceptionObj
-                0x0082a1b4      0x148 obj_fork/game_OBJECT.o
-                0x0082a1b4                ReceptionObj
+                0x0082a2aa      0x148 obj_fork/game_OBJECT.o
+                0x0082a2aa                ReceptionObj
  .text.DoCornerReajust
-                0x0082a2fc      0x19c obj_fork/game_OBJECT.o
-                0x0082a2fc                DoCornerReajust
+                0x0082a3f2      0x19c obj_fork/game_OBJECT.o
+                0x0082a3f2                DoCornerReajust
  .text.DoCornerReajustTwinkel
-                0x0082a498      0x1c0 obj_fork/game_OBJECT.o
-                0x0082a498                DoCornerReajustTwinkel
- .text.DoAnim   0x0082a658      0xf0c obj_fork/game_OBJECT.o
-                0x0082a658                DoAnim
+                0x0082a58e      0x1c0 obj_fork/game_OBJECT.o
+                0x0082a58e                DoCornerReajustTwinkel
+ .text.DoAnim   0x0082a74e      0xf0c obj_fork/game_OBJECT.o
+                0x0082a74e                DoAnim
  .text.ClearRealAngle
-                0x0082b564       0x1e obj_fork/game_OBJECT.o
-                0x0082b564                ClearRealAngle
- .text.DoDir    0x0082b582      0xc76 obj_fork/game_OBJECT.o
-                0x0082b582                DoDir
+                0x0082b65a       0x1e obj_fork/game_OBJECT.o
+                0x0082b65a                ClearRealAngle
+ .text.DoDir    0x0082b678      0xc76 obj_fork/game_OBJECT.o
+                0x0082b678                DoDir
  .text.AffScene
-                0x0082c1f8        0x6 obj_fork/game_OBJECT.o
-                0x0082c1f8                AffScene
+                0x0082c2ee        0x6 obj_fork/game_OBJECT.o
+                0x0082c2ee                AffScene
  .text.CheckZoneSce
-                0x0082c1fe      0x4a4 obj_fork/game_OBJECT.o
-                0x0082c1fe                CheckZoneSce
+                0x0082c2f4      0x4a4 obj_fork/game_OBJECT.o
+                0x0082c2f4                CheckZoneSce
  .text.validatePersoPosition
-                0x0082c6a2       0xfe obj_fork/game_PERSO.o
-                0x0082c6a2                validatePersoPosition
+                0x0082c798       0xfe obj_fork/game_PERSO.o
+                0x0082c798                validatePersoPosition
  .text.InitGameLists
-                0x0082c7a0       0xee obj_fork/game_PERSO.o
-                0x0082c7a0                InitGameLists
+                0x0082c896       0xee obj_fork/game_PERSO.o
+                0x0082c896                InitGameLists
  .text.InitGame
-                0x0082c88e      0x116 obj_fork/game_PERSO.o
-                0x0082c88e                InitGame
+                0x0082c984      0x116 obj_fork/game_PERSO.o
+                0x0082c984                InitGame
  .text.MainLoop
-                0x0082c9a4     0x14b4 obj_fork/game_PERSO.o
-                0x0082c9a4                MainLoop
+                0x0082ca9a     0x14b4 obj_fork/game_PERSO.o
+                0x0082ca9a                MainLoop
  .text.ReadVolumeSettings
-                0x0082de58      0x232 obj_fork/game_PERSO.o
-                0x0082de58                ReadVolumeSettings
+                0x0082df4e      0x232 obj_fork/game_PERSO.o
+                0x0082df4e                ReadVolumeSettings
  .text.WriteVolumeSettings
-                0x0082e08a       0x78 obj_fork/game_PERSO.o
-                0x0082e08a                WriteVolumeSettings
- .text.Message  0x0082e102       0xe0 obj_fork/game_PERSO.o
-                0x0082e102                Message
+                0x0082e180       0x78 obj_fork/game_PERSO.o
+                0x0082e180                WriteVolumeSettings
+ .text.Message  0x0082e1f8       0xe0 obj_fork/game_PERSO.o
+                0x0082e1f8                Message
  .text.lba_main
-                0x0082e1e2      0x75a obj_fork/game_PERSO.o
-                0x0082e1e2                lba_main
+                0x0082e2d8      0x75a obj_fork/game_PERSO.o
+                0x0082e2d8                lba_main
  .text.PatchInterStep
-                0x0082e93c       0x88 obj_fork/l3d_P_ANIM.o
+                0x0082ea32       0x88 obj_fork/l3d_P_ANIM.o
  .text.PatchInterAngle
-                0x0082e9c4       0xde obj_fork/l3d_P_ANIM.o
+                0x0082eaba       0xde obj_fork/l3d_P_ANIM.o
  .text.SaveTimer
-                0x0082eaa2       0x1e obj_fork/l3d_P_ANIM.o
-                0x0082eaa2                SaveTimer
+                0x0082eb98       0x1e obj_fork/l3d_P_ANIM.o
+                0x0082eb98                SaveTimer
  .text.RestoreTimer
-                0x0082eac0       0x22 obj_fork/l3d_P_ANIM.o
-                0x0082eac0                RestoreTimer
+                0x0082ebb6       0x22 obj_fork/l3d_P_ANIM.o
+                0x0082ebb6                RestoreTimer
  .text.GetNbFramesAnim
-                0x0082eae2       0x12 obj_fork/l3d_P_ANIM.o
-                0x0082eae2                GetNbFramesAnim
+                0x0082ebd8       0x12 obj_fork/l3d_P_ANIM.o
+                0x0082ebd8                GetNbFramesAnim
  .text.GetBouclageAnim
-                0x0082eaf4       0x14 obj_fork/l3d_P_ANIM.o
-                0x0082eaf4                GetBouclageAnim
+                0x0082ebea       0x14 obj_fork/l3d_P_ANIM.o
+                0x0082ebea                GetBouclageAnim
  .text.SetAnimObjet
-                0x0082eb08      0x1c6 obj_fork/l3d_P_ANIM.o
-                0x0082eb08                SetAnimObjet
+                0x0082ebfe      0x1e4 obj_fork/l3d_P_ANIM.o
+                0x0082ebfe                SetAnimObjet
  .text.SetInterAnimObjet
-                0x0082ecce      0x4b0 obj_fork/l3d_P_ANIM.o
-                0x0082ecce                SetInterAnimObjet
+                0x0082ede2      0x4ce obj_fork/l3d_P_ANIM.o
+                0x0082ede2                SetInterAnimObjet
  .text.StockInterAnim
-                0x0082f17e       0xea obj_fork/l3d_P_ANIM.o
-                0x0082f17e                StockInterAnim
+                0x0082f2b0       0xea obj_fork/l3d_P_ANIM.o
+                0x0082f2b0                StockInterAnim
  .text.InitRealValue
-                0x0082f268       0x20 obj_fork/l3d_P_FUNC.o
-                0x0082f268                InitRealValue
+                0x0082f39a       0x20 obj_fork/l3d_P_FUNC.o
+                0x0082f39a                InitRealValue
  .text.InitRealAngle
-                0x0082f288       0x2c obj_fork/l3d_P_FUNC.o
-                0x0082f288                InitRealAngle
+                0x0082f3ba       0x2c obj_fork/l3d_P_FUNC.o
+                0x0082f3ba                InitRealAngle
  .text.InitRealAngleConst
-                0x0082f2b4       0x82 obj_fork/l3d_P_FUNC.o
-                0x0082f2b4                InitRealAngleConst
+                0x0082f3e6       0x82 obj_fork/l3d_P_FUNC.o
+                0x0082f3e6                InitRealAngleConst
  .text.GetRealValue
-                0x0082f336       0x60 obj_fork/l3d_P_FUNC.o
-                0x0082f336                GetRealValue
+                0x0082f468       0x60 obj_fork/l3d_P_FUNC.o
+                0x0082f468                GetRealValue
  .text.GetRealAngle
-                0x0082f396       0xa0 obj_fork/l3d_P_FUNC.o
-                0x0082f396                GetRealAngle
+                0x0082f4c8       0xa0 obj_fork/l3d_P_FUNC.o
+                0x0082f4c8                GetRealAngle
  .text.BoundRegleTrois
-                0x0082f436       0x40 obj_fork/l3d_P_FUNC.o
-                0x0082f436                BoundRegleTrois
+                0x0082f568       0x40 obj_fork/l3d_P_FUNC.o
+                0x0082f568                BoundRegleTrois
  .text.RegleTrois32
-                0x0082f476       0x36 obj_fork/l3d_P_FUNC.o
-                0x0082f476                RegleTrois32
+                0x0082f5a8       0x36 obj_fork/l3d_P_FUNC.o
+                0x0082f5a8                RegleTrois32
  .text.Distance2D
-                0x0082f4ac       0x84 obj_fork/l3d_P_FUNC.o
-                0x0082f4ac                Distance2D
+                0x0082f5de       0x84 obj_fork/l3d_P_FUNC.o
+                0x0082f5de                Distance2D
  .text.Distance3D
-                0x0082f530       0x98 obj_fork/l3d_P_FUNC.o
-                0x0082f530                Distance3D
+                0x0082f662       0x98 obj_fork/l3d_P_FUNC.o
+                0x0082f662                Distance3D
  .text.GetAngle
-                0x0082f5c8      0x176 obj_fork/l3d_P_FUNC.o
-                0x0082f5c8                GetAngle
- .text.MovMem   0x0082f73e       0x14 obj_fork/sys_BUFFER_A.o
-                0x0082f73e                MovMem
- .text.Itoa     0x0082f752       0x1a obj_fork/sys_DIVERS.o
-                0x0082f752                Itoa
- .text.Expand   0x0082f76c       0x86 obj_fork/sys_EXPAND.o
-                0x0082f76c                Expand
+                0x0082f6fa      0x176 obj_fork/l3d_P_FUNC.o
+                0x0082f6fa                GetAngle
+ .text.MovMem   0x0082f870       0x14 obj_fork/sys_BUFFER_A.o
+                0x0082f870                MovMem
+ .text.Itoa     0x0082f884       0x1a obj_fork/sys_DIVERS.o
+                0x0082f884                Itoa
+ .text.Expand   0x0082f89e       0x86 obj_fork/sys_EXPAND.o
+                0x0082f89e                Expand
  .text.CoulFont
-                0x0082f7f2       0x10 obj_fork/svga_FONT_A.o
-                0x0082f7f2                CoulFont
- .text.SetFont  0x0082f802       0x1a obj_fork/svga_FONT_A.o
-                0x0082f802                SetFont
+                0x0082f924       0x10 obj_fork/svga_FONT_A.o
+                0x0082f924                CoulFont
+ .text.SetFont  0x0082f934       0x1a obj_fork/svga_FONT_A.o
+                0x0082f934                SetFont
  .text.SizeFont
-                0x0082f81c       0x64 obj_fork/svga_FONT_A.o
-                0x0082f81c                SizeFont
- .text.CarFont  0x0082f880       0x7c obj_fork/svga_FONT_A.o
-                0x0082f880                CarFont
- .text.Font     0x0082f8fc       0x82 obj_fork/svga_FONT_A.o
-                0x0082f8fc                Font
- .text.Rect     0x0082f97e       0x68 obj_fork/svga_RECT.o
-                0x0082f97e                Rect
- .text.Cls      0x0082f9e6       0x22 obj_fork/svga_S_SCREEN.o
-                0x0082f9e6                Cls
+                0x0082f94e       0x8e obj_fork/svga_FONT_A.o
+                0x0082f94e                SizeFont
+ .text.CarFont  0x0082f9dc       0xa8 obj_fork/svga_FONT_A.o
+                0x0082f9dc                CarFont
+ .text.Font     0x0082fa84       0xa6 obj_fork/svga_FONT_A.o
+                0x0082fa84                Font
+ .text.Rect     0x0082fb2a       0x68 obj_fork/svga_RECT.o
+                0x0082fb2a                Rect
+ .text.Cls      0x0082fb92       0x22 obj_fork/svga_S_SCREEN.o
+                0x0082fb92                Cls
  .text.CopyScreen
-                0x0082fa08       0x2e obj_fork/svga_S_SCREEN.o
-                0x0082fa08                CopyScreen
- .text.Text     0x0082fa36      0x204 obj_fork/svga_S_TEXT.o
-                0x0082fa36                Text
+                0x0082fbb4       0x46 obj_fork/svga_S_SCREEN.o
+                0x0082fbb4                CopyScreen
+ .text.Text     0x0082fbfa      0x204 obj_fork/svga_S_TEXT.o
+                0x0082fbfa                Text
  .text.AffGraph
-                0x0082fc3a      0x268 obj_fork/tr_graph_a.o
-                0x0082fc3a                AffGraph
+                0x0082fdfe      0x290 obj_fork/tr_graph_a.o
+                0x0082fdfe                AffGraph
  .text.GetDxDyGraph
-                0x0082fea2       0x26 obj_fork/tr_graph_a.o
-                0x0082fea2                GetDxDyGraph
+                0x0083008e       0x52 obj_fork/tr_graph_a.o
+                0x0083008e                GetDxDyGraph
  .text.CoulMask
-                0x0082fec8        0xa obj_fork/tr_mask_a.o
-                0x0082fec8                CoulMask
- .text.AffMask  0x0082fed2      0x224 obj_fork/tr_mask_a.o
-                0x0082fed2                AffMask
+                0x008300e0        0xa obj_fork/tr_mask_a.o
+                0x008300e0                CoulMask
+ .text.AffMask  0x008300ea      0x24c obj_fork/tr_mask_a.o
+                0x008300ea                AffMask
  .text.GetDxDyMask
-                0x008300f6       0x26 obj_fork/tr_mask_a.o
-                0x008300f6                GetDxDyMask
- .text.RW       0x0083011c       0x18 obj_fork/tr_p_ob_iso.o
+                0x00830336       0x52 obj_fork/tr_mask_a.o
+                0x00830336                GetDxDyMask
+ .text.RW       0x00830388       0x18 obj_fork/tr_p_ob_iso.o
  .text.RotateGroupe
-                0x00830134       0xf6 obj_fork/tr_p_ob_iso.o
+                0x008303a0       0xf6 obj_fork/tr_p_ob_iso.o
  .text.SergeSort.constprop.0
-                0x0083022a      0x17a obj_fork/tr_p_ob_iso.o
+                0x00830496      0x17a obj_fork/tr_p_ob_iso.o
  .text.PatchObjet
-                0x008303a4       0x8c obj_fork/tr_p_ob_iso.o
-                0x008303a4                PatchObjet
+                0x00830610       0x8c obj_fork/tr_p_ob_iso.o
+                0x00830610                PatchObjet
  .text.AffObjetIso
-                0x00830430      0xf3a obj_fork/tr_p_ob_iso.o
-                0x00830430                AffObjetIso
- .text.RotList  0x0083136a      0x120 obj_fork/tr_p_trigo.o
-                0x0083136a                RotList
+                0x0083069c      0xf52 obj_fork/tr_p_ob_iso.o
+                0x0083069c                AffObjetIso
+ .text.RotList  0x008315ee      0x120 obj_fork/tr_p_trigo.o
+                0x008315ee                RotList
  .text.TransRotList
-                0x0083148a      0x14e obj_fork/tr_p_trigo.o
-                0x0083148a                TransRotList
- .text.Rot      0x008315d8       0xc4 obj_fork/tr_p_trigo.o
-                0x008315d8                Rot
+                0x0083170e      0x14e obj_fork/tr_p_trigo.o
+                0x0083170e                TransRotList
+ .text.Rot      0x0083185c       0xc4 obj_fork/tr_p_trigo.o
+                0x0083185c                Rot
  .text.WorldRotatePoint
-                0x0083169c       0xc4 obj_fork/tr_p_trigo.o
-                0x0083169c                WorldRotatePoint
+                0x00831920       0xc4 obj_fork/tr_p_trigo.o
+                0x00831920                WorldRotatePoint
  .text.LongWorldRot
-                0x00831760      0x1cc obj_fork/tr_p_trigo.o
-                0x00831760                LongWorldRot
+                0x008319e4      0x1cc obj_fork/tr_p_trigo.o
+                0x008319e4                LongWorldRot
  .text.LongInverseRot
-                0x0083192c      0x1cc obj_fork/tr_p_trigo.o
-                0x0083192c                LongInverseRot
+                0x00831bb0      0x1cc obj_fork/tr_p_trigo.o
+                0x00831bb0                LongInverseRot
  .text.RotMatIndex2
-                0x00831af8      0x5d0 obj_fork/tr_p_trigo.o
-                0x00831af8                RotMatIndex2
- .text.RotMatW  0x008320c8       0x16 obj_fork/tr_p_trigo.o
-                0x008320c8                RotMatW
+                0x00831d7c      0x5d0 obj_fork/tr_p_trigo.o
+                0x00831d7c                RotMatIndex2
+ .text.RotMatW  0x0083234c       0x16 obj_fork/tr_p_trigo.o
+                0x0083234c                RotMatW
  .text.SetLightVector
-                0x008320de       0x74 obj_fork/tr_p_trigo.o
-                0x008320de                SetLightVector
+                0x00832362       0x74 obj_fork/tr_p_trigo.o
+                0x00832362                SetLightVector
  .text.SetPosCamera
-                0x00832152       0x1a obj_fork/tr_p_trigo.o
-                0x00832152                SetPosCamera
+                0x008323d6       0x1a obj_fork/tr_p_trigo.o
+                0x008323d6                SetPosCamera
  .text.SetAngleCamera
-                0x0083216c      0x176 obj_fork/tr_p_trigo.o
-                0x0083216c                SetAngleCamera
+                0x008323f0      0x176 obj_fork/tr_p_trigo.o
+                0x008323f0                SetAngleCamera
  .text.SetInverseAngleCamera
-                0x008322e2       0xf2 obj_fork/tr_p_trigo.o
-                0x008322e2                SetInverseAngleCamera
+                0x00832566       0xf2 obj_fork/tr_p_trigo.o
+                0x00832566                SetInverseAngleCamera
  .text.SetFollowCamera
-                0x008323d4       0x72 obj_fork/tr_p_trigo.o
-                0x008323d4                SetFollowCamera
- .text.Rotate   0x00832446       0x82 obj_fork/tr_p_trigo.o
-                0x00832446                Rotate
+                0x00832658       0x72 obj_fork/tr_p_trigo.o
+                0x00832658                SetFollowCamera
+ .text.Rotate   0x008326ca       0x82 obj_fork/tr_p_trigo.o
+                0x008326ca                Rotate
  .text.Proj_ISO
-                0x008324c8       0x56 obj_fork/tr_p_trigo.o
-                0x008324c8                Proj_ISO
+                0x0083274c       0x56 obj_fork/tr_p_trigo.o
+                0x0083274c                Proj_ISO
  .text.ProjettePoint
-                0x0083251e      0x11c obj_fork/tr_p_trigo.o
-                0x0083251e                ProjettePoint
+                0x008327a2      0x11c obj_fork/tr_p_trigo.o
+                0x008327a2                ProjettePoint
  .text.SetProjection
-                0x0083263a       0x30 obj_fork/tr_p_trigo.o
-                0x0083263a                SetProjection
+                0x008328be       0x30 obj_fork/tr_p_trigo.o
+                0x008328be                SetProjection
  .text.SetIsoProjection
-                0x0083266a       0x22 obj_fork/tr_p_trigo.o
-                0x0083266a                SetIsoProjection
+                0x008328ee       0x22 obj_fork/tr_p_trigo.o
+                0x008328ee                SetIsoProjection
  .text.TestVuePoly
-                0x0083268c       0x54 obj_fork/tr_p_trigo.o
-                0x0083268c                TestVuePoly
+                0x00832910       0x54 obj_fork/tr_p_trigo.o
+                0x00832910                TestVuePoly
  .text.CopyBlock
-                0x008326e0       0x70 obj_fork/tr_s_block.o
-                0x008326e0                CopyBlock
- .text.Box      0x00832750       0xca obj_fork/tr_s_box.o
-                0x00832750                Box
+                0x00832964       0x94 obj_fork/tr_s_block.o
+                0x00832964                CopyBlock
+ .text.Box      0x008329f8       0xca obj_fork/tr_s_box.o
+                0x008329f8                Box
  .text.SVGAPolyMarbre
-                0x0083281a       0xa4 obj_fork/tr_s_fillv.o
+                0x00832ac2       0xa4 obj_fork/tr_s_fillv.o
  .text.SVGAPolyTele
-                0x008328be       0x84 obj_fork/tr_s_fillv.o
+                0x00832b66       0x84 obj_fork/tr_s_fillv.o
  .text.SVGAPolyTrans
-                0x00832942       0x8c obj_fork/tr_s_fillv.o
+                0x00832bea       0x8c obj_fork/tr_s_fillv.o
  .text.SVGAPolyTrame
-                0x008329ce       0x68 obj_fork/tr_s_fillv.o
+                0x00832c76       0x68 obj_fork/tr_s_fillv.o
  .text.SVGAPolyGouraud
-                0x00832a36      0x16c obj_fork/tr_s_fillv.o
+                0x00832cde      0x16c obj_fork/tr_s_fillv.o
  .text.SVGAPolyDith
-                0x00832ba2      0x120 obj_fork/tr_s_fillv.o
+                0x00832e4a      0x120 obj_fork/tr_s_fillv.o
  .text.SVGAPolyBopper
-                0x00832cc2       0xbc obj_fork/tr_s_fillv.o
+                0x00832f6a       0xbc obj_fork/tr_s_fillv.o
  .text.SVGAPolyCopper
-                0x00832d7e       0xee obj_fork/tr_s_fillv.o
+                0x00833026       0xee obj_fork/tr_s_fillv.o
  .text.SVGAPolyTriste
-                0x00832e6c       0x6a obj_fork/tr_s_fillv.o
+                0x00833114       0x6a obj_fork/tr_s_fillv.o
  .text.SVGAPolyTriche
-                0x00832ed6       0x72 obj_fork/tr_s_fillv.o
+                0x0083317e       0x72 obj_fork/tr_s_fillv.o
  .text.SetFillDetails
-                0x00832f48       0x4e obj_fork/tr_s_fillv.o
-                0x00832f48                SetFillDetails
+                0x008331f0       0x4e obj_fork/tr_s_fillv.o
+                0x008331f0                SetFillDetails
  .text.FillVertic_A
-                0x00832f96       0x7a obj_fork/tr_s_fillv.o
-                0x00832f96                FillVertic_A
+                0x0083323e       0x7a obj_fork/tr_s_fillv.o
+                0x0083323e                FillVertic_A
  .text.FillVertic
-                0x00833010        0x6 obj_fork/tr_s_fillv.o
-                0x00833010                FillVertic
- .text.Line_A   0x00833016      0x2c4 obj_fork/tr_s_line.o
-                0x00833016                Line_A
- .text.Line     0x008332da        0x6 obj_fork/tr_s_line.o
-                0x008332da                Line
+                0x008332b8        0x6 obj_fork/tr_s_fillv.o
+                0x008332b8                FillVertic
+ .text.Line_A   0x008332be      0x2c4 obj_fork/tr_s_line.o
+                0x008332be                Line_A
+ .text.Line     0x00833582        0x6 obj_fork/tr_s_line.o
+                0x00833582                Line
  .text.ClipPolyEdge
-                0x008332e0      0x16e obj_fork/tr_s_poly.o
+                0x00833588      0x16e obj_fork/tr_s_poly.o
  .text.ComputeSphere_A
-                0x0083344e      0x356 obj_fork/tr_s_poly.o
-                0x0083344e                ComputeSphere_A
+                0x008336f6      0x356 obj_fork/tr_s_poly.o
+                0x008336f6                ComputeSphere_A
  .text.ComputePoly_A
-                0x008337a4      0x5e6 obj_fork/tr_s_poly.o
-                0x008337a4                ComputePoly_A
+                0x00833a4c      0x5e6 obj_fork/tr_s_poly.o
+                0x00833a4c                ComputePoly_A
  .text.ComputePoly
-                0x00833d8a        0x6 obj_fork/tr_s_poly.o
-                0x00833d8a                ComputePoly
+                0x00834032        0x6 obj_fork/tr_s_poly.o
+                0x00834032                ComputePoly
  .text.AffString
-                0x00833d90       0x8c obj_fork/tr_s_string.o
-                0x00833d90                AffString
+                0x00834038       0x8c obj_fork/tr_s_string.o
+                0x00834038                AffString
  .text.CoulText
-                0x00833e1c       0x12 obj_fork/tr_s_string.o
-                0x00833e1c                CoulText
+                0x008340c4       0x12 obj_fork/tr_s_string.o
+                0x008340c4                CoulText
  .text.FillPropDDA
-                0x00833e2e      0x116 obj_fork/tr_texture.o
+                0x008340d6      0x116 obj_fork/tr_texture.o
  .text.A_FillPropNoClip
-                0x00833f44       0x5a obj_fork/tr_texture.o
+                0x008341ec       0x5a obj_fork/tr_texture.o
  .text.AsmTexturedTriangleNoClip
-                0x00833f9e      0x2c4 obj_fork/tr_texture.o
-                0x00833f9e                AsmTexturedTriangleNoClip
+                0x00834246      0x2c4 obj_fork/tr_texture.o
+                0x00834246                AsmTexturedTriangleNoClip
  .text.FillTextPolyNoClip
-                0x00834262       0xe8 obj_fork/tr_texture.o
-                0x00834262                FillTextPolyNoClip
- *fill*         0x0083434a        0x2 
- .text          0x0083434c       0x30 /marsdev/mars/m68k-elf/bin/../lib/gcc/m68k-elf/15.2.0/../../../../m68k-elf/lib/libc.a(lib_a-atol.o)
-                0x0083434c                atol
-                0x00834362                _atol_r
- .text          0x0083437c       0x1a /marsdev/mars/m68k-elf/bin/../lib/gcc/m68k-elf/15.2.0/../../../../m68k-elf/lib/libc.a(lib_a-calloc.o)
-                0x0083437c                calloc
- *fill*         0x00834396        0x2 
- .text          0x00834398      0x15c /marsdev/mars/m68k-elf/bin/../lib/gcc/m68k-elf/15.2.0/../../../../m68k-elf/lib/libc.a(lib_a-callocr.o)
-                0x00834398                _calloc_r
- .text          0x008344f4        0x8 /marsdev/mars/m68k-elf/bin/../lib/gcc/m68k-elf/15.2.0/../../../../m68k-elf/lib/libc.a(lib_a-errno.o)
-                0x008344f4                __errno
- .text          0x008344fc       0xd8 /marsdev/mars/m68k-elf/bin/../lib/gcc/m68k-elf/15.2.0/../../../../m68k-elf/lib/libc.a(lib_a-itoa.o)
-                0x008344fc                __itoa
-                0x00834568                itoa
- .text          0x008345d4       0x28 /marsdev/mars/m68k-elf/bin/../lib/gcc/m68k-elf/15.2.0/../../../../m68k-elf/lib/libc.a(lib_a-malloc.o)
-                0x008345d4                malloc
-                0x008345e8                free
- .text          0x008345fc      0x964 /marsdev/mars/m68k-elf/bin/../lib/gcc/m68k-elf/15.2.0/../../../../m68k-elf/lib/libc.a(lib_a-mallocr.o)
-                0x008345fc                _malloc_r
- .text          0x00834f60      0x13e /marsdev/mars/m68k-elf/bin/../lib/gcc/m68k-elf/15.2.0/../../../../m68k-elf/lib/libc.a(lib_a-memmove.o)
-                0x00834f60                memmove
- *fill*         0x0083509e        0x2 
- .text          0x008350a0        0x4 /marsdev/mars/m68k-elf/bin/../lib/gcc/m68k-elf/15.2.0/../../../../m68k-elf/lib/libc.a(lib_a-mlock.o)
-                0x008350a0                __malloc_lock
-                0x008350a2                __malloc_unlock
- .text          0x008350a4      0x750 /marsdev/mars/m68k-elf/bin/../lib/gcc/m68k-elf/15.2.0/../../../../m68k-elf/lib/libc.a(lib_a-qsort.o)
-                0x008350a4                qsort
- .text          0x008357f4       0x52 /marsdev/mars/m68k-elf/bin/../lib/gcc/m68k-elf/15.2.0/../../../../m68k-elf/lib/libc.a(lib_a-rand.o)
-                0x008357f4                srand
-                0x00835806                rand
- *fill*         0x00835846        0x2 
- .text          0x00835848       0x1a /marsdev/mars/m68k-elf/bin/../lib/gcc/m68k-elf/15.2.0/../../../../m68k-elf/lib/libc.a(lib_a-realloc.o)
-                0x00835848                realloc
- *fill*         0x00835862        0x2 
- .text          0x00835864      0x708 /marsdev/mars/m68k-elf/bin/../lib/gcc/m68k-elf/15.2.0/../../../../m68k-elf/lib/libc.a(lib_a-reallocr.o)
-                0x00835864                _realloc_r
- .text          0x00835f6c       0x2a /marsdev/mars/m68k-elf/bin/../lib/gcc/m68k-elf/15.2.0/../../../../m68k-elf/lib/libc.a(lib_a-sbrkr.o)
-                0x00835f6c                _sbrk_r
- *fill*         0x00835f96        0x2 
- .text          0x00835f98       0x72 /marsdev/mars/m68k-elf/bin/../lib/gcc/m68k-elf/15.2.0/../../../../m68k-elf/lib/libc.a(lib_a-strcasecmp.o)
-                0x00835f98                strcasecmp
- *fill*         0x0083600a        0x2 
- .text          0x0083600c       0x58 /marsdev/mars/m68k-elf/bin/../lib/gcc/m68k-elf/15.2.0/../../../../m68k-elf/lib/libc.a(lib_a-strcat.o)
-                0x0083600c                strcat
- .text          0x00836064      0x10a /marsdev/mars/m68k-elf/bin/../lib/gcc/m68k-elf/15.2.0/../../../../m68k-elf/lib/libc.a(lib_a-strchr.o)
-                0x00836064                strchr
- *fill*         0x0083616e        0x2 
- .text          0x00836170       0x68 /marsdev/mars/m68k-elf/bin/../lib/gcc/m68k-elf/15.2.0/../../../../m68k-elf/lib/libc.a(lib_a-strcmp.o)
-                0x00836170                strcmp
- .text          0x008361d8       0x14 /marsdev/mars/m68k-elf/bin/../lib/gcc/m68k-elf/15.2.0/../../../../m68k-elf/lib/libc.a(lib_a-strcpy.o)
-                0x008361d8                strcpy
- .text          0x008361ec       0x14 /marsdev/mars/m68k-elf/bin/../lib/gcc/m68k-elf/15.2.0/../../../../m68k-elf/lib/libc.a(lib_a-strlen.o)
-                0x008361ec                strlen
- .text          0x00836200       0x7e /marsdev/mars/m68k-elf/bin/../lib/gcc/m68k-elf/15.2.0/../../../../m68k-elf/lib/libc.a(lib_a-strncpy.o)
-                0x00836200                strncpy
- *fill*         0x0083627e        0x2 
- .text          0x00836280      0x2ea /marsdev/mars/m68k-elf/bin/../lib/gcc/m68k-elf/15.2.0/../../../../m68k-elf/lib/libc.a(lib_a-strtol.o)
-                0x0083652c                _strtol_r
-                0x00836530                strtol_l
-                0x0083654e                strtol
- *fill*         0x0083656a        0x2 
- .text          0x0083656c       0xaa /marsdev/mars/m68k-elf/bin/../lib/gcc/m68k-elf/15.2.0/../../../../m68k-elf/lib/libc.a(lib_a-utoa.o)
-                0x0083656c                __utoa
-                0x00836612                utoa
- *fill*         0x00836616        0x2 
- .text          0x00836618      0x4c2 /marsdev/mars/m68k-elf/bin/../lib/gcc/m68k-elf/15.2.0/../../../../m68k-elf/lib/libc.a(lib_a-freer.o)
-                0x00836618                _malloc_trim_r
-                0x00836704                _free_r
- *fill*         0x00836ada        0x2 
- .text          0x00836adc       0x22 /marsdev/mars/m68k-elf/bin/../lib/gcc/m68k-elf/15.2.0/libgcc.a(_mulsi3.o)
-                0x00836adc                __mulsi3_internal
-                0x00836adc                __mulsi3
- *fill*         0x00836afe        0x2 
- .text          0x00836b00       0x5c /marsdev/mars/m68k-elf/bin/../lib/gcc/m68k-elf/15.2.0/libgcc.a(_udivsi3.o)
-                0x00836b00                __udivsi3_internal
-                0x00836b00                __udivsi3
- .text          0x00836b5c       0x2e /marsdev/mars/m68k-elf/bin/../lib/gcc/m68k-elf/15.2.0/libgcc.a(_divsi3.o)
-                0x00836b5c                __divsi3_internal
-                0x00836b5c                __divsi3
- *fill*         0x00836b8a        0x2 
- .text          0x00836b8c       0x2e /marsdev/mars/m68k-elf/bin/../lib/gcc/m68k-elf/15.2.0/libgcc.a(_umodsi3.o)
-                0x00836b8c                __umodsi3
- *fill*         0x00836bba        0x2 
- .text          0x00836bbc       0x2e /marsdev/mars/m68k-elf/bin/../lib/gcc/m68k-elf/15.2.0/libgcc.a(_modsi3.o)
-                0x00836bbc                __modsi3
- *fill*         0x00836bea        0x2 
- .text          0x00836bec       0x78 /marsdev/mars/m68k-elf/bin/../lib/gcc/m68k-elf/15.2.0/libgcc.a(_muldi3.o)
-                0x00836bec                __muldi3
- .text          0x00836c64      0x60e /marsdev/mars/m68k-elf/bin/../lib/gcc/m68k-elf/15.2.0/libgcc.a(_divdi3.o)
-                0x00836c64                __divdi3
+                0x0083450a       0xe8 obj_fork/tr_texture.o
+                0x0083450a                FillTextPolyNoClip
+ *fill*         0x008345f2        0x2 
+ .text          0x008345f4       0x30 /marsdev/mars/m68k-elf/bin/../lib/gcc/m68k-elf/15.2.0/../../../../m68k-elf/lib/libc.a(lib_a-atol.o)
+                0x008345f4                atol
+                0x0083460a                _atol_r
+ .text          0x00834624       0x1a /marsdev/mars/m68k-elf/bin/../lib/gcc/m68k-elf/15.2.0/../../../../m68k-elf/lib/libc.a(lib_a-calloc.o)
+                0x00834624                calloc
+ *fill*         0x0083463e        0x2 
+ .text          0x00834640      0x15c /marsdev/mars/m68k-elf/bin/../lib/gcc/m68k-elf/15.2.0/../../../../m68k-elf/lib/libc.a(lib_a-callocr.o)
+                0x00834640                _calloc_r
+ .text          0x0083479c        0x8 /marsdev/mars/m68k-elf/bin/../lib/gcc/m68k-elf/15.2.0/../../../../m68k-elf/lib/libc.a(lib_a-errno.o)
+                0x0083479c                __errno
+ .text          0x008347a4       0xd8 /marsdev/mars/m68k-elf/bin/../lib/gcc/m68k-elf/15.2.0/../../../../m68k-elf/lib/libc.a(lib_a-itoa.o)
+                0x008347a4                __itoa
+                0x00834810                itoa
+ .text          0x0083487c       0x28 /marsdev/mars/m68k-elf/bin/../lib/gcc/m68k-elf/15.2.0/../../../../m68k-elf/lib/libc.a(lib_a-malloc.o)
+                0x0083487c                malloc
+                0x00834890                free
+ .text          0x008348a4      0x964 /marsdev/mars/m68k-elf/bin/../lib/gcc/m68k-elf/15.2.0/../../../../m68k-elf/lib/libc.a(lib_a-mallocr.o)
+                0x008348a4                _malloc_r
+ .text          0x00835208      0x13e /marsdev/mars/m68k-elf/bin/../lib/gcc/m68k-elf/15.2.0/../../../../m68k-elf/lib/libc.a(lib_a-memmove.o)
+                0x00835208                memmove
+ *fill*         0x00835346        0x2 
+ .text          0x00835348        0x4 /marsdev/mars/m68k-elf/bin/../lib/gcc/m68k-elf/15.2.0/../../../../m68k-elf/lib/libc.a(lib_a-mlock.o)
+                0x00835348                __malloc_lock
+                0x0083534a                __malloc_unlock
+ .text          0x0083534c      0x750 /marsdev/mars/m68k-elf/bin/../lib/gcc/m68k-elf/15.2.0/../../../../m68k-elf/lib/libc.a(lib_a-qsort.o)
+                0x0083534c                qsort
+ .text          0x00835a9c       0x52 /marsdev/mars/m68k-elf/bin/../lib/gcc/m68k-elf/15.2.0/../../../../m68k-elf/lib/libc.a(lib_a-rand.o)
+                0x00835a9c                srand
+                0x00835aae                rand
+ *fill*         0x00835aee        0x2 
+ .text          0x00835af0       0x1a /marsdev/mars/m68k-elf/bin/../lib/gcc/m68k-elf/15.2.0/../../../../m68k-elf/lib/libc.a(lib_a-realloc.o)
+                0x00835af0                realloc
+ *fill*         0x00835b0a        0x2 
+ .text          0x00835b0c      0x708 /marsdev/mars/m68k-elf/bin/../lib/gcc/m68k-elf/15.2.0/../../../../m68k-elf/lib/libc.a(lib_a-reallocr.o)
+                0x00835b0c                _realloc_r
+ .text          0x00836214       0x2a /marsdev/mars/m68k-elf/bin/../lib/gcc/m68k-elf/15.2.0/../../../../m68k-elf/lib/libc.a(lib_a-sbrkr.o)
+                0x00836214                _sbrk_r
+ *fill*         0x0083623e        0x2 
+ .text          0x00836240       0x72 /marsdev/mars/m68k-elf/bin/../lib/gcc/m68k-elf/15.2.0/../../../../m68k-elf/lib/libc.a(lib_a-strcasecmp.o)
+                0x00836240                strcasecmp
+ *fill*         0x008362b2        0x2 
+ .text          0x008362b4       0x58 /marsdev/mars/m68k-elf/bin/../lib/gcc/m68k-elf/15.2.0/../../../../m68k-elf/lib/libc.a(lib_a-strcat.o)
+                0x008362b4                strcat
+ .text          0x0083630c      0x10a /marsdev/mars/m68k-elf/bin/../lib/gcc/m68k-elf/15.2.0/../../../../m68k-elf/lib/libc.a(lib_a-strchr.o)
+                0x0083630c                strchr
+ *fill*         0x00836416        0x2 
+ .text          0x00836418       0x68 /marsdev/mars/m68k-elf/bin/../lib/gcc/m68k-elf/15.2.0/../../../../m68k-elf/lib/libc.a(lib_a-strcmp.o)
+                0x00836418                strcmp
+ .text          0x00836480       0x14 /marsdev/mars/m68k-elf/bin/../lib/gcc/m68k-elf/15.2.0/../../../../m68k-elf/lib/libc.a(lib_a-strcpy.o)
+                0x00836480                strcpy
+ .text          0x00836494       0x14 /marsdev/mars/m68k-elf/bin/../lib/gcc/m68k-elf/15.2.0/../../../../m68k-elf/lib/libc.a(lib_a-strlen.o)
+                0x00836494                strlen
+ .text          0x008364a8       0x7e /marsdev/mars/m68k-elf/bin/../lib/gcc/m68k-elf/15.2.0/../../../../m68k-elf/lib/libc.a(lib_a-strncpy.o)
+                0x008364a8                strncpy
+ *fill*         0x00836526        0x2 
+ .text          0x00836528      0x2ea /marsdev/mars/m68k-elf/bin/../lib/gcc/m68k-elf/15.2.0/../../../../m68k-elf/lib/libc.a(lib_a-strtol.o)
+                0x008367d4                _strtol_r
+                0x008367d8                strtol_l
+                0x008367f6                strtol
+ *fill*         0x00836812        0x2 
+ .text          0x00836814       0xaa /marsdev/mars/m68k-elf/bin/../lib/gcc/m68k-elf/15.2.0/../../../../m68k-elf/lib/libc.a(lib_a-utoa.o)
+                0x00836814                __utoa
+                0x008368ba                utoa
+ *fill*         0x008368be        0x2 
+ .text          0x008368c0      0x4c2 /marsdev/mars/m68k-elf/bin/../lib/gcc/m68k-elf/15.2.0/../../../../m68k-elf/lib/libc.a(lib_a-freer.o)
+                0x008368c0                _malloc_trim_r
+                0x008369ac                _free_r
+ *fill*         0x00836d82        0x2 
+ .text          0x00836d84       0x22 /marsdev/mars/m68k-elf/bin/../lib/gcc/m68k-elf/15.2.0/libgcc.a(_mulsi3.o)
+                0x00836d84                __mulsi3_internal
+                0x00836d84                __mulsi3
+ *fill*         0x00836da6        0x2 
+ .text          0x00836da8       0x5c /marsdev/mars/m68k-elf/bin/../lib/gcc/m68k-elf/15.2.0/libgcc.a(_udivsi3.o)
+                0x00836da8                __udivsi3_internal
+                0x00836da8                __udivsi3
+ .text          0x00836e04       0x2e /marsdev/mars/m68k-elf/bin/../lib/gcc/m68k-elf/15.2.0/libgcc.a(_divsi3.o)
+                0x00836e04                __divsi3_internal
+                0x00836e04                __divsi3
+ *fill*         0x00836e32        0x2 
+ .text          0x00836e34       0x2e /marsdev/mars/m68k-elf/bin/../lib/gcc/m68k-elf/15.2.0/libgcc.a(_umodsi3.o)
+                0x00836e34                __umodsi3
+ *fill*         0x00836e62        0x2 
+ .text          0x00836e64       0x2e /marsdev/mars/m68k-elf/bin/../lib/gcc/m68k-elf/15.2.0/libgcc.a(_modsi3.o)
+                0x00836e64                __modsi3
+ *fill*         0x00836e92        0x2 
+ .text          0x00836e94       0x78 /marsdev/mars/m68k-elf/bin/../lib/gcc/m68k-elf/15.2.0/libgcc.a(_muldi3.o)
+                0x00836e94                __muldi3
+ .text          0x00836f0c      0x60e /marsdev/mars/m68k-elf/bin/../lib/gcc/m68k-elf/15.2.0/libgcc.a(_divdi3.o)
+                0x00836f0c                __divdi3
  *(.rodata*)
  .rodata.hexfont
-                0x00837272       0x80 obj_fork/jag_hal_debug.o
+                0x0083751a       0x80 obj_fork/jag_hal_debug.o
  .rodata.Jag_Malloc.str1.1
-                0x008372f2      0x620 obj_fork/jag_hal_mem.o
+                0x0083759a      0x619 obj_fork/jag_hal_mem.o
                                   0x7 (size before relaxing)
  .rodata.Jag_LoadMalloc.str1.1
-                0x00837912        0xb obj_fork/jag_hal_mem.o
+                0x00837bb3        0xb obj_fork/jag_hal_mem.o
  .rodata.Jag_LoadMallocPhrase.str1.1
-                0x00837912       0x11 obj_fork/jag_hal_mem.o
+                0x00837bb3       0x11 obj_fork/jag_hal_mem.o
  .rodata.Jag_HQR_Get.str1.1
-                0x00837912        0xa obj_fork/jag_hal_hqr.o
+                0x00837bb3        0xa obj_fork/jag_hal_hqr.o
  .rodata.Bg_LoadRoom.str1.1
-                0x00837912        0xc obj_fork/jag_scene_bg.o
+                0x00837bb3        0xc obj_fork/jag_scene_bg.o
  .rodata.body_parse.str1.1
-                0x00837912       0x35 obj_fork/jag_body_draw.o
+                0x00837bb3       0x35 obj_fork/jag_body_draw.o
  .rodata.pose_load.str1.1
-                0x00837912       0x44 obj_fork/jag_body_draw.o
+                0x00837bb3       0x44 obj_fork/jag_body_draw.o
  .rodata.Body_DrawAll.str1.1
-                0x00837912       0x5a obj_fork/jag_body_draw.o
+                0x00837bb3       0x5a obj_fork/jag_body_draw.o
+ *fill*         0x00837bb3        0x1 
  .rodata.mat_identity
-                0x00837912       0x24 obj_fork/jag_body_draw.o
+                0x00837bb4       0x24 obj_fork/jag_body_draw.o
  .rodata.P_SinTab
-                0x00837936      0x800 obj_fork/jag_body_draw.o
+                0x00837bd8      0x800 obj_fork/jag_body_draw.o
  .rodata.text_get.str1.1
-                0x00838136        0x1 obj_fork/jag_front_menu.o
+                0x008383d8        0x1 obj_fork/jag_front_menu.o
  .rodata.want.0
-                0x00838136       0x30 obj_fork/jag_front_menu.o
+                0x008383d8       0x30 obj_fork/jag_front_menu.o
  .rodata.menu_text_id
-                0x00838166       0x10 obj_fork/jag_front_menu.o
+                0x00838408       0x10 obj_fork/jag_front_menu.o
  .rodata.engine_init.str1.1
-                0x00838176        0x6 obj_fork/jag_engine_main.o
+                0x00838418        0x6 obj_fork/jag_engine_main.o
  .rodata.rodata_probe
-                0x00838176        0x4 obj_fork/jag_engine_main.o
+                0x00838418        0x4 obj_fork/jag_engine_main.o
  .rodata.Vsync.str1.1
-                0x0083817a        0x6 obj_fork/port_jag_video.o
+                0x0083841c        0x6 obj_fork/port_jag_video.o
  .rodata.str1.1
-                0x0083817a       0x98 obj_fork/port_jag_hqr.o
+                0x0083841c       0x98 obj_fork/port_jag_hqr.o
  .rodata.archives
-                0x0083817a       0x70 obj_fork/port_jag_hqr.o
+                0x0083841c       0x70 obj_fork/port_jag_hqr.o
  .rodata.str1.1
-                0x008381ea      0x12b obj_fork/port_jag_config.o
- .rodata.cfg    0x008381ea       0x98 obj_fork/port_jag_config.o
+                0x0083848c      0x12b obj_fork/port_jag_config.o
+ .rodata.cfg    0x0083848c       0x98 obj_fork/port_jag_config.o
  .rodata.IncrustGrm.str1.1
-                0x00838282        0xb obj_fork/port_jag_grille.o
+                0x00838524        0xb obj_fork/port_jag_grille.o
  .rodata.CopyMapToCube.str1.1
-                0x00838282        0xe obj_fork/port_jag_grille.o
+                0x00838524        0xe obj_fork/port_jag_grille.o
  .rodata.Jag_LoadBody.str1.1
-                0x00838282        0xd obj_fork/port_jag_scene.o
+                0x00838524        0xd obj_fork/port_jag_scene.o
  .rodata.Jag_ForkStart.str1.1
-                0x00838282       0x12 obj_fork/port_jag_game.o
+                0x00838524       0x12 obj_fork/port_jag_game.o
  .rodata.Jag_M5Game.str1.1
-                0x00838282       0x12 obj_fork/port_jag_game.o
+                0x00838524       0x12 obj_fork/port_jag_game.o
  .rodata.LoadScene.str1.1
-                0x00838282       0x3c obj_fork/game_DISKFUNC.o
+                0x00838524       0x3c obj_fork/game_DISKFUNC.o
  .rodata.GereAnimAction.str1.1
-                0x00838282       0x3a obj_fork/game_FICHE.o
+                0x00838524       0x3a obj_fork/game_FICHE.o
  .rodata.SearchBody.str1.1
-                0x00838282       0x13 obj_fork/game_FICHE.o
+                0x00838524       0x13 obj_fork/game_FICHE.o
  .rodata.CSWTCH.86
-                0x00838282        0x5 obj_fork/game_FICHE.o
+                0x00838524        0x5 obj_fork/game_FICHE.o
  .rodata.CSWTCH.85
-                0x00838287        0x5 obj_fork/game_FICHE.o
+                0x00838529        0x5 obj_fork/game_FICHE.o
  .rodata.Draw3dObject.str1.1
-                0x0083828c        0xb obj_fork/game_GAMEMENU.o
+                0x0083852e        0xb obj_fork/game_GAMEMENU.o
  .rodata.PlayerGameList.str1.1
-                0x0083828c       0x1d obj_fork/game_GAMEMENU.o
+                0x0083852e       0x1d obj_fork/game_GAMEMENU.o
  .rodata.SaveGameWithName.str1.1
-                0x0083828c       0x32 obj_fork/game_GAMEMENU.o
+                0x0083852e       0x32 obj_fork/game_GAMEMENU.o
  .rodata.ChoosePlayerName.str1.1
-                0x0083828c       0x13 obj_fork/game_GAMEMENU.o
+                0x0083852e       0x13 obj_fork/game_GAMEMENU.o
  .rodata.DoGameMenu.str1.1
-                0x0083828c        0x9 obj_fork/game_GAMEMENU.o
+                0x0083852e        0x9 obj_fork/game_GAMEMENU.o
  .rodata.DoLife.str1.1
-                0x0083828c        0x9 obj_fork/game_GERELIFE.o
+                0x0083852e        0x9 obj_fork/game_GERELIFE.o
  .rodata.DrawTitle.str1.1
-                0x0083828c        0x8 obj_fork/game_HOLOMAP.o
+                0x0083852e        0x8 obj_fork/game_HOLOMAP.o
  .rodata.InitHoloDatas.str1.1
-                0x0083828c        0x9 obj_fork/game_HOLOMAP.o
+                0x0083852e        0x9 obj_fork/game_HOLOMAP.o
  .rodata.InitLanguage.str1.1
-                0x0083828c       0x39 obj_fork/game_MESSAGE.o
+                0x0083852e       0x39 obj_fork/game_MESSAGE.o
  .rodata.InitVoiceFile.str1.1
-                0x0083828c        0xf obj_fork/game_MESSAGE.o
+                0x0083852e        0xf obj_fork/game_MESSAGE.o
  .rodata.InitSpeak.str1.1
-                0x0083828c        0xf obj_fork/game_MESSAGE.o
+                0x0083852e        0xf obj_fork/game_MESSAGE.o
  .rodata.InitDial.str1.1
-                0x0083828c        0xa obj_fork/game_MESSAGE.o
+                0x0083852e        0xa obj_fork/game_MESSAGE.o
  .rodata.GetNextLine.str1.1
-                0x0083828c        0x2 obj_fork/game_MESSAGE.o
+                0x0083852e        0x2 obj_fork/game_MESSAGE.o
  .rodata.str1.1
-                0x0083828c       0x7c obj_fork/game_MESSAGE.o
+                0x0083852e       0x7c obj_fork/game_MESSAGE.o
  .rodata.InitializeCustomMessageFile.str1.1
-                0x0083828c        0xc obj_fork/game_MSG_CUST.o
+                0x0083852e        0xc obj_fork/game_MSG_CUST.o
  .rodata.treatSingleColumnWithQuotes.str1.1
-                0x0083828c        0x4 obj_fork/game_MSG_CUST.o
+                0x0083852e        0x4 obj_fork/game_MSG_CUST.o
  .rodata.SetFadePalOnLoad.part.0.str1.1
-                0x0083828c        0x9 obj_fork/game_OBJECT.o
+                0x0083852e        0x9 obj_fork/game_OBJECT.o
  .rodata.LoadFicPerso.str1.1
-                0x0083828c        0xb obj_fork/game_OBJECT.o
+                0x0083852e        0xb obj_fork/game_OBJECT.o
  .rodata.DoAnim.str1.1
-                0x0083828c       0x18 obj_fork/game_OBJECT.o
- .rodata.Introduction.str1.1
-                0x0083828c       0x10 obj_fork/game_PERSO.o
+                0x0083852e       0x18 obj_fork/game_OBJECT.o
+ .rodata.IntroSlide.str1.1
+                0x0083852e        0x9 obj_fork/game_PERSO.o
  .rodata.MainLoop.str1.1
-                0x0083828c        0x6 obj_fork/game_PERSO.o
+                0x0083852e        0x6 obj_fork/game_PERSO.o
  .rodata.ReadVolumeSettings.str1.1
-                0x0083828c       0x38 obj_fork/game_PERSO.o
+                0x0083852e       0x38 obj_fork/game_PERSO.o
  .rodata.InitProgram.str1.1
-                0x0083828c        0x8 obj_fork/game_PERSO.o
+                0x0083852e        0x8 obj_fork/game_PERSO.o
  .rodata.Message.str1.1
-                0x0083828c        0x3 obj_fork/game_PERSO.o
+                0x0083852e        0x3 obj_fork/game_PERSO.o
  .rodata.lba_main.str1.1
-                0x0083828c      0x14f obj_fork/game_PERSO.o
+                0x0083852e      0x14f obj_fork/game_PERSO.o
  .rodata.Font8X8
-                0x0083828c      0x800 obj_fork/svga_FONT8X8.o
-                0x0083828c                Font8X8
+                0x0083852e      0x800 obj_fork/svga_FONT8X8.o
+                0x0083852e                Font8X8
  .rodata.CarFont.str1.1
-                0x00838a8c       0x34 obj_fork/svga_FONT_A.o
+                0x00838d2e       0x34 obj_fork/svga_FONT_A.o
  .rodata.TabPoly_2
-                0x00838a8c       0x24 obj_fork/tr_s_fillv.o
+                0x00838d2e       0x24 obj_fork/tr_s_fillv.o
  .rodata.TabPoly_1
-                0x00838ab0       0x24 obj_fork/tr_s_fillv.o
+                0x00838d52       0x24 obj_fork/tr_s_fillv.o
  .rodata.TabPoly_0
-                0x00838ad4       0x24 obj_fork/tr_s_fillv.o
- .rodata        0x00838af8      0x101 /marsdev/mars/m68k-elf/bin/../lib/gcc/m68k-elf/15.2.0/../../../../m68k-elf/lib/libc.a(lib_a-ctype_.o)
-                0x00838af8                _ctype_
+                0x00838d76       0x24 obj_fork/tr_s_fillv.o
+ .rodata        0x00838d9a      0x101 /marsdev/mars/m68k-elf/bin/../lib/gcc/m68k-elf/15.2.0/../../../../m68k-elf/lib/libc.a(lib_a-ctype_.o)
+                0x00838d9a                _ctype_
  .rodata.str1.1
-                0x00838bf9       0x25 /marsdev/mars/m68k-elf/bin/../lib/gcc/m68k-elf/15.2.0/../../../../m68k-elf/lib/libc.a(lib_a-utoa.o)
- .rodata        0x00838bf9      0x100 /marsdev/mars/m68k-elf/bin/../lib/gcc/m68k-elf/15.2.0/libgcc.a(_clz.o)
-                0x00838bf9                __clz_tab
-                0x00838cfa                        . = ALIGN (0x2)
- *fill*         0x00838cf9        0x1 
+                0x00838e9b       0x25 /marsdev/mars/m68k-elf/bin/../lib/gcc/m68k-elf/15.2.0/../../../../m68k-elf/lib/libc.a(lib_a-utoa.o)
+ .rodata        0x00838e9b      0x100 /marsdev/mars/m68k-elf/bin/../lib/gcc/m68k-elf/15.2.0/libgcc.a(_clz.o)
+                0x00838e9b                __clz_tab
+                0x00838f9c                        . = ALIGN (0x2)
+ *fill*         0x00838f9b        0x1 
 
-.data           0x00153000     0x1538 load address 0x00838cfa
+.data           0x00153000     0x1538 load address 0x00838f9c
                 0x00153000                        . = ALIGN (0x2)
                 0x00153000                        __data_start = .
  *(.data*)
@@ -2752,9 +2757,9 @@ Linker script and memory map
                 0x00154130                __malloc_av_
                 0x00154538                        . = ALIGN (0x2)
                 0x00154538                        __data_end = .
-                0x00838cfa                        __data_lma = LOADADDR (.data)
+                0x00838f9c                        __data_lma = LOADADDR (.data)
 
-.bss            0x00154538    0x1467a load address 0x0083a234
+.bss            0x00154538    0x1467e load address 0x0083a4d4
                 0x00154538                        . = ALIGN (0x2)
                 0x00154538                        __bss_start = .
  *(.bss*)
@@ -2901,683 +2906,686 @@ Linker script and memory map
  .bss.Jag_VblHook
                 0x0015966c        0x4 obj_fork/jag_engine_main.o
                 0x0015966c                Jag_VblHook
+ .bss.Jag_ScreenSkips
+                0x00159670        0x4 obj_fork/port_jag_video.o
+                0x00159670                Jag_ScreenSkips
  .bss.PORT_PalRGB
-                0x00159670      0x300 obj_fork/port_jag_video.o
-                0x00159670                PORT_PalRGB
+                0x00159674      0x300 obj_fork/port_jag_video.o
+                0x00159674                PORT_PalRGB
  .bss.MemoClipYmax
-                0x00159970        0x2 obj_fork/port_jag_video.o
- .bss.MemoClipXmax
-                0x00159972        0x2 obj_fork/port_jag_video.o
- .bss.MemoClipYmin
                 0x00159974        0x2 obj_fork/port_jag_video.o
- .bss.MemoClipXmin
+ .bss.MemoClipXmax
                 0x00159976        0x2 obj_fork/port_jag_video.o
- .bss.ClipYmin  0x00159978        0x2 obj_fork/port_jag_video.o
-                0x00159978                ClipYmin
- .bss.ClipXmin  0x0015997a        0x2 obj_fork/port_jag_video.o
-                0x0015997a                ClipXmin
+ .bss.MemoClipYmin
+                0x00159978        0x2 obj_fork/port_jag_video.o
+ .bss.MemoClipXmin
+                0x0015997a        0x2 obj_fork/port_jag_video.o
+ .bss.ClipYmin  0x0015997c        0x2 obj_fork/port_jag_video.o
+                0x0015997c                ClipYmin
+ .bss.ClipXmin  0x0015997e        0x2 obj_fork/port_jag_video.o
+                0x0015997e                ClipXmin
  .bss.TabOffLine
-                0x0015997c      0x784 obj_fork/port_jag_video.o
-                0x0015997c                TabOffLine
+                0x00159980      0x784 obj_fork/port_jag_video.o
+                0x00159980                TabOffLine
  .bss.Text_Paper
-                0x0015a100        0x1 obj_fork/port_jag_video.o
-                0x0015a100                Text_Paper
- *fill*         0x0015a101        0x1 
+                0x0015a104        0x1 obj_fork/port_jag_video.o
+                0x0015a104                Text_Paper
+ *fill*         0x0015a105        0x1 
  .bss.AsciiMode
-                0x0015a102        0x2 obj_fork/port_jag_sys.o
-                0x0015a102                AsciiMode
- .bss.Fire      0x0015a104        0x2 obj_fork/port_jag_sys.o
-                0x0015a104                Fire
- .bss.Joy       0x0015a106        0x2 obj_fork/port_jag_sys.o
-                0x0015a106                Joy
- .bss.Key       0x0015a108        0x2 obj_fork/port_jag_sys.o
-                0x0015a108                Key
+                0x0015a106        0x2 obj_fork/port_jag_sys.o
+                0x0015a106                AsciiMode
+ .bss.Fire      0x0015a108        0x2 obj_fork/port_jag_sys.o
+                0x0015a108                Fire
+ .bss.Joy       0x0015a10a        0x2 obj_fork/port_jag_sys.o
+                0x0015a10a                Joy
+ .bss.Key       0x0015a10c        0x2 obj_fork/port_jag_sys.o
+                0x0015a10c                Key
  .bss.fps_ticks
-                0x0015a10a        0x2 obj_fork/port_jag_sys.o
- .bss.vbl_acc   0x0015a10c        0x4 obj_fork/port_jag_sys.o
+                0x0015a10e        0x2 obj_fork/port_jag_sys.o
+ .bss.vbl_acc   0x0015a110        0x4 obj_fork/port_jag_sys.o
  .bss.CmptFrame
-                0x0015a110        0x2 obj_fork/port_jag_sys.o
-                0x0015a110                CmptFrame
+                0x0015a114        0x2 obj_fork/port_jag_sys.o
+                0x0015a114                CmptFrame
  .bss.TimerSystem
-                0x0015a112        0x4 obj_fork/port_jag_sys.o
-                0x0015a112                TimerSystem
+                0x0015a116        0x4 obj_fork/port_jag_sys.o
+                0x0015a116                TimerSystem
  .bss.Size_HQM_Free
-                0x0015a116        0x4 obj_fork/port_jag_hqr.o
-                0x0015a116                Size_HQM_Free
- .bss.Size_HQM_Memory
                 0x0015a11a        0x4 obj_fork/port_jag_hqr.o
-                0x0015a11a                Size_HQM_Memory
- .bss.HQR_Flag  0x0015a11e        0x2 obj_fork/port_jag_hqr.o
-                0x0015a11e                HQR_Flag
- .bss.pools     0x0015a120       0x3c obj_fork/port_jag_hqr.o
+                0x0015a11a                Size_HQM_Free
+ .bss.Size_HQM_Memory
+                0x0015a11e        0x4 obj_fork/port_jag_hqr.o
+                0x0015a11e                Size_HQM_Memory
+ .bss.HQR_Flag  0x0015a122        0x2 obj_fork/port_jag_hqr.o
+                0x0015a122                HQR_Flag
+ .bss.pools     0x0015a124       0x3c obj_fork/port_jag_hqr.o
  .bss.FileCD_Size
-                0x0015a15c        0x4 obj_fork/port_jag_stubs.o
-                0x0015a15c                FileCD_Size
- .bss.FileCD_Sect
                 0x0015a160        0x4 obj_fork/port_jag_stubs.o
-                0x0015a160                FileCD_Sect
- .bss.FileCD_Start
+                0x0015a160                FileCD_Size
+ .bss.FileCD_Sect
                 0x0015a164        0x4 obj_fork/port_jag_stubs.o
-                0x0015a164                FileCD_Start
+                0x0015a164                FileCD_Sect
+ .bss.FileCD_Start
+                0x0015a168        0x4 obj_fork/port_jag_stubs.o
+                0x0015a168                FileCD_Start
  .bss.Midi_Driver_Enable
-                0x0015a168        0x2 obj_fork/port_jag_stubs.o
-                0x0015a168                Midi_Driver_Enable
+                0x0015a16c        0x2 obj_fork/port_jag_stubs.o
+                0x0015a16c                Midi_Driver_Enable
  .bss.Wave_Driver_Enable
-                0x0015a16a        0x4 obj_fork/port_jag_stubs.o
-                0x0015a16a                Wave_Driver_Enable
- .bss.empty.0   0x0015a16e        0x1 obj_fork/port_jag_config.o
- *fill*         0x0015a16f        0x1 
- .bss.brk.0     0x0015a170        0x4 obj_fork/port_jag_libc.o
- .bss.base.1    0x0015a174        0x4 obj_fork/port_jag_libc.o
+                0x0015a16e        0x4 obj_fork/port_jag_stubs.o
+                0x0015a16e                Wave_Driver_Enable
+ .bss.empty.0   0x0015a172        0x1 obj_fork/port_jag_config.o
+ *fill*         0x0015a173        0x1 
+ .bss.brk.0     0x0015a174        0x4 obj_fork/port_jag_libc.o
+ .bss.base.1    0x0015a178        0x4 obj_fork/port_jag_libc.o
  .bss.Jag_DiagRing
-                0x0015a178      0x400 obj_fork/port_jag_libc.o
-                0x0015a178                Jag_DiagRing
+                0x0015a17c      0x400 obj_fork/port_jag_libc.o
+                0x0015a17c                Jag_DiagRing
  .bss.Jag_DiagCount
-                0x0015a578        0x4 obj_fork/port_jag_libc.o
-                0x0015a578                Jag_DiagCount
+                0x0015a57c        0x4 obj_fork/port_jag_libc.o
+                0x0015a57c                Jag_DiagCount
  .bss.WorldZCube
-                0x0015a57c        0x4 obj_fork/port_jag_grille.o
-                0x0015a57c                WorldZCube
- .bss.WorldYCube
                 0x0015a580        0x4 obj_fork/port_jag_grille.o
-                0x0015a580                WorldYCube
- .bss.WorldXCube
+                0x0015a580                WorldZCube
+ .bss.WorldYCube
                 0x0015a584        0x4 obj_fork/port_jag_grille.o
-                0x0015a584                WorldXCube
- .bss.StartZCube
+                0x0015a584                WorldYCube
+ .bss.WorldXCube
                 0x0015a588        0x4 obj_fork/port_jag_grille.o
-                0x0015a588                StartZCube
- .bss.StartYCube
+                0x0015a588                WorldXCube
+ .bss.StartZCube
                 0x0015a58c        0x4 obj_fork/port_jag_grille.o
-                0x0015a58c                StartYCube
- .bss.StartXCube
+                0x0015a58c                StartZCube
+ .bss.StartYCube
                 0x0015a590        0x4 obj_fork/port_jag_grille.o
-                0x0015a590                StartXCube
+                0x0015a590                StartYCube
+ .bss.StartXCube
+                0x0015a594        0x4 obj_fork/port_jag_grille.o
+                0x0015a594                StartXCube
  .bss.body_slot
-                0x0015a594      0x190 obj_fork/port_jag_scene.o
- .bss.Scene     0x0015a724       0x36 obj_fork/port_jag_scene.o
-                0x0015a724                Scene
+                0x0015a598      0x190 obj_fork/port_jag_scene.o
+ .bss.Scene     0x0015a728       0x36 obj_fork/port_jag_scene.o
+                0x0015a728                Scene
  .bss.EndMusicCD
-                0x0015a75a        0x4 obj_fork/game_AMBIANCE.o
-                0x0015a75a                EndMusicCD
+                0x0015a75e        0x4 obj_fork/game_AMBIANCE.o
+                0x0015a75e                EndMusicCD
  .bss.NbOptPhysBox
-                0x0015a75e        0x2 obj_fork/game_FLIPBOX.o
-                0x0015a75e                NbOptPhysBox
+                0x0015a762        0x2 obj_fork/game_FLIPBOX.o
+                0x0015a762                NbOptPhysBox
  .bss.NbPhysBox
-                0x0015a760        0x2 obj_fork/game_FLIPBOX.o
-                0x0015a760                NbPhysBox
+                0x0015a764        0x2 obj_fork/game_FLIPBOX.o
+                0x0015a764                NbPhysBox
  .bss.InvSelect
-                0x0015a762        0x2 obj_fork/game_GAMEMENU.o
-                0x0015a762                InvSelect
+                0x0015a766        0x2 obj_fork/game_GAMEMENU.o
+                0x0015a766                InvSelect
  .bss.NumVersion
-                0x0015a764        0x1 obj_fork/game_GAMEMENU.o
-                0x0015a764                NumVersion
- *fill*         0x0015a765        0x1 
- .bss.TextLig   0x0015a766        0x2 obj_fork/game_GERELIFE.o
-                0x0015a766                TextLig
+                0x0015a768        0x1 obj_fork/game_GAMEMENU.o
+                0x0015a768                NumVersion
+ *fill*         0x0015a769        0x1 
+ .bss.TextLig   0x0015a76a        0x2 obj_fork/game_GERELIFE.o
+                0x0015a76a                TextLig
  .bss.CameraZone
-                0x0015a768        0x2 obj_fork/game_GLOBAL.o
-                0x0015a768                CameraZone
- .bss.PtrXmi    0x0015a76a        0x4 obj_fork/game_GLOBAL.o
-                0x0015a76a                PtrXmi
+                0x0015a76c        0x2 obj_fork/game_GLOBAL.o
+                0x0015a76c                CameraZone
+ .bss.PtrXmi    0x0015a76e        0x4 obj_fork/game_GLOBAL.o
+                0x0015a76e                PtrXmi
  .bss.TimerNextAmbiance
-                0x0015a76e        0x4 obj_fork/game_GLOBAL.o
-                0x0015a76e                TimerNextAmbiance
+                0x0015a772        0x4 obj_fork/game_GLOBAL.o
+                0x0015a772                TimerNextAmbiance
  .bss.SamplePlayed
-                0x0015a772        0x2 obj_fork/game_GLOBAL.o
-                0x0015a772                SamplePlayed
+                0x0015a776        0x2 obj_fork/game_GLOBAL.o
+                0x0015a776                SamplePlayed
  .bss.NumObjFollow
-                0x0015a774        0x2 obj_fork/game_GLOBAL.o
-                0x0015a774                NumObjFollow
- .bss.NbObjets  0x0015a776        0x4 obj_fork/game_GLOBAL.o
-                0x0015a776                NbObjets
- .bss.NbBodys   0x0015a77a        0x4 obj_fork/game_GLOBAL.o
-                0x0015a77a                NbBodys
+                0x0015a778        0x2 obj_fork/game_GLOBAL.o
+                0x0015a778                NumObjFollow
+ .bss.NbObjets  0x0015a77a        0x4 obj_fork/game_GLOBAL.o
+                0x0015a77a                NbObjets
+ .bss.NbBodys   0x0015a77e        0x4 obj_fork/game_GLOBAL.o
+                0x0015a77e                NbBodys
  .bss.WallColDamageEnabled
-                0x0015a77e        0x2 obj_fork/game_GLOBAL.o
-                0x0015a77e                WallColDamageEnabled
- .bss.SaveBeta  0x0015a780        0x2 obj_fork/game_GLOBAL.o
-                0x0015a780                SaveBeta
- .bss.SaveComportement
                 0x0015a782        0x2 obj_fork/game_GLOBAL.o
-                0x0015a782                SaveComportement
- .bss.FlagWater
-                0x0015a784        0x2 obj_fork/game_GLOBAL.o
-                0x0015a784                FlagWater
- .bss.StartYFalling
+                0x0015a782                WallColDamageEnabled
+ .bss.SaveBeta  0x0015a784        0x2 obj_fork/game_GLOBAL.o
+                0x0015a784                SaveBeta
+ .bss.SaveComportement
                 0x0015a786        0x2 obj_fork/game_GLOBAL.o
-                0x0015a786                StartYFalling
- .bss.FlagClimbing
+                0x0015a786                SaveComportement
+ .bss.FlagWater
                 0x0015a788        0x2 obj_fork/game_GLOBAL.o
-                0x0015a788                FlagClimbing
- .bss.Fuel      0x0015a78a        0x2 obj_fork/game_GLOBAL.o
-                0x0015a78a                Fuel
- .bss.Island    0x0015a78c        0x2 obj_fork/game_GLOBAL.o
-                0x0015a78c                Island
+                0x0015a788                FlagWater
+ .bss.StartYFalling
+                0x0015a78a        0x2 obj_fork/game_GLOBAL.o
+                0x0015a78a                StartYFalling
+ .bss.FlagClimbing
+                0x0015a78c        0x2 obj_fork/game_GLOBAL.o
+                0x0015a78c                FlagClimbing
+ .bss.Fuel      0x0015a78e        0x2 obj_fork/game_GLOBAL.o
+                0x0015a78e                Fuel
+ .bss.Island    0x0015a790        0x2 obj_fork/game_GLOBAL.o
+                0x0015a790                Island
  .bss.DisableAutoSave
-                0x0015a78e        0x2 obj_fork/game_GLOBAL.o
-                0x0015a78e                DisableAutoSave
- .bss.HasLoadedLastValidPersoOnSave
-                0x0015a790        0x2 obj_fork/game_GLOBAL.o
-                0x0015a790                HasLoadedLastValidPersoOnSave
- .bss.HasLoadedListAuxFlagCubeOnSave
                 0x0015a792        0x2 obj_fork/game_GLOBAL.o
-                0x0015a792                HasLoadedListAuxFlagCubeOnSave
- .bss.HasLoadedListFlagCubeOnSave
+                0x0015a792                DisableAutoSave
+ .bss.HasLoadedLastValidPersoOnSave
                 0x0015a794        0x2 obj_fork/game_GLOBAL.o
-                0x0015a794                HasLoadedListFlagCubeOnSave
- .bss.HasLoadedInventoryOnSave
+                0x0015a794                HasLoadedLastValidPersoOnSave
+ .bss.HasLoadedListAuxFlagCubeOnSave
                 0x0015a796        0x2 obj_fork/game_GLOBAL.o
-                0x0015a796                HasLoadedInventoryOnSave
- .bss.HasLoadedKeysOnSave
+                0x0015a796                HasLoadedListAuxFlagCubeOnSave
+ .bss.HasLoadedListFlagCubeOnSave
                 0x0015a798        0x2 obj_fork/game_GLOBAL.o
-                0x0015a798                HasLoadedKeysOnSave
- .bss.HasLoadedListZoneOnSave
+                0x0015a798                HasLoadedListFlagCubeOnSave
+ .bss.HasLoadedInventoryOnSave
                 0x0015a79a        0x2 obj_fork/game_GLOBAL.o
-                0x0015a79a                HasLoadedListZoneOnSave
- .bss.HasLoadedListExtraOnSave
+                0x0015a79a                HasLoadedInventoryOnSave
+ .bss.HasLoadedKeysOnSave
                 0x0015a79c        0x2 obj_fork/game_GLOBAL.o
-                0x0015a79c                HasLoadedListExtraOnSave
- .bss.HasLoadedListObjetTracksOnSave
+                0x0015a79c                HasLoadedKeysOnSave
+ .bss.HasLoadedListZoneOnSave
                 0x0015a79e        0x2 obj_fork/game_GLOBAL.o
-                0x0015a79e                HasLoadedListObjetTracksOnSave
- .bss.HasLoadedListObjetsOnSave
+                0x0015a79e                HasLoadedListZoneOnSave
+ .bss.HasLoadedListExtraOnSave
                 0x0015a7a0        0x2 obj_fork/game_GLOBAL.o
-                0x0015a7a0                HasLoadedListObjetsOnSave
- .bss.HasLoadedSave
+                0x0015a7a0                HasLoadedListExtraOnSave
+ .bss.HasLoadedListObjetTracksOnSave
                 0x0015a7a2        0x2 obj_fork/game_GLOBAL.o
-                0x0015a7a2                HasLoadedSave
- .bss.Chapitre  0x0015a7a4        0x2 obj_fork/game_GLOBAL.o
-                0x0015a7a4                Chapitre
- .bss.NbLittleKeys
+                0x0015a7a2                HasLoadedListObjetTracksOnSave
+ .bss.HasLoadedListObjetsOnSave
+                0x0015a7a4        0x2 obj_fork/game_GLOBAL.o
+                0x0015a7a4                HasLoadedListObjetsOnSave
+ .bss.HasLoadedSave
                 0x0015a7a6        0x2 obj_fork/game_GLOBAL.o
-                0x0015a7a6                NbLittleKeys
- .bss.NbGoldPieces
-                0x0015a7a8        0x2 obj_fork/game_GLOBAL.o
-                0x0015a7a8                NbGoldPieces
- .bss.MagicPoint
+                0x0015a7a6                HasLoadedSave
+ .bss.Chapitre  0x0015a7a8        0x2 obj_fork/game_GLOBAL.o
+                0x0015a7a8                Chapitre
+ .bss.NbLittleKeys
                 0x0015a7aa        0x2 obj_fork/game_GLOBAL.o
-                0x0015a7aa                MagicPoint
- .bss.MagicLevel
+                0x0015a7aa                NbLittleKeys
+ .bss.NbGoldPieces
                 0x0015a7ac        0x2 obj_fork/game_GLOBAL.o
-                0x0015a7ac                MagicLevel
- .bss.GameOverCube
+                0x0015a7ac                NbGoldPieces
+ .bss.MagicPoint
                 0x0015a7ae        0x2 obj_fork/game_GLOBAL.o
-                0x0015a7ae                GameOverCube
- .bss.FlagChgCube
+                0x0015a7ae                MagicPoint
+ .bss.MagicLevel
                 0x0015a7b0        0x2 obj_fork/game_GLOBAL.o
-                0x0015a7b0                FlagChgCube
- .bss.NumCube   0x0015a7b2        0x2 obj_fork/game_GLOBAL.o
-                0x0015a7b2                NumCube
- .bss.Comportement
+                0x0015a7b0                MagicLevel
+ .bss.GameOverCube
+                0x0015a7b2        0x2 obj_fork/game_GLOBAL.o
+                0x0015a7b2                GameOverCube
+ .bss.FlagChgCube
                 0x0015a7b4        0x2 obj_fork/game_GLOBAL.o
-                0x0015a7b4                Comportement
- .bss.Weapon    0x0015a7b6        0x2 obj_fork/game_GLOBAL.o
-                0x0015a7b6                Weapon
- .bss.ActionNormal
+                0x0015a7b4                FlagChgCube
+ .bss.NumCube   0x0015a7b6        0x2 obj_fork/game_GLOBAL.o
+                0x0015a7b6                NumCube
+ .bss.Comportement
                 0x0015a7b8        0x2 obj_fork/game_GLOBAL.o
-                0x0015a7b8                ActionNormal
- .bss.FlagTheEnd
-                0x0015a7ba        0x2 obj_fork/game_GLOBAL.o
-                0x0015a7ba                FlagTheEnd
- .bss.PersoInvulnerable
+                0x0015a7b8                Comportement
+ .bss.Weapon    0x0015a7ba        0x2 obj_fork/game_GLOBAL.o
+                0x0015a7ba                Weapon
+ .bss.ActionNormal
                 0x0015a7bc        0x2 obj_fork/game_GLOBAL.o
-                0x0015a7bc                PersoInvulnerable
- .bss.NbBrickTrack
+                0x0015a7bc                ActionNormal
+ .bss.FlagTheEnd
                 0x0015a7be        0x2 obj_fork/game_GLOBAL.o
-                0x0015a7be                NbBrickTrack
- .bss.NbZones   0x0015a7c0        0x2 obj_fork/game_GLOBAL.o
-                0x0015a7c0                NbZones
- .bss.FlagWindowsFilenameSaving
+                0x0015a7be                FlagTheEnd
+ .bss.PersoInvulnerable
+                0x0015a7c0        0x2 obj_fork/game_GLOBAL.o
+                0x0015a7c0                PersoInvulnerable
+ .bss.NbBrickTrack
                 0x0015a7c2        0x2 obj_fork/game_GLOBAL.o
-                0x0015a7c2                FlagWindowsFilenameSaving
+                0x0015a7c2                NbBrickTrack
+ .bss.NbZones   0x0015a7c4        0x2 obj_fork/game_GLOBAL.o
+                0x0015a7c4                NbZones
+ .bss.FlagWindowsFilenameSaving
+                0x0015a7c6        0x2 obj_fork/game_GLOBAL.o
+                0x0015a7c6                FlagWindowsFilenameSaving
  .bss.FlagBlackPal
-                0x0015a7c4        0x2 obj_fork/game_GLOBAL.o
-                0x0015a7c4                FlagBlackPal
- .bss.FlagFade  0x0015a7c6        0x2 obj_fork/game_GLOBAL.o
-                0x0015a7c6                FlagFade
- .bss.FlagPalettePcx
                 0x0015a7c8        0x2 obj_fork/game_GLOBAL.o
-                0x0015a7c8                FlagPalettePcx
- .bss.CDEnable  0x0015a7ca        0x2 obj_fork/game_GLOBAL.o
-                0x0015a7ca                CDEnable
- .bss.SamplesEnable
+                0x0015a7c8                FlagBlackPal
+ .bss.FlagFade  0x0015a7ca        0x2 obj_fork/game_GLOBAL.o
+                0x0015a7ca                FlagFade
+ .bss.FlagPalettePcx
                 0x0015a7cc        0x2 obj_fork/game_GLOBAL.o
-                0x0015a7cc                SamplesEnable
+                0x0015a7cc                FlagPalettePcx
+ .bss.CDEnable  0x0015a7ce        0x2 obj_fork/game_GLOBAL.o
+                0x0015a7ce                CDEnable
+ .bss.SamplesEnable
+                0x0015a7d0        0x2 obj_fork/game_GLOBAL.o
+                0x0015a7d0                SamplesEnable
  .bss.FlagCredits
-                0x0015a7ce        0x4 obj_fork/game_GLOBAL.o
-                0x0015a7ce                FlagCredits
- .bss.FlagMCGA  0x0015a7d2        0x2 obj_fork/game_GLOBAL.o
-                0x0015a7d2                FlagMCGA
- .bss.LastFire  0x0015a7d4        0x2 obj_fork/game_GLOBAL.o
-                0x0015a7d4                LastFire
- .bss.MyKey     0x0015a7d6        0x2 obj_fork/game_GLOBAL.o
-                0x0015a7d6                MyKey
- .bss.MyFire    0x0015a7d8        0x2 obj_fork/game_GLOBAL.o
-                0x0015a7d8                MyFire
- .bss.MyJoy     0x0015a7da        0x2 obj_fork/game_GLOBAL.o
-                0x0015a7da                MyJoy
+                0x0015a7d2        0x4 obj_fork/game_GLOBAL.o
+                0x0015a7d2                FlagCredits
+ .bss.FlagMCGA  0x0015a7d6        0x2 obj_fork/game_GLOBAL.o
+                0x0015a7d6                FlagMCGA
+ .bss.LastFire  0x0015a7d8        0x2 obj_fork/game_GLOBAL.o
+                0x0015a7d8                LastFire
+ .bss.MyKey     0x0015a7da        0x2 obj_fork/game_GLOBAL.o
+                0x0015a7da                MyKey
+ .bss.MyFire    0x0015a7dc        0x2 obj_fork/game_GLOBAL.o
+                0x0015a7dc                MyFire
+ .bss.MyJoy     0x0015a7de        0x2 obj_fork/game_GLOBAL.o
+                0x0015a7de                MyJoy
  .bss.RotPalPos
-                0x0015a7dc        0x2 obj_fork/game_HOLOMAP.o
-                0x0015a7dc                RotPalPos
- .bss.LenWord   0x0015a7de        0x4 obj_fork/game_MESSAGE.o
+                0x0015a7e0        0x2 obj_fork/game_HOLOMAP.o
+                0x0015a7e0                RotPalPos
+ .bss.LenWord   0x0015a7e2        0x4 obj_fork/game_MESSAGE.o
  .bss.FlagEndDial
-                0x0015a7e2        0x4 obj_fork/game_MESSAGE.o
- .bss.FlagRunningDial
                 0x0015a7e6        0x4 obj_fork/game_MESSAGE.o
- .bss.FlagEnd3Line
+ .bss.FlagRunningDial
                 0x0015a7ea        0x4 obj_fork/game_MESSAGE.o
- .bss.NbLineDial
+ .bss.FlagEnd3Line
                 0x0015a7ee        0x4 obj_fork/game_MESSAGE.o
- .bss.Y_Dial    0x0015a7f2        0x4 obj_fork/game_MESSAGE.o
- .bss.X_Dial    0x0015a7f6        0x4 obj_fork/game_MESSAGE.o
- .bss.Word      0x0015a7fa      0x100 obj_fork/game_MESSAGE.o
- .bss.PtDial    0x0015a8fa        0x4 obj_fork/game_MESSAGE.o
- .bss.MaxVoice  0x0015a8fe        0x4 obj_fork/game_MESSAGE.o
-                0x0015a8fe                MaxVoice
+ .bss.NbLineDial
+                0x0015a7f2        0x4 obj_fork/game_MESSAGE.o
+ .bss.Y_Dial    0x0015a7f6        0x4 obj_fork/game_MESSAGE.o
+ .bss.X_Dial    0x0015a7fa        0x4 obj_fork/game_MESSAGE.o
+ .bss.Word      0x0015a7fe      0x100 obj_fork/game_MESSAGE.o
+ .bss.PtDial    0x0015a8fe        0x4 obj_fork/game_MESSAGE.o
+ .bss.MaxVoice  0x0015a902        0x4 obj_fork/game_MESSAGE.o
+                0x0015a902                MaxVoice
  .bss.NbFileOnHD
-                0x0015a902        0x4 obj_fork/game_MESSAGE.o
-                0x0015a902                NbFileOnHD
- .bss.LanguageCD
                 0x0015a906        0x4 obj_fork/game_MESSAGE.o
-                0x0015a906                LanguageCD
- .bss.TotalSizeFileHD
+                0x0015a906                NbFileOnHD
+ .bss.LanguageCD
                 0x0015a90a        0x4 obj_fork/game_MESSAGE.o
-                0x0015a90a                TotalSizeFileHD
- .bss.FdCd      0x0015a90e        0x4 obj_fork/game_MESSAGE.o
- .bss.FdNar     0x0015a912        0x4 obj_fork/game_MESSAGE.o
+                0x0015a90a                LanguageCD
+ .bss.TotalSizeFileHD
+                0x0015a90e        0x4 obj_fork/game_MESSAGE.o
+                0x0015a90e                TotalSizeFileHD
+ .bss.FdCd      0x0015a912        0x4 obj_fork/game_MESSAGE.o
+ .bss.FdNar     0x0015a916        0x4 obj_fork/game_MESSAGE.o
  .bss.BufMemoSeek
-                0x0015a916        0x4 obj_fork/game_MESSAGE.o
-                0x0015a916                BufMemoSeek
- .bss.FlagNextVoc
                 0x0015a91a        0x4 obj_fork/game_MESSAGE.o
- .bss.FlagKeepVoice
+                0x0015a91a                BufMemoSeek
+ .bss.FlagNextVoc
                 0x0015a91e        0x4 obj_fork/game_MESSAGE.o
- .bss.FlagVoiceCD
+ .bss.FlagKeepVoice
                 0x0015a922        0x4 obj_fork/game_MESSAGE.o
-                0x0015a922                FlagVoiceCD
- .bss.FlagSpeak
+ .bss.FlagVoiceCD
                 0x0015a926        0x4 obj_fork/game_MESSAGE.o
-                0x0015a926                FlagSpeak
- .bss.BufOrder  0x0015a92a        0x4 obj_fork/game_MESSAGE.o
-                0x0015a92a                BufOrder
- .bss.SizeText  0x0015a92e        0x4 obj_fork/game_MESSAGE.o
- .bss.PtText    0x0015a932        0x4 obj_fork/game_MESSAGE.o
- .bss.BufText   0x0015a936        0x4 obj_fork/game_MESSAGE.o
-                0x0015a936                BufText
+                0x0015a926                FlagVoiceCD
+ .bss.FlagSpeak
+                0x0015a92a        0x4 obj_fork/game_MESSAGE.o
+                0x0015a92a                FlagSpeak
+ .bss.BufOrder  0x0015a92e        0x4 obj_fork/game_MESSAGE.o
+                0x0015a92e                BufOrder
+ .bss.SizeText  0x0015a932        0x4 obj_fork/game_MESSAGE.o
+ .bss.PtText    0x0015a936        0x4 obj_fork/game_MESSAGE.o
+ .bss.BufText   0x0015a93a        0x4 obj_fork/game_MESSAGE.o
+                0x0015a93a                BufText
  .bss.StepDegrade
-                0x0015a93a        0x4 obj_fork/game_MESSAGE.o
- .bss.MaxDegrade
                 0x0015a93e        0x4 obj_fork/game_MESSAGE.o
- .bss.MinDegrade
+ .bss.MaxDegrade
                 0x0015a942        0x4 obj_fork/game_MESSAGE.o
- .bss.NbDegrade
+ .bss.MinDegrade
                 0x0015a946        0x4 obj_fork/game_MESSAGE.o
- .bss.NbCar     0x0015a94a        0x4 obj_fork/game_MESSAGE.o
- .bss.StackCar  0x0015a94e       0xc0 obj_fork/game_MESSAGE.o
- .bss.FileText  0x0015aa0e      0x100 obj_fork/game_MESSAGE.o
+ .bss.NbDegrade
+                0x0015a94a        0x4 obj_fork/game_MESSAGE.o
+ .bss.NbCar     0x0015a94e        0x4 obj_fork/game_MESSAGE.o
+ .bss.StackCar  0x0015a952       0xc0 obj_fork/game_MESSAGE.o
+ .bss.FileText  0x0015aa12      0x100 obj_fork/game_MESSAGE.o
  .bss.SaveTimerForCar
-                0x0015ab0e        0x4 obj_fork/game_MESSAGE.o
- .bss.FlecheForcee
                 0x0015ab12        0x4 obj_fork/game_MESSAGE.o
-                0x0015ab12                FlecheForcee
+ .bss.FlecheForcee
+                0x0015ab16        0x4 obj_fork/game_MESSAGE.o
+                0x0015ab16                FlecheForcee
  .bss.BufferMultiText
-                0x0015ab16      0x100 obj_fork/game_MESSAGE.o
- .bss.SizeWord  0x0015ac16        0x4 obj_fork/game_MESSAGE.o
+                0x0015ab1a      0x100 obj_fork/game_MESSAGE.o
+ .bss.SizeWord  0x0015ac1a        0x4 obj_fork/game_MESSAGE.o
  .bss.SizeSpace
-                0x0015ac1a        0x4 obj_fork/game_MESSAGE.o
- .bss.NbBigSpace
                 0x0015ac1e        0x4 obj_fork/game_MESSAGE.o
- .bss.NbSpace   0x0015ac22        0x4 obj_fork/game_MESSAGE.o
- .bss.SizeLine  0x0015ac26        0x4 obj_fork/game_MESSAGE.o
- .bss.PtLine    0x0015ac2a        0x4 obj_fork/game_MESSAGE.o
- .bss.BufLine   0x0015ac2e      0x100 obj_fork/game_MESSAGE.o
+ .bss.NbBigSpace
+                0x0015ac22        0x4 obj_fork/game_MESSAGE.o
+ .bss.NbSpace   0x0015ac26        0x4 obj_fork/game_MESSAGE.o
+ .bss.SizeLine  0x0015ac2a        0x4 obj_fork/game_MESSAGE.o
+ .bss.PtLine    0x0015ac2e        0x4 obj_fork/game_MESSAGE.o
+ .bss.BufLine   0x0015ac32      0x100 obj_fork/game_MESSAGE.o
  .bss._cacheLoaded
-                0x0015ad2e        0x1 obj_fork/game_MSG_CUST.o
- *fill*         0x0015ad2f        0x1 
+                0x0015ad32        0x1 obj_fork/game_MSG_CUST.o
+ *fill*         0x0015ad33        0x1 
  .bss._cachedLanguage
-                0x0015ad30        0x4 obj_fork/game_MSG_CUST.o
- .bss._messageCacheSize
                 0x0015ad34        0x4 obj_fork/game_MSG_CUST.o
- .bss._messageCache
+ .bss._messageCacheSize
                 0x0015ad38        0x4 obj_fork/game_MSG_CUST.o
+ .bss._messageCache
+                0x0015ad3c        0x4 obj_fork/game_MSG_CUST.o
  .bss.LastMyFire
-                0x0015ad3c        0x2 obj_fork/game_OBJECT.o
-                0x0015ad3c                LastMyFire
- .bss.LastMyJoy
-                0x0015ad3e        0x2 obj_fork/game_OBJECT.o
-                0x0015ad3e                LastMyJoy
- .bss.LastJoyFlag
                 0x0015ad40        0x2 obj_fork/game_OBJECT.o
-                0x0015ad40                LastJoyFlag
+                0x0015ad40                LastMyFire
+ .bss.LastMyJoy
+                0x0015ad42        0x2 obj_fork/game_OBJECT.o
+                0x0015ad42                LastMyJoy
+ .bss.LastJoyFlag
+                0x0015ad44        0x2 obj_fork/game_OBJECT.o
+                0x0015ad44                LastJoyFlag
  .bss.AnimStepGamma
-                0x0015ad42        0x2 obj_fork/l3d_P_ANIM.o
-                0x0015ad42                AnimStepGamma
- .bss.AnimStepBeta
-                0x0015ad44        0x2 obj_fork/l3d_P_ANIM.o
-                0x0015ad44                AnimStepBeta
- .bss.AnimStepAlpha
                 0x0015ad46        0x2 obj_fork/l3d_P_ANIM.o
-                0x0015ad46                AnimStepAlpha
- .bss.AnimMasterRot
+                0x0015ad46                AnimStepGamma
+ .bss.AnimStepBeta
                 0x0015ad48        0x2 obj_fork/l3d_P_ANIM.o
-                0x0015ad48                AnimMasterRot
- .bss.AnimStepZ
+                0x0015ad48                AnimStepBeta
+ .bss.AnimStepAlpha
                 0x0015ad4a        0x2 obj_fork/l3d_P_ANIM.o
-                0x0015ad4a                AnimStepZ
- .bss.AnimStepY
+                0x0015ad4a                AnimStepAlpha
+ .bss.AnimMasterRot
                 0x0015ad4c        0x2 obj_fork/l3d_P_ANIM.o
-                0x0015ad4c                AnimStepY
- .bss.AnimStepX
+                0x0015ad4c                AnimMasterRot
+ .bss.AnimStepZ
                 0x0015ad4e        0x2 obj_fork/l3d_P_ANIM.o
-                0x0015ad4e                AnimStepX
+                0x0015ad4e                AnimStepZ
+ .bss.AnimStepY
+                0x0015ad50        0x2 obj_fork/l3d_P_ANIM.o
+                0x0015ad50                AnimStepY
+ .bss.AnimStepX
+                0x0015ad52        0x2 obj_fork/l3d_P_ANIM.o
+                0x0015ad52                AnimStepX
  .bss.CmptMemoTimerRef
-                0x0015ad50        0x4 obj_fork/l3d_P_ANIM.o
-                0x0015ad50                CmptMemoTimerRef
- .bss.MemoTimerRef
                 0x0015ad54        0x4 obj_fork/l3d_P_ANIM.o
-                0x0015ad54                MemoTimerRef
- .bss.Offset_Dest
+                0x0015ad54                CmptMemoTimerRef
+ .bss.MemoTimerRef
                 0x0015ad58        0x4 obj_fork/l3d_P_ANIM.o
- .bss.Offset_Source
+                0x0015ad58                MemoTimerRef
+ .bss.Offset_Dest
                 0x0015ad5c        0x4 obj_fork/l3d_P_ANIM.o
- .bss.Distance  0x0015ad60        0x4 obj_fork/l3d_P_FUNC.o
-                0x0015ad60                Distance
- .bss.DxFont    0x0015ad64        0x4 obj_fork/svga_FONT_A.o
- .bss.PtrFont   0x0015ad68        0x4 obj_fork/svga_FONT_A.o
+ .bss.Offset_Source
+                0x0015ad60        0x4 obj_fork/l3d_P_ANIM.o
+ .bss.Distance  0x0015ad64        0x4 obj_fork/l3d_P_FUNC.o
+                0x0015ad64                Distance
+ .bss.DxFont    0x0015ad68        0x4 obj_fork/svga_FONT_A.o
+ .bss.PtrFont   0x0015ad6c        0x4 obj_fork/svga_FONT_A.o
  .bss.BufferClip
-                0x0015ad6c      0x200 obj_fork/tr_graph_a.o
- .bss.ColMask   0x0015af6c        0x1 obj_fork/tr_mask_a.o
+                0x0015ad70      0x200 obj_fork/tr_graph_a.o
+ .bss.ColMask   0x0015af70        0x1 obj_fork/tr_mask_a.o
  .bss.BufferClip
-                0x0015af6d      0x200 obj_fork/tr_mask_a.o
- *fill*         0x0015b16d        0x1 
- .bss.PosZWr    0x0015b16e        0x4 obj_fork/tr_p_ob_iso.o
- .bss.PosYWr    0x0015b172        0x4 obj_fork/tr_p_ob_iso.o
- .bss.PosXWr    0x0015b176        0x4 obj_fork/tr_p_ob_iso.o
- .bss.Ptr1mat   0x0015b17a        0x4 obj_fork/tr_p_ob_iso.o
+                0x0015af71      0x200 obj_fork/tr_mask_a.o
+ *fill*         0x0015b171        0x1 
+ .bss.PosZWr    0x0015b172        0x4 obj_fork/tr_p_ob_iso.o
+ .bss.PosYWr    0x0015b176        0x4 obj_fork/tr_p_ob_iso.o
+ .bss.PosXWr    0x0015b17a        0x4 obj_fork/tr_p_ob_iso.o
+ .bss.Ptr1mat   0x0015b17e        0x4 obj_fork/tr_p_ob_iso.o
  .bss.OffsetDefPoint
-                0x0015b17e        0x4 obj_fork/tr_p_ob_iso.o
- .bss.ListGroupe
                 0x0015b182        0x4 obj_fork/tr_p_ob_iso.o
- .bss.PointeurListTri
+ .bss.ListGroupe
                 0x0015b186        0x4 obj_fork/tr_p_ob_iso.o
- .bss.Count1    0x0015b18a        0x2 obj_fork/tr_p_ob_iso.o
+ .bss.PointeurListTri
+                0x0015b18a        0x4 obj_fork/tr_p_ob_iso.o
+ .bss.Count1    0x0015b18e        0x2 obj_fork/tr_p_ob_iso.o
  .bss.NbGroupes
-                0x0015b18c        0x2 obj_fork/tr_p_ob_iso.o
+                0x0015b190        0x2 obj_fork/tr_p_ob_iso.o
  .bss.TotalEntite
-                0x0015b18e        0x2 obj_fork/tr_p_ob_iso.o
- .bss.NbPoints  0x0015b190        0x2 obj_fork/tr_p_ob_iso.o
-                0x0015b190                NbPoints
- .bss.ScreenYmax
                 0x0015b192        0x2 obj_fork/tr_p_ob_iso.o
-                0x0015b192                ScreenYmax
- .bss.ScreenXmax
-                0x0015b194        0x2 obj_fork/tr_p_ob_iso.o
-                0x0015b194                ScreenXmax
- .bss.ScreenYmin
+ .bss.NbPoints  0x0015b194        0x2 obj_fork/tr_p_ob_iso.o
+                0x0015b194                NbPoints
+ .bss.ScreenYmax
                 0x0015b196        0x2 obj_fork/tr_p_ob_iso.o
-                0x0015b196                ScreenYmin
- .bss.ScreenXmin
+                0x0015b196                ScreenYmax
+ .bss.ScreenXmax
                 0x0015b198        0x2 obj_fork/tr_p_ob_iso.o
-                0x0015b198                ScreenXmin
- .bss.List_Tri  0x0015b19a      0xfa0 obj_fork/tr_p_ob_iso.o
+                0x0015b198                ScreenXmax
+ .bss.ScreenYmin
+                0x0015b19a        0x2 obj_fork/tr_p_ob_iso.o
+                0x0015b19a                ScreenYmin
+ .bss.ScreenXmin
+                0x0015b19c        0x2 obj_fork/tr_p_ob_iso.o
+                0x0015b19c                ScreenXmin
+ .bss.List_Tri  0x0015b19e      0xfa0 obj_fork/tr_p_ob_iso.o
  .bss.List_Normal
-                0x0015c13a      0x3e8 obj_fork/tr_p_ob_iso.o
- *fill*         0x0015c522        0x2 
+                0x0015c13e      0x3e8 obj_fork/tr_p_ob_iso.o
+ *fill*         0x0015c526        0x2 
  .bss.LMatriceWorld
-                0x0015c524       0x24 obj_fork/tr_p_trigo.o
-                0x0015c524                LMatriceWorld
+                0x0015c528       0x24 obj_fork/tr_p_trigo.o
+                0x0015c528                LMatriceWorld
  .bss.LMatriceDummy
-                0x0015c548       0x24 obj_fork/tr_p_trigo.o
-                0x0015c548                LMatriceDummy
+                0x0015c54c       0x24 obj_fork/tr_p_trigo.o
+                0x0015c54c                LMatriceDummy
  .bss.LMatriceRot
-                0x0015c56c       0x24 obj_fork/tr_p_trigo.o
-                0x0015c56c                LMatriceRot
- .bss.Z0        0x0015c590        0x4 obj_fork/tr_p_trigo.o
-                0x0015c590                Z0
- .bss.Y0        0x0015c594        0x4 obj_fork/tr_p_trigo.o
-                0x0015c594                Y0
- .bss.X0        0x0015c598        0x4 obj_fork/tr_p_trigo.o
-                0x0015c598                X0
+                0x0015c570       0x24 obj_fork/tr_p_trigo.o
+                0x0015c570                LMatriceRot
+ .bss.Z0        0x0015c594        0x4 obj_fork/tr_p_trigo.o
+                0x0015c594                Z0
+ .bss.Y0        0x0015c598        0x4 obj_fork/tr_p_trigo.o
+                0x0015c598                Y0
+ .bss.X0        0x0015c59c        0x4 obj_fork/tr_p_trigo.o
+                0x0015c59c                X0
  .bss.NormalZLight
-                0x0015c59c        0x4 obj_fork/tr_p_trigo.o
-                0x0015c59c                NormalZLight
- .bss.NormalYLight
                 0x0015c5a0        0x4 obj_fork/tr_p_trigo.o
-                0x0015c5a0                NormalYLight
- .bss.lGamma    0x0015c5a4        0x4 obj_fork/tr_p_trigo.o
-                0x0015c5a4                lGamma
- .bss.lBeta     0x0015c5a8        0x4 obj_fork/tr_p_trigo.o
-                0x0015c5a8                lBeta
- .bss.lAlpha    0x0015c5ac        0x4 obj_fork/tr_p_trigo.o
-                0x0015c5ac                lAlpha
- .bss.Gamma     0x0015c5b0        0x4 obj_fork/tr_p_trigo.o
-                0x0015c5b0                Gamma
- .bss.Beta      0x0015c5b4        0x4 obj_fork/tr_p_trigo.o
-                0x0015c5b4                Beta
- .bss.Alpha     0x0015c5b8        0x4 obj_fork/tr_p_trigo.o
-                0x0015c5b8                Alpha
+                0x0015c5a0                NormalZLight
+ .bss.NormalYLight
+                0x0015c5a4        0x4 obj_fork/tr_p_trigo.o
+                0x0015c5a4                NormalYLight
+ .bss.lGamma    0x0015c5a8        0x4 obj_fork/tr_p_trigo.o
+                0x0015c5a8                lGamma
+ .bss.lBeta     0x0015c5ac        0x4 obj_fork/tr_p_trigo.o
+                0x0015c5ac                lBeta
+ .bss.lAlpha    0x0015c5b0        0x4 obj_fork/tr_p_trigo.o
+                0x0015c5b0                lAlpha
+ .bss.Gamma     0x0015c5b4        0x4 obj_fork/tr_p_trigo.o
+                0x0015c5b4                Gamma
+ .bss.Beta      0x0015c5b8        0x4 obj_fork/tr_p_trigo.o
+                0x0015c5b8                Beta
+ .bss.Alpha     0x0015c5bc        0x4 obj_fork/tr_p_trigo.o
+                0x0015c5bc                Alpha
  .bss.GammaLight
-                0x0015c5bc        0x4 obj_fork/tr_p_trigo.o
-                0x0015c5bc                GammaLight
- .bss.BetaLight
                 0x0015c5c0        0x4 obj_fork/tr_p_trigo.o
-                0x0015c5c0                BetaLight
- .bss.AlphaLight
+                0x0015c5c0                GammaLight
+ .bss.BetaLight
                 0x0015c5c4        0x4 obj_fork/tr_p_trigo.o
-                0x0015c5c4                AlphaLight
- .bss.CameraZr  0x0015c5c8        0x4 obj_fork/tr_p_trigo.o
-                0x0015c5c8                CameraZr
- .bss.CameraYr  0x0015c5cc        0x4 obj_fork/tr_p_trigo.o
-                0x0015c5cc                CameraYr
- .bss.CameraXr  0x0015c5d0        0x4 obj_fork/tr_p_trigo.o
-                0x0015c5d0                CameraXr
- .bss.CameraZ   0x0015c5d4        0x4 obj_fork/tr_p_trigo.o
-                0x0015c5d4                CameraZ
- .bss.CameraY   0x0015c5d8        0x4 obj_fork/tr_p_trigo.o
-                0x0015c5d8                CameraY
- .bss.CameraX   0x0015c5dc        0x4 obj_fork/tr_p_trigo.o
-                0x0015c5dc                CameraX
- .bss.Yp        0x0015c5e0        0x2 obj_fork/tr_p_trigo.o
-                0x0015c5e0                Yp
- .bss.Xp        0x0015c5e2        0x2 obj_fork/tr_p_trigo.o
-                0x0015c5e2                Xp
- .bss.TypeProj  0x0015c5e4        0x2 obj_fork/tr_p_trigo.o
-                0x0015c5e4                TypeProj
- .bss.compteur  0x0015c5e6        0x2 obj_fork/tr_p_trigo.o
-                0x0015c5e6                compteur
+                0x0015c5c4                BetaLight
+ .bss.AlphaLight
+                0x0015c5c8        0x4 obj_fork/tr_p_trigo.o
+                0x0015c5c8                AlphaLight
+ .bss.CameraZr  0x0015c5cc        0x4 obj_fork/tr_p_trigo.o
+                0x0015c5cc                CameraZr
+ .bss.CameraYr  0x0015c5d0        0x4 obj_fork/tr_p_trigo.o
+                0x0015c5d0                CameraYr
+ .bss.CameraXr  0x0015c5d4        0x4 obj_fork/tr_p_trigo.o
+                0x0015c5d4                CameraXr
+ .bss.CameraZ   0x0015c5d8        0x4 obj_fork/tr_p_trigo.o
+                0x0015c5d8                CameraZ
+ .bss.CameraY   0x0015c5dc        0x4 obj_fork/tr_p_trigo.o
+                0x0015c5dc                CameraY
+ .bss.CameraX   0x0015c5e0        0x4 obj_fork/tr_p_trigo.o
+                0x0015c5e0                CameraX
+ .bss.Yp        0x0015c5e4        0x2 obj_fork/tr_p_trigo.o
+                0x0015c5e4                Yp
+ .bss.Xp        0x0015c5e6        0x2 obj_fork/tr_p_trigo.o
+                0x0015c5e6                Xp
+ .bss.TypeProj  0x0015c5e8        0x2 obj_fork/tr_p_trigo.o
+                0x0015c5e8                TypeProj
+ .bss.compteur  0x0015c5ea        0x2 obj_fork/tr_p_trigo.o
+                0x0015c5ea                compteur
  .bss.offtabpoly
-                0x0015c5e8        0x8 obj_fork/tr_s_poly.o
+                0x0015c5ec        0x8 obj_fork/tr_s_poly.o
  .bss.flagrencadre
-                0x0015c5f0        0x2 obj_fork/tr_s_poly.o
+                0x0015c5f4        0x2 obj_fork/tr_s_poly.o
  .bss.newboucle
-                0x0015c5f2        0x2 obj_fork/tr_s_poly.o
- .bss.boucle    0x0015c5f4        0x2 obj_fork/tr_s_poly.o
- .bss.NbPolyPoints
                 0x0015c5f6        0x2 obj_fork/tr_s_poly.o
-                0x0015c5f6                NbPolyPoints
- .bss.TypePoly  0x0015c5f8        0x2 obj_fork/tr_s_poly.o
-                0x0015c5f8                TypePoly
- .bss.Ymax      0x0015c5fa        0x2 obj_fork/tr_s_poly.o
-                0x0015c5fa                Ymax
- .bss.Xmax      0x0015c5fc        0x2 obj_fork/tr_s_poly.o
-                0x0015c5fc                Xmax
- .bss.Ymin      0x0015c5fe        0x2 obj_fork/tr_s_poly.o
-                0x0015c5fe                Ymin
- .bss.Xmin      0x0015c600        0x2 obj_fork/tr_s_poly.o
-                0x0015c600                Xmin
- .bss.LYmax     0x0015c602        0x4 obj_fork/tr_texture.o
-                0x0015c602                LYmax
- .bss.LYmin     0x0015c606        0x4 obj_fork/tr_texture.o
-                0x0015c606                LYmin
- *fill*         0x0015c60a        0x2 
- .bss           0x0015c60c       0x34 /marsdev/mars/m68k-elf/bin/../lib/gcc/m68k-elf/15.2.0/../../../../m68k-elf/lib/libc.a(lib_a-mallocr.o)
-                0x0015c60c                __malloc_current_mallinfo
-                0x0015c634                __malloc_max_total_mem
-                0x0015c638                __malloc_max_sbrked_mem
-                0x0015c63c                __malloc_top_pad
- .bss           0x0015c640        0x4 /marsdev/mars/m68k-elf/bin/../lib/gcc/m68k-elf/15.2.0/../../../../m68k-elf/lib/libc.a(lib_a-reent.o)
-                0x0015c640                errno
+ .bss.boucle    0x0015c5f8        0x2 obj_fork/tr_s_poly.o
+ .bss.NbPolyPoints
+                0x0015c5fa        0x2 obj_fork/tr_s_poly.o
+                0x0015c5fa                NbPolyPoints
+ .bss.TypePoly  0x0015c5fc        0x2 obj_fork/tr_s_poly.o
+                0x0015c5fc                TypePoly
+ .bss.Ymax      0x0015c5fe        0x2 obj_fork/tr_s_poly.o
+                0x0015c5fe                Ymax
+ .bss.Xmax      0x0015c600        0x2 obj_fork/tr_s_poly.o
+                0x0015c600                Xmax
+ .bss.Ymin      0x0015c602        0x2 obj_fork/tr_s_poly.o
+                0x0015c602                Ymin
+ .bss.Xmin      0x0015c604        0x2 obj_fork/tr_s_poly.o
+                0x0015c604                Xmin
+ .bss.LYmax     0x0015c606        0x4 obj_fork/tr_texture.o
+                0x0015c606                LYmax
+ .bss.LYmin     0x0015c60a        0x4 obj_fork/tr_texture.o
+                0x0015c60a                LYmin
+ *fill*         0x0015c60e        0x2 
+ .bss           0x0015c610       0x34 /marsdev/mars/m68k-elf/bin/../lib/gcc/m68k-elf/15.2.0/../../../../m68k-elf/lib/libc.a(lib_a-mallocr.o)
+                0x0015c610                __malloc_current_mallinfo
+                0x0015c638                __malloc_max_total_mem
+                0x0015c63c                __malloc_max_sbrked_mem
+                0x0015c640                __malloc_top_pad
+ .bss           0x0015c644        0x4 /marsdev/mars/m68k-elf/bin/../lib/gcc/m68k-elf/15.2.0/../../../../m68k-elf/lib/libc.a(lib_a-reent.o)
+                0x0015c644                errno
  *(COMMON)
- COMMON         0x0015c644        0x8 obj_fork/game_DISKFUNC.o
-                0x0015c644                PtrScene
-                0x0015c648                PtrSce
- COMMON         0x0015c64c        0xe obj_fork/game_FICHE.o
-                0x0015c64c                M_Xmax
-                0x0015c64e                SearchPtrAnimAction
-                0x0015c652                M_Ymin
-                0x0015c654                M_Zmax
-                0x0015c656                M_Zmin
-                0x0015c658                M_Ymax
- COMMON         0x0015c65a      0xe10 obj_fork/game_FLIPBOX.o
-                0x0015c65a                OptListBox
-                0x0015cfba                NewListBox
- COMMON         0x0015d46a      0x342 obj_fork/game_GAMEMENU.o
-                0x0015d46a                TimerSample
-                0x0015d46e                Ptr3do
-                0x0015d472                RealRot
-                0x0015d47c                PlayerName
-                0x0015d49a                TabAnim
-                0x0015d4a2                ListBetaGame
-                0x0015d6a0                GamePathname
-                0x0015d7a4                FrameAnim
- COMMON         0x0015d7ac        0x6 obj_fork/game_GERELIFE.o
-                0x0015d7ac                PtrPrg
-                0x0015d7b0                TypeAnswer
- COMMON         0x0015d7b2     0x5478 obj_fork/game_GLOBAL.o
-                0x0015d7b2                AnimRienDiscret
-                0x0015d7b4                Value
-                0x0015d7b6                MasterVolume
-                0x0015d7ba                SampleRepeat
-                0x0015d7c2                PtrFile3dNormal
-                0x0015d7c6                SampleVolume
-                0x0015d7ca                SceneStartZ
-                0x0015d7cc                CubeStartY
-                0x0015d7ce                Screen
-                0x0015d7d2                BufSpeak
-                0x0015d7d6                OrgDrive
-                0x0015d7da                ShadowX
-                0x0015d7dc                ShadowZ
-                0x0015d7de                SceneStartX
-                0x0015d7e0                RealFalling
-                0x0015d7ea                ListObjet
-                0x00160c42                AnimRienProtopack
-                0x00160c44                LineVolume
-                0x00160c48                AnimRienSportif
-                0x00160c4a                PtrFile3dSportif
-                0x00160c4e                ListFlagGame
-                0x00160d4d                Name
-                0x00160e4e                LbaFont
-                0x00160e52                ProgDrive
-                0x00160e56                HQRPtrSpriteExtra
-                0x00160e5a                MusicVolume
-                0x00160e5e                PtrBufferAnim
-                0x00160e62                ListIncrustDisp
-                0x00160f02                AnimRienAgressif
-                0x00160f04                PtrFile3dAgressif
-                0x00160f08                CubeStartZ
-                0x00160f0a                PtrZvExtra
-                0x00160f0e                PtrFile3dProtopack
-                0x00160f12                CubeStartX
-                0x00160f14                GameListChoice
-                0x00160f28                GameChoice
-                0x00160f2a                PtrFile3dDiscret
-                0x00160f2e                HQR_Midi
-                0x00160f32                Ext
-                0x00161032                CDVolume
-                0x00161036                HQR_Anims
-                0x0016103a                ListFlagInventory
-                0x00161056                ListHoloPos
-                0x0016105a                ShadowY
-                0x0016105c                ProgDir
-                0x0016115c                ListTri
-                0x00161864                GameNbChoices
-                0x00161866                String
-                0x00161966                SampleRnd
-                0x0016196e                ListBrickTrack
-                0x00161972                ShadowCol
-                0x00161974                PtrBody
-                0x00161c94                SampleAmbiance
-                0x00161c9c                BufferAnim
-                0x00161ca0                PleaseWait
-                0x00161cdc                ListExtra
-                0x00162380                BufferShadow
-                0x00162384                PalettePcx
-                0x00162878                LastValidPerso
-                0x001628fe                OrgDir
-                0x001629fe                TabHoloPos
-                0x00162a94                AnimRienNormal
-                0x00162a96                PathFla
-                0x00162b9a                PtrPal
-                0x00162b9e                ListFlagCube
-                0x00162bee                ListZone
-                0x00162bf2                NewPosZ
-                0x00162bf4                NewPosX
-                0x00162bf6                SceneStartY
-                0x00162bf8                InventoryObj
-                0x00162bfc                ListAuxFlagCube
-                0x00162c24                NewPosY
-                0x00162c26                HQR_Samples
- COMMON         0x00162c2a       0xf0 obj_fork/game_HOLOMAP.o
-                0x00162c2a                PtrTri
-                0x00162c2e                LastPtr
-                0x00162c32                PtrHoloFleche
-                0x00162c36                ListTraj
-                0x00162c3a                RotPal
-                0x00162cf8                CamGamma
-                0x00162cfa                PtrMap
-                0x00162cfe                PtrAlt
-                0x00162d02                PtrCone
-                0x00162d06                PtrCoorGlobe
-                0x00162d0a                PtrHoloBodyFleche
-                0x00162d0e                PtrHoloBody
-                0x00162d12                CamBeta
-                0x00162d14                PtrGlobe
-                0x00162d18                CamAlpha
- COMMON         0x00162d1a      0x446 obj_fork/game_MESSAGE.o
-                0x00162d1a                MaxText
-                0x00162d1c                TabFileOnHD
- COMMON         0x00163160        0x4 obj_fork/game_MSG_CUST.o
-                0x00163160                _customMultiTextFile
- COMMON         0x00163164       0x1a obj_fork/game_OBJECT.o
-                0x00163164                OldZ
-                0x00163166                AnimNumObj
-                0x00163168                Nxw
-                0x0016316a                SaveNyw
-                0x0016316c                OldY
-                0x0016316e                Nyw
-                0x00163170                APtObj
-                0x00163174                Nzw
-                0x00163176                OldX
-                0x00163178                SaveNzw
-                0x0016317a                Col1
-                0x0016317c                SaveNxw
- COMMON         0x0016317e       0x14 obj_fork/game_PERSO.o
-                0x0016317e                AnimMem
-                0x00163182                PersoInvulnerableTimer
-                0x00163186                SampleMem
-                0x0016318a                ValidPositionTimer
-                0x0016318e                SpriteMem
- COMMON         0x00163192       0x28 obj_fork/sys_DIVERS.o
-                0x00163192                ItoaTempoString
- COMMON         0x001631ba     0x3e80 obj_fork/tr_p_ob_iso.o
-                0x001631ba                List_Anim_Point
-                0x00163d72                List_Entity
-                0x00166482                List_Point
- COMMON         0x0016703a      0x438 obj_fork/tr_p_trigo.o
-                0x0016703a                TabMat
- COMMON         0x00167472     0x1680 obj_fork/tr_s_poly.o
-                0x00167472                TabX1
-                0x00167832                TabCoulD
-                0x00167bf2                TabCoulG
-                0x00167fb2                TabVerticD
-                0x00168372                TabVerticG
-                0x00168732                TabY1
- COMMON         0x00168af2       0xc0 obj_fork/tr_texture.o
-                0x00168af2                TabText
-                0x00168bb2                        . = ALIGN (0x2)
-                0x00168bb2                        __bss_end = .
-                0x00168bb2                        __heap_start = __bss_end
+ COMMON         0x0015c648        0x8 obj_fork/game_DISKFUNC.o
+                0x0015c648                PtrScene
+                0x0015c64c                PtrSce
+ COMMON         0x0015c650        0xe obj_fork/game_FICHE.o
+                0x0015c650                M_Xmax
+                0x0015c652                SearchPtrAnimAction
+                0x0015c656                M_Ymin
+                0x0015c658                M_Zmax
+                0x0015c65a                M_Zmin
+                0x0015c65c                M_Ymax
+ COMMON         0x0015c65e      0xe10 obj_fork/game_FLIPBOX.o
+                0x0015c65e                OptListBox
+                0x0015cfbe                NewListBox
+ COMMON         0x0015d46e      0x342 obj_fork/game_GAMEMENU.o
+                0x0015d46e                TimerSample
+                0x0015d472                Ptr3do
+                0x0015d476                RealRot
+                0x0015d480                PlayerName
+                0x0015d49e                TabAnim
+                0x0015d4a6                ListBetaGame
+                0x0015d6a4                GamePathname
+                0x0015d7a8                FrameAnim
+ COMMON         0x0015d7b0        0x6 obj_fork/game_GERELIFE.o
+                0x0015d7b0                PtrPrg
+                0x0015d7b4                TypeAnswer
+ COMMON         0x0015d7b6     0x5478 obj_fork/game_GLOBAL.o
+                0x0015d7b6                AnimRienDiscret
+                0x0015d7b8                Value
+                0x0015d7ba                MasterVolume
+                0x0015d7be                SampleRepeat
+                0x0015d7c6                PtrFile3dNormal
+                0x0015d7ca                SampleVolume
+                0x0015d7ce                SceneStartZ
+                0x0015d7d0                CubeStartY
+                0x0015d7d2                Screen
+                0x0015d7d6                BufSpeak
+                0x0015d7da                OrgDrive
+                0x0015d7de                ShadowX
+                0x0015d7e0                ShadowZ
+                0x0015d7e2                SceneStartX
+                0x0015d7e4                RealFalling
+                0x0015d7ee                ListObjet
+                0x00160c46                AnimRienProtopack
+                0x00160c48                LineVolume
+                0x00160c4c                AnimRienSportif
+                0x00160c4e                PtrFile3dSportif
+                0x00160c52                ListFlagGame
+                0x00160d51                Name
+                0x00160e52                LbaFont
+                0x00160e56                ProgDrive
+                0x00160e5a                HQRPtrSpriteExtra
+                0x00160e5e                MusicVolume
+                0x00160e62                PtrBufferAnim
+                0x00160e66                ListIncrustDisp
+                0x00160f06                AnimRienAgressif
+                0x00160f08                PtrFile3dAgressif
+                0x00160f0c                CubeStartZ
+                0x00160f0e                PtrZvExtra
+                0x00160f12                PtrFile3dProtopack
+                0x00160f16                CubeStartX
+                0x00160f18                GameListChoice
+                0x00160f2c                GameChoice
+                0x00160f2e                PtrFile3dDiscret
+                0x00160f32                HQR_Midi
+                0x00160f36                Ext
+                0x00161036                CDVolume
+                0x0016103a                HQR_Anims
+                0x0016103e                ListFlagInventory
+                0x0016105a                ListHoloPos
+                0x0016105e                ShadowY
+                0x00161060                ProgDir
+                0x00161160                ListTri
+                0x00161868                GameNbChoices
+                0x0016186a                String
+                0x0016196a                SampleRnd
+                0x00161972                ListBrickTrack
+                0x00161976                ShadowCol
+                0x00161978                PtrBody
+                0x00161c98                SampleAmbiance
+                0x00161ca0                BufferAnim
+                0x00161ca4                PleaseWait
+                0x00161ce0                ListExtra
+                0x00162384                BufferShadow
+                0x00162388                PalettePcx
+                0x0016287c                LastValidPerso
+                0x00162902                OrgDir
+                0x00162a02                TabHoloPos
+                0x00162a98                AnimRienNormal
+                0x00162a9a                PathFla
+                0x00162b9e                PtrPal
+                0x00162ba2                ListFlagCube
+                0x00162bf2                ListZone
+                0x00162bf6                NewPosZ
+                0x00162bf8                NewPosX
+                0x00162bfa                SceneStartY
+                0x00162bfc                InventoryObj
+                0x00162c00                ListAuxFlagCube
+                0x00162c28                NewPosY
+                0x00162c2a                HQR_Samples
+ COMMON         0x00162c2e       0xf0 obj_fork/game_HOLOMAP.o
+                0x00162c2e                PtrTri
+                0x00162c32                LastPtr
+                0x00162c36                PtrHoloFleche
+                0x00162c3a                ListTraj
+                0x00162c3e                RotPal
+                0x00162cfc                CamGamma
+                0x00162cfe                PtrMap
+                0x00162d02                PtrAlt
+                0x00162d06                PtrCone
+                0x00162d0a                PtrCoorGlobe
+                0x00162d0e                PtrHoloBodyFleche
+                0x00162d12                PtrHoloBody
+                0x00162d16                CamBeta
+                0x00162d18                PtrGlobe
+                0x00162d1c                CamAlpha
+ COMMON         0x00162d1e      0x446 obj_fork/game_MESSAGE.o
+                0x00162d1e                MaxText
+                0x00162d20                TabFileOnHD
+ COMMON         0x00163164        0x4 obj_fork/game_MSG_CUST.o
+                0x00163164                _customMultiTextFile
+ COMMON         0x00163168       0x1a obj_fork/game_OBJECT.o
+                0x00163168                OldZ
+                0x0016316a                AnimNumObj
+                0x0016316c                Nxw
+                0x0016316e                SaveNyw
+                0x00163170                OldY
+                0x00163172                Nyw
+                0x00163174                APtObj
+                0x00163178                Nzw
+                0x0016317a                OldX
+                0x0016317c                SaveNzw
+                0x0016317e                Col1
+                0x00163180                SaveNxw
+ COMMON         0x00163182       0x14 obj_fork/game_PERSO.o
+                0x00163182                AnimMem
+                0x00163186                PersoInvulnerableTimer
+                0x0016318a                SampleMem
+                0x0016318e                ValidPositionTimer
+                0x00163192                SpriteMem
+ COMMON         0x00163196       0x28 obj_fork/sys_DIVERS.o
+                0x00163196                ItoaTempoString
+ COMMON         0x001631be     0x3e80 obj_fork/tr_p_ob_iso.o
+                0x001631be                List_Anim_Point
+                0x00163d76                List_Entity
+                0x00166486                List_Point
+ COMMON         0x0016703e      0x438 obj_fork/tr_p_trigo.o
+                0x0016703e                TabMat
+ COMMON         0x00167476     0x1680 obj_fork/tr_s_poly.o
+                0x00167476                TabX1
+                0x00167836                TabCoulD
+                0x00167bf6                TabCoulG
+                0x00167fb6                TabVerticD
+                0x00168376                TabVerticG
+                0x00168736                TabY1
+ COMMON         0x00168af6       0xc0 obj_fork/tr_texture.o
+                0x00168af6                TabText
+                0x00168bb6                        . = ALIGN (0x2)
+                0x00168bb6                        __bss_end = .
+                0x00168bb6                        __heap_start = __bss_end
                 0x001c9000                        __heap_end = 0x1c9000
 
 /DISCARD/

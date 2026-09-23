@@ -18,6 +18,12 @@
 
 #include "translate.h"
 
+#ifdef PORT_JAG
+#define BANK_OFF(b, n) JAG_BANK_OFF(b, n) /* JAGUAR_PORT.md #12 */
+#else
+#define BANK_OFF(b, n) (((ULONG *)(b))[n])
+#endif
+
 static UBYTE BufferClip[512];
 static UBYTE ColMask = 0;       /* Noir par defaut */
 
@@ -40,7 +46,7 @@ void AffMask(LONG nummask, LONG xmask, LONG ymask, void *bankmask)
 	UBYTE skip, draw;
 	LONG n;
 
-	pData = (UBYTE *)bankmask + ((ULONG *)bankmask)[nummask];
+	pData = (UBYTE *)bankmask + BANK_OFF(bankmask, nummask);
 
 	x = xmask + pData[2];       /* Hot X */
 	y = ymask + pData[3];       /* Hot Y */
@@ -178,7 +184,7 @@ void GetDxDyMask(LONG num, LONG *dx, LONG *dy, void *bankmask)
 {
 	UBYTE *pData;
 
-	pData = (UBYTE *)bankmask + ((ULONG *)bankmask)[num];
+	pData = (UBYTE *)bankmask + BANK_OFF(bankmask, num);
 	*dx = (LONG)pData[0];
 	*dy = (LONG)pData[1];
 }

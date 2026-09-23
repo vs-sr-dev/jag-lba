@@ -900,6 +900,20 @@ void InitDial(LONG file)
 	Load_HQR(FileText, BufText,
 			 (Language * MAX_TEXT_LANG * 2) + (file * 2) + 1);
 
+#ifdef PORT_JAG
+	/* Both indexes are little-endian WORDs read natively: BufOrder by
+	 * FindText, the offset table at the head of BufText by GetText (one
+	 * more entry than there are texts: the end of the last). Swapped once
+	 * here, as LoadScene does for zones and tracks (JAGUAR_PORT.md #8). */
+	for (i = 0; i < MaxText; i++)
+		BufOrder[i] = (UWORD)((BufOrder[i] >> 8) | (BufOrder[i] << 8));
+	for (i = 0; i <= MaxText && MaxText; i++)
+	{
+		UWORD *w = (UWORD *)BufText + i;
+		*w = (UWORD)((*w >> 8) | (*w << 8));
+	}
+#endif
+
 // #endif
 
 	if (FlagSpeak)

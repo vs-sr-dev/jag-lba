@@ -32,6 +32,9 @@
     .68000
     .include "jaguar.inc"
     .include "dram_map.inc"
+
+; S52: cornice dell'ultima eccezione del 68000, scritta da ExcCommon (36 byte)
+EXC_SAVE        EQU SPARE_LO
     .include "cart_map.inc"
 
 ; Prova a mano del percorso di guasto (criterio M0). Mettere a:
@@ -1245,6 +1248,17 @@ ExcOther:   moveq   #20, d1
 ;---------------------------------------------------------------------------
 ExcCommon:
     move.w  #$2700, sr
+    ; S52: la cornice dell'eccezione prima di azzerare lo stack. EXC_SAVE+0 =
+    ; a7 al momento del guasto, +4.. = 32 byte da (a7): per Bus/Address Error
+    ; funzione(w) indirizzo(l) istruzione(w) SR(w) PC(l), per gli altri SR(w)
+    ; PC(l). Si legge da BigPEmu (emu_run -Watch 0x3400,...).
+    move.l  a7, EXC_SAVE
+    movea.l a7, a0
+    lea     EXC_SAVE+4, a1
+    moveq   #7, d0
+.ex_copy:
+    move.l  (a0)+, (a1)+
+    dbra    d0, .ex_copy
     move.l  #STACK_TOP, a7
     move.w  d1, EXC_BLINKS
     bsr     StopOnlyOpList
