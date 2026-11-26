@@ -100,6 +100,7 @@ void  Log_FrameOut(void);
 void  Log_Idle(void);
 void  Log_Boot(void);
 void  Log_End(WORD code, const char *msg);
+void  Log_Vals(const char *tag, const ULONG *v, int n);
 
 /* ===== INPUT =====
  * Il motore legge queste tre variabili in cima al MainLoop. Le riempie

@@ -2592,8 +2592,20 @@ static void pose_load(const T_OBJET *o, const T_BODY3D *b)
      * `(UWORD)-1` sarebbe sempre fuori dall'animazione e fermerebbe il gioco. */
     snap = (o->AnimSrcFrame < 0) ? o->PtrPoseSrc : 0;
 
-    if ((UWORD)o->Frame >= nbf || (!snap && (UWORD)o->AnimSrcFrame >= nbf))
+    if ((UWORD)o->Frame >= nbf || (!snap && (UWORD)o->AnimSrcFrame >= nbf)) {
+        /* S53: chi e con che valori, su COM8 (riga I prima della E). */
+        ULONG v[8];
+        v[0] = (ULONG)(o - ListObjet);
+        v[1] = (ULONG)(UWORD)o->Anim;
+        v[2] = (ULONG)(UWORD)o->Frame;
+        v[3] = (ULONG)(UWORD)o->AnimSrcFrame;
+        v[4] = nbf;
+        v[5] = ((ULONG)o->GenBody << 16) | o->GenAnim;
+        v[6] = (ULONG)(UWORD)o->Body;
+        v[7] = TimerRef;
+        Log_Vals("anim obj Anim Frame Src nbf GenBody|GenAnim Body tref", v, 8);
         TheEnd(TE_ANIM_BAD, "fotogramma fuori dall'animazione");
+    }
 
     stride = nba * 8 + 8;
     fd = anim + 8 + (long)stride * (UWORD)o->Frame;

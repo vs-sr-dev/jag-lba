@@ -1823,6 +1823,17 @@ void DoAnim(WORD numobj)
 					}
 					else /* ANIM[_ALL]_THEN */
 					{
+#ifdef PORT_JAG
+						/* PORT: the blend source is an INDEX here, not the pose
+						 * in the body: left alone it is the OLD animation's frame
+						 * read in the new one (TheEnd 0108 on hardware, S53:
+						 * obj 8, anim 79, Src 5 of 5). Photograph the pose just
+						 * reached instead, as InitAnim does. Body_InterDep has
+						 * set AnimSrcFrame to that frame, and Frame is already
+						 * past the end: put it back so the pose is that frame. */
+						APtObj->Frame = APtObj->AnimSrcFrame;
+						Jag_AnimSnap(numobj);    /* PORT: port/jag_anim.c */
+#endif
 						APtObj->GenAnim = APtObj->NextGenAnim;
 						APtObj->Anim = SearchAnim(APtObj->GenAnim, numobj);
 						if (APtObj->Anim == -1)

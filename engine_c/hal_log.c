@@ -340,6 +340,25 @@ void Log_Boot(void)
     log_line(lg_buf);
 }
 
+/* Una riga "I tag v0 v1 ...": il contesto di un guasto, mandato SUBITO prima
+ * di TheEnd, che da solo dice cosa ma non chi. */
+void Log_Vals(const char *tag, const ULONG *v, int n)
+{
+    char *o = lg_buf;
+    int i;
+
+    *o++ = 'I';
+    *o++ = ' ';
+    while (*tag && o < lg_buf + 40)
+        *o++ = *tag++;
+    for (i = 0; i < n && i < 12; i++) {
+        *o++ = ' ';
+        o = put_hex(o, v[i], 8);
+    }
+    *o = 0;
+    log_line(lg_buf);
+}
+
 void Log_End(WORD code, const char *msg)
 {
     char *o = lg_buf;

@@ -1446,7 +1446,13 @@ void Bg_Show(WORD cgx, WORD cgy, WORD cgz)
     render(BgStat.vx, BgStat.vy);   /* l'azzeramento cancella i quadratini */
     BgStat.t_render = (UWORD)(JAG_HAL_VBL_TICK - t0);
 
+    /* S53: la sonda (riquadro, somme di Fletcher, pixel non nulli su tutti i
+     * 379 KB del fondo) serve solo alle attese di M2 del percorso S50. Nel
+     * gioco del fork nessuno la legge, e sul ferro era ~9 dei 9,8 s di ogni
+     * ridisegno completo (profiler a campionamento, primo giro su COM8). */
+#if !defined(JAG_FORK) || !JAG_FORK
     Bg_Measure();
+#endif
     bg_shown = 1;
 
     /* Il fondo c'e': BG smette di dire "sto caricando". Vedi JAG_BG_REG. */

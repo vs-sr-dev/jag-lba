@@ -150,6 +150,17 @@ void TheEnd(WORD code, const char *msg)
     exit(2);
 }
 
+/* S53: sul Jaguar va su COM8 (hal_log.c); qui il contesto di un guasto. */
+void Log_Vals(const char *tag, const ULONG *v, int n)
+{
+    int i;
+
+    fprintf(stderr, "I %s", tag);
+    for (i = 0; i < n; i++)
+        fprintf(stderr, " %08lX", (unsigned long)v[i]);
+    fprintf(stderr, "\n");
+}
+
 /* M6: `Body_AnimTick` la chiama nel ramo ANIM_THEN, cioe' quando
  * un'animazione FINISCE e ne comincia una prenotata. La vera SearchAnim sta in
  * scene_load.c e legge la fiche FILE3D dell'attore, che nel dump non c'e': il

@@ -44,6 +44,12 @@ EXC_SAVE        EQU SPARE_LO
 ;       boot                                   la stessa eccezione della V4)
 FORCE_EXCEPTION EQU 0
 
+; S53: tappe del boot. 1 = sei passi del boot nuovo (prima del video) scrivono
+; BG alternando bianco e un colore, con ~0,3 s di pausa: il colore su cui lo
+; schermo si ferma dice dove si pianta, contando i cambi. Il BIOS lascia il
+; video acceso, quindi BG si vede anche prima di InitVideoTiming.
+BOOT_MARKS      EQU 0
+
 ; Scrittura della tabella video COMPLETA (18 registri) invece dei soli 9 che
 ; V4 e V6-M0 scrivevano. Mettere a 0 per tornare al comportamento precedente.
 ; Vedi il blocco "Perche' i 18 registri" sotto InitVideoTiming.
@@ -400,57 +406,53 @@ Start:
     move.w  #$2700, sr                      ; interrupt mascherati per tutto il boot
     move.l  #STACK_TOP, a7
 
+; S53: tappe del boot nel registro BG (vedi BootMark).
+    .if BOOT_MARKS=1
+    move.w  #$FFFF, d6
+    bsr     BootMark
+    .endif
 ;---------------------------------------------------------------------------
-; S53: SEQUENZA DI QUIETE. Con la GameDrive una ROM parte dopo un reboot via
-; USB, e la GPU, il DSP, gli interrupt e il Blitter della ROM precedente sono
-; ancora vivi (JaguarDocs metodi/gamedrive_usb.md 5). L'ordine conta: INT1
-; azzera i pendenti PRIMA di INT2=0 - l'ordine inverso lascia ihandler alto e
-; ferma GPU e Blitter. L'attesa del Blitter ha un tetto.
+; S53: NIENTE SEQUENZA DI QUIETE. La KB la raccomanda per le ROM lanciate
+; DOPO un'altra senza passare dal BIOS (gamedrive_usb.md 5: GPU, DSP,
+; interrupt e Blitter della ROM precedente restano vivi). Qui si passa SEMPRE
+; dal BIOS (jaggd run, exec $FFFFFFFF, o la scheda SD), come in S50-S52.
+; Provata in S53 (G_CTRL=0, D_CTRL=0, INT1=$1F00, INT2=0, attesa del Blitter
+; con un tetto) e tolta durante la caccia ai boot neri; la bisezione ha poi
+; indicato l'azzeramento LUNGO (vedi sotto), quindi la quiete e' con ogni
+; probabilita' INNOCENTE. Se servira' - un lancio senza BIOS, `upload --exec` -
+; si rimette e si riprova sul ferro dopo un crash.
 ;---------------------------------------------------------------------------
-    move.l  #0, G_CTRL                      ; GPU ferma
-    move.l  #0, D_CTRL                      ; DSP fermo
-    move.w  #$1F00, INT1                    ; tutti i pendenti azzerati, nessuna sorgente
-    move.w  #0, INT2
-    move.l  #200000, d0
-.st_blit:
-    move.l  B_CMD, d1
-    btst    #0, d1                          ; bit 0 = Blitter inattivo
-    bne.s   .st_blit_ok
-    subq.l  #1, d0
-    bne.s   .st_blit
-.st_blit_ok:
-; E si azzera quel che il codice nuovo legge prima di scrivere: le variabili
-; dell'HAL (contatori del canale, del profiler, del DSP) e i cassetti del
-; profiler. Il resto della DRAM lo inizializza chi lo usa, come prima.
+    .if BOOT_MARKS=1
+    move.w  #$F800, d6
+    bsr     BootMark
+    .endif
+; E si azzerano i CAMPI DICHIARATI dell'HAL (HAL_VARS..HAL_FIELDS_END, 144
+; byte), cioe' quel che il codice legge prima di scrivere: contatori del
+; canale, del profiler e del DSP, campi degli sprite. Senza, sul ferro dopo una
+; ROM precedente si vedevano righe nero-verdi sopra il gioco (sprite dell'OP
+; armati con lo sporco di prima).
 ;
-; SOLO SUL FERRO tutti i 4+8 KB. Su BigPEmu i due cicli lunghi rompono il menu
-; (righe dei due campi sfalsate, banda verde in mezzo), e non per quel che
-; azzerano: bisezione di S53, rompe azzerare la sola HAL e rompe azzerare i
-; soli cassetti, due zone senza niente in comune, mentre azzerare i soli campi
-; dichiarati no. Conta il TEMPO del boot: su BigPEmu il secondo campo si arma
-; sorvegliando HEIGHT e la fase del primo dipende da quando si accende il
-; video (IPOTESI, non verificata oltre: BigPEmu non e' il bersaglio del 480i).
-; Sul ferro il campo lo dice il bit 11 di VC. All'emulatore bastano i campi.
-    .if TARGET_HW=1
-    lea     HAL_VARS, a0
-    move.w  #(HAL_VARS_SIZE/4)-1, d0
-.st_hal:
-    clr.l   (a0)+
-    dbra    d0, .st_hal
-    lea     PROF_BINS, a0
-    move.w  #(PROF_BINS_SIZE/4)-1, d0
-.st_prof:
-    clr.l   (a0)+
-    dbra    d0, .st_prof
-    .else
+; CORTO, e non per risparmio. Azzerare tutti i 4 KB dell'HAL e gli 8 KB dei
+; cassetti del profiler piantava il boot sul ferro dopo un crash o una ROM
+; bloccata (nero, nessuna riga: 0 su 4), e su BigPEmu sfalsava i campi del
+; menu; i soli campi no, su nessuno dei due (S53, bisezioni). Il perche' NON
+; e' capito. I cassetti li azzera il C (hal_log.c, prof_clear) prima di
+; accendere il campionatore.
     lea     HAL_VARS, a0
     move.w  #((HAL_FIELDS_END-HAL_VARS)/4)-1, d0
 .st_hal:
     clr.l   (a0)+
     dbra    d0, .st_hal
+    .if BOOT_MARKS=1
+    move.w  #$FFFF, d6
+    bsr     BootMark
     .endif
 
     bsr     InitVectors
+    .if BOOT_MARKS=1
+    move.w  #$F800, d6
+    bsr     BootMark
+    .endif
 
 ; S53: il canale COM8 (src/gd.s). Ogni attesa ha un tetto: senza GameDrive, o
 ; con un firmware vecchio, GD_BIOS resta 0 e il gioco prosegue muto. Solo sul
@@ -467,10 +469,18 @@ Start:
 .st_gdcopy:
     move.l  (a0)+, (a1)+
     dbra    d0, .st_gdcopy
+    .if BOOT_MARKS=1
+    move.w  #$FFFF, d6
+    bsr     BootMark
+    .endif
     .if TARGET_HW=1
     lea     GD_CODE, a0
     adda.l  #GdInstall-GdBlock, a0
     jsr     (a0)
+    .endif
+    .if BOOT_MARKS=1
+    move.w  #$F800, d6
+    bsr     BootMark
     .endif
     bsr     InitVideoTiming
     bsr     VideoOnMinimal                  ; da qui in poi un blocco si VEDE
@@ -1380,6 +1390,16 @@ ExcCommon:
     subq.w  #1, d3
     bne.s   .ex_pause
     bra.s   .ex_cycle
+
+BootMark:                                   ; d6 = colore; solo con BOOT_MARKS
+    movem.l d0-d1, -(sp)
+    move.w  d6, BG
+    moveq   #2, d1
+.bm_wait:
+    bsr     ExcDelay
+    dbra    d1, .bm_wait
+    movem.l (sp)+, d0-d1
+    rts
 
 ExcDelay:
     move.l  #$18000, d0
