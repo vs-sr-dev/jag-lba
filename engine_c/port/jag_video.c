@@ -166,6 +166,10 @@ void Vsync(void)
         if (++spin > 4000000UL)
             TheEnd(TE_VBL_DEAD, "Vsync");
     }
+
+    /* S53: dialoghi e menu non passano da AffScene; la riga al secondo esce
+     * lo stesso, con f=0 (hal_log.c). Dentro AffScene non fa niente. */
+    Log_Idle();
 }
 
 void Flip(void)

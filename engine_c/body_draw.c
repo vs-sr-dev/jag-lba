@@ -322,7 +322,12 @@ static void spr_clear(void)
  * NUMERI, non i tempi.
  * ------------------------------------------------------------------------- */
 #if BODY_FILL_ON_GPU
-#define BODY_CLOCK  ((ULONG)JAG_HAL_VBL_TICK)
+/* S53: in MEZZE RIGHE (hal_log.c), non piu' in tick. Il tick da 1/60 s era piu'
+ * grosso della maggior parte degli stadi di una passata: le somme si reggevano
+ * solo sul profilo a ripetizione. Le pagine di diagnostica che li mostrano ora
+ * leggono mezze righe (x525 per campo); la soglia del profilo con OPTION resta
+ * in tick (engine_main.c, BODY_PROFILE_TICKS). */
+#define BODY_CLOCK  Jag_Time()
 #else
 #define BODY_CLOCK  0UL
 #endif

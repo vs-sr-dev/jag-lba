@@ -995,6 +995,9 @@ ULONG engine_init(void)
 #endif
     sc_tail  = (ULONG)(Scene.tail - (long)(UWORD)Scene.NbBrickTrack * 6);
 
+    /* S53: la prima riga su COM8 (stato della GameDrive, cadenza, taratura). */
+    Log_Boot();
+
     /* Il fondo NON si costruisce qui. Vedi engine_frame. */
     return JAG_ENGINE_MAGIC;
 }

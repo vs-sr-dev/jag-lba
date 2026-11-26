@@ -40,20 +40,28 @@ void Jag_AffScene(LONG flagflip)
 {
     WORD n;
 
+    /* S53: le fasi del quadro in mezze righe, per la riga al secondo su COM8
+     * (hal_log.c). Il tempo da qui al Log_FrameOut precedente e' la LOGICA. */
+    Log_FrameIn();
+
     for (n = Jag_FrameDelay; n > 0; n--)
         Vsync();
+    Log_Mark(LG_WAIT);
 
     Jag_SceneFromFork();
+    Log_Mark(LG_SYNC);
 
     if (flagflip) {
         SaveTimer();
         Bg_Show(Scene.CamGX, Scene.CamGY, Scene.CamGZ);
     }
+    Log_Mark(LG_BG);
 
     Body_DrawAll();
 
     if (flagflip)
         RestoreTimer();
+    Log_Mark(LG_BODY);
 
     if (FlagFade) {
         if (FlagPalettePcx)
@@ -62,4 +70,7 @@ void Jag_AffScene(LONG flagflip)
             FadeToPal(PtrPal);
         FlagFade = FALSE;
     }
+    Log_Mark(LG_FADE);
+
+    Log_FrameOut();
 }

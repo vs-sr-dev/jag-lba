@@ -87,6 +87,20 @@ extern volatile WORD  NbFramePerSecond;
 
 void Hal_UpdateTimerRef(void);   /* una volta per quadro, prima della logica */
 
+/* ===== IL CANALE COM8 (S53, hal_log.c) =====
+ * Jag_Time: mezze righe dal boot (31,778 us in NTSC), monotono. Le fasi del
+ * quadro si segnano da Jag_AffScene: Log_FrameIn in testa, Log_Mark(fase) alla
+ * fine di ogni fase, Log_FrameOut in coda (che una volta al secondo manda la
+ * riga S). Log_Idle dai cicli che non disegnano (Vsync). */
+enum { LG_LOGIC = 0, LG_WAIT, LG_SYNC, LG_BG, LG_BODY, LG_FADE, LG_SEND, LG_N };
+ULONG Jag_Time(void);
+void  Log_FrameIn(void);
+void  Log_Mark(int phase);
+void  Log_FrameOut(void);
+void  Log_Idle(void);
+void  Log_Boot(void);
+void  Log_End(WORD code, const char *msg);
+
 /* ===== INPUT =====
  * Il motore legge queste tre variabili in cima al MainLoop. Le riempie
  * Hal_ReadPad dal controller Jaguar. Non sono volatile: le scrive e le legge

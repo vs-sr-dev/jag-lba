@@ -68,7 +68,19 @@ DRAM = [
     # a 4). Non e' un margine di sicurezza inventato: e' il numero misurato piu'
     # dodici KB, presi dai sessantotto di SPARE_HI.
     ("JOB_STREAM",     0x1DD000, 0x008000, "flusso di poligoni e tratte per il lancio singolo (S34/S37)"),
-    ("SPARE_HI",       0x1E5000, 0x00B000, "margine alto (audio DSP, M7)"),
+    # S53, fase 0: il canale COM8. Il GD BIOS si scarica dalla GameDrive in un
+    # buffer di 4 KB allineato a long (l'immagine misurata e' $770 byte, gd.s
+    # rifiuta oltre GDB_BUF_SIZE); usa solo il 68000 e la porta SPI. Vedi
+    # D:\Homebrew6\JaguarDocs\metodi\gamedrive_usb.md 3.2.
+    ("GDB_BUF",        0x1E5000, 0x001000, "GD BIOS scaricato dalla GameDrive (S53)"),
+    # Il profiler a campionamento: ViHandler conta il PC interrotto in cassetti
+    # da 64 byte su tutto il codice in cartuccia ($802000-$842000, 4096 word).
+    # Il C li legge e li azzera ogni PROF_SECS secondi.
+    ("PROF_BINS",      0x1E6000, 0x002000, "profiler: cassetti del PC, una word ogni 64 byte di codice (S53)"),
+    # Il codice del canale (src/gd.s) gira da QUI, non dalla cartuccia: chiamato
+    # da codice in cartuccia, GdInstall bloccava il boot sul ferro (S53).
+    ("GD_CODE",        0x1E8000, 0x000400, "src/gd.s copiato in DRAM al boot (S53)"),
+    ("SPARE_HI",       0x1E8400, 0x007C00, "margine alto (audio DSP, M7)"),
     ("STACK",          0x1F0000, 0x010000, "stack 68000, top = fine DRAM"),
 ]
 
@@ -153,6 +165,25 @@ HAL_FIELDS = [
     # da uno script - logo, menu, un giro a piedi - senza mandare tasti al
     # desktop dell'utente. engine_init la azzera: sul ferro nessuno la scrive.
     ("EMU_PAD",         0x64, 4, "long: pulsanti dello script BigPEmu, OR sul pad (0 sul ferro)"),
+    # S53, fase 0: il canale COM8 (src/gd.s, da JaguarMI). GD_BIOS = base del
+    # GD BIOS o 0 (nessuna GameDrive, build per BigPEmu: non si manda niente);
+    # GD_SEND_FN = indirizzo di GdSendC per il C, o 0. GD_DROP e GD_TIMEOUT
+    # sono i contatori dr= e to= della riga al secondo: un giro con righe
+    # scartate non e' valido. Azzerati da Start prima di GdInstall.
+    ("GD_BIOS",         0x68, 4, "long: base del GD BIOS, 0 = nessuna GameDrive"),
+    ("GD_SEND_FN",      0x6C, 4, "long: GdSendC per il C, 0 = canale chiuso"),
+    ("GD_CALL_FN",      0x70, 4, "long: GdCallC per il C, 0 = canale chiuso"),
+    ("GD_DROP",         0x74, 4, "long: righe scartate (nessuno legge COM8)"),
+    ("GD_TIMEOUT",      0x78, 4, "long: byte andati in timeout sulla porta SPI"),
+    ("GD_VER",          0x7C, 4, "long: firmware (word alta) e ASIC (word bassa) della GD"),
+    ("GD_STATE",        0x80, 2, "word: 0 = GD BIOS installato, altro = dove e' fallito"),
+    ("GD_PEND",         0x82, 2, "word: risposta del micro ancora da raccogliere"),
+    # Il profiler. PROF_ON lo accende il C dopo aver azzerato i cassetti;
+    # ViHandler conta in PROF_N ogni campione e in PROF_OUT quelli fuori dal
+    # codice in cartuccia (oggi: solo il codice copiato in DRAM, cioe' niente).
+    ("PROF_ON",         0x84, 2, "word: 1 = ViHandler campiona il PC"),
+    ("PROF_N",          0x88, 4, "long: campioni presi"),
+    ("PROF_OUT",        0x8C, 4, "long: campioni fuori dai cassetti"),
 ]
 # Il joypad NON e' qui. Leggerlo e' superficie HAL, e il blob C puo' arrivare a
 # $F14000 come a qualunque altro indirizzo: farlo in C evita due campi in piu'
@@ -690,6 +721,10 @@ def gen_dram_inc():
     out.append("; Gli stessi offset escono in engine_c/mem_map.h come JAG_HAL_*.\n")
     for name, off, size, comment in HAL_FIELDS:
         out.append("%-20s EQU HAL_VARS+$%02X    ; %s\n" % (name, off, comment))
+    fields_end = max(off + size for _, off, size, _ in HAL_FIELDS)
+    fields_end = (fields_end + 3) & ~3
+    out.append("%-20s EQU HAL_VARS+$%02X    ; fine dei campi (long), S53\n"
+               % ("HAL_FIELDS_END", fields_end))
     out.append("\n; Argomenti della GPU TOM: superficie di contatto blob C <-> src/gpu_body.s.\n")
     out.append("; Gli stessi indirizzi escono in engine_c/mem_map.h come JAG_GPU_*.\n")
     for name, off, comment in gpu_slots():

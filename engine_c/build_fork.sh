@@ -86,7 +86,7 @@ JAG_CFLAGS="-m68000 -O2 -fomit-frame-pointer -ffreestanding -fno-builtin \
     -fno-tree-loop-distribute-patterns -ffunction-sections -fdata-sections \
     -Wall -Wextra -I."
 [ "$MODE" = blob ] && JAG_CFLAGS="$JAG_CFLAGS -DJAG_FORK=1"
-JAG="hal_debug hal_mem hal_time hal_input hal_hqr hal_panic scene_bg \
+JAG="hal_debug hal_mem hal_time hal_log hal_input hal_hqr hal_panic scene_bg \
      body_draw sprite_draw front_menu engine_main"
 PORT="jag_video jag_sys jag_hqr jag_stubs jag_config jag_libc jag_grille jag_layout_ours \
       jag_anim jag_scene jag_render jag_game"

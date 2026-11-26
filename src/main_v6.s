@@ -400,7 +400,78 @@ Start:
     move.w  #$2700, sr                      ; interrupt mascherati per tutto il boot
     move.l  #STACK_TOP, a7
 
+;---------------------------------------------------------------------------
+; S53: SEQUENZA DI QUIETE. Con la GameDrive una ROM parte dopo un reboot via
+; USB, e la GPU, il DSP, gli interrupt e il Blitter della ROM precedente sono
+; ancora vivi (JaguarDocs metodi/gamedrive_usb.md 5). L'ordine conta: INT1
+; azzera i pendenti PRIMA di INT2=0 - l'ordine inverso lascia ihandler alto e
+; ferma GPU e Blitter. L'attesa del Blitter ha un tetto.
+;---------------------------------------------------------------------------
+    move.l  #0, G_CTRL                      ; GPU ferma
+    move.l  #0, D_CTRL                      ; DSP fermo
+    move.w  #$1F00, INT1                    ; tutti i pendenti azzerati, nessuna sorgente
+    move.w  #0, INT2
+    move.l  #200000, d0
+.st_blit:
+    move.l  B_CMD, d1
+    btst    #0, d1                          ; bit 0 = Blitter inattivo
+    bne.s   .st_blit_ok
+    subq.l  #1, d0
+    bne.s   .st_blit
+.st_blit_ok:
+; E si azzera quel che il codice nuovo legge prima di scrivere: le variabili
+; dell'HAL (contatori del canale, del profiler, del DSP) e i cassetti del
+; profiler. Il resto della DRAM lo inizializza chi lo usa, come prima.
+;
+; SOLO SUL FERRO tutti i 4+8 KB. Su BigPEmu i due cicli lunghi rompono il menu
+; (righe dei due campi sfalsate, banda verde in mezzo), e non per quel che
+; azzerano: bisezione di S53, rompe azzerare la sola HAL e rompe azzerare i
+; soli cassetti, due zone senza niente in comune, mentre azzerare i soli campi
+; dichiarati no. Conta il TEMPO del boot: su BigPEmu il secondo campo si arma
+; sorvegliando HEIGHT e la fase del primo dipende da quando si accende il
+; video (IPOTESI, non verificata oltre: BigPEmu non e' il bersaglio del 480i).
+; Sul ferro il campo lo dice il bit 11 di VC. All'emulatore bastano i campi.
+    .if TARGET_HW=1
+    lea     HAL_VARS, a0
+    move.w  #(HAL_VARS_SIZE/4)-1, d0
+.st_hal:
+    clr.l   (a0)+
+    dbra    d0, .st_hal
+    lea     PROF_BINS, a0
+    move.w  #(PROF_BINS_SIZE/4)-1, d0
+.st_prof:
+    clr.l   (a0)+
+    dbra    d0, .st_prof
+    .else
+    lea     HAL_VARS, a0
+    move.w  #((HAL_FIELDS_END-HAL_VARS)/4)-1, d0
+.st_hal:
+    clr.l   (a0)+
+    dbra    d0, .st_hal
+    .endif
+
     bsr     InitVectors
+
+; S53: il canale COM8 (src/gd.s). Ogni attesa ha un tetto: senza GameDrive, o
+; con un firmware vecchio, GD_BIOS resta 0 e il gioco prosegue muto. Solo sul
+; ferro: su BigPEmu con "Force GD" l'Init del BIOS fa crashare la CPU.
+;
+; DALLA DRAM. Chiamato dal codice in cartuccia, GdInstall bloccava il boot sul
+; ferro: schermo nero, nessuna riga; la stessa ROM senza la chiamata partiva
+; (S53, bisezione sul ferro). La cartuccia E' la GameDrive, e tutti i progetti
+; che usano il canale eseguono dalla DRAM. Il blocco di gd.s e' indipendente
+; dalla posizione: si copia in GD_CODE e si chiama li'.
+    lea     GdBlock, a0
+    lea     GD_CODE, a1
+    move.w  #((GdBlockEnd-GdBlock+3)/4)-1, d0
+.st_gdcopy:
+    move.l  (a0)+, (a1)+
+    dbra    d0, .st_gdcopy
+    .if TARGET_HW=1
+    lea     GD_CODE, a0
+    adda.l  #GdInstall-GdBlock, a0
+    jsr     (a0)
+    .endif
     bsr     InitVideoTiming
     bsr     VideoOnMinimal                  ; da qui in poi un blocco si VEDE
     bsr     InitClut
@@ -947,6 +1018,37 @@ ViHandler:
     movem.l d0-d2, -(sp)
     addq.l  #1, VBL_TICK
 
+;---------------------------------------------------------------------------
+; S53: il profiler a campionamento. Il PC interrotto (nella cornice, sopra i
+; tre registri e a0) cade in un cassetto da 64 byte di tutto il codice in
+; cartuccia, ROM_CODE..fine di ROM_CBLOB; fuori (oggi niente, domani il codice
+; caldo copiato in DRAM) si conta e basta. Lo accende il C (hal_log.c), che
+; legge e azzera i cassetti. Campionare al VI e' agganciato alla fase del
+; video: per i TEMPI fanno fede i cronometri in mezze righe, questo dice DOVE.
+;---------------------------------------------------------------------------
+PROF_SPAN       EQU     ROM_CBLOB+ROM_CBLOB_SIZE-ROM_CODE
+; La parentesi NON e' cosmetica: RMAC legge "A = B*32" come "(A = B)*32"
+; (il confronto lega piu' della moltiplicazione), e l'assert cade.
+    .assert PROF_SPAN = (PROF_BINS_SIZE*32)
+    tst.w   PROF_ON
+    beq.s   .vh_noprof
+    move.l  a0, -(sp)
+    move.l  18(sp), d0                      ; PC: d0-d2 (12) + a0 (4) + SR (2)
+    sub.l   #ROM_CODE, d0
+    cmp.l   #PROF_SPAN, d0
+    bcc.s   .vh_prof_out                    ; senza segno: anche sotto ROM_CODE
+    lsr.l   #5, d0                          ; (PC>>6)*2, il cassetto e' una word
+    and.w   #$FFFE, d0
+    lea     PROF_BINS, a0
+    addq.w  #1, 0(a0,d0.l)
+    bra.s   .vh_prof_n
+.vh_prof_out:
+    addq.l  #1, PROF_OUT
+.vh_prof_n:
+    addq.l  #1, PROF_N
+    move.l  (sp)+, a0
+.vh_noprof:
+
     ; DIAGNOSTICA: fotografa l'oggetto del campo pari com'e' adesso, cioe' dopo
     ; che l'OP lo ha usato e prima che noi lo rimettiamo a posto.
     move.l  OP_BG_F0, DBG_F0_HI
@@ -1262,6 +1364,7 @@ ExcCommon:
     move.l  #STACK_TOP, a7
     move.w  d1, EXC_BLINKS
     bsr     StopOnlyOpList
+    bsr     ExcReport                       ; S53: la stessa cornice su COM8
 .ex_cycle:
     move.w  EXC_BLINKS, d2
 .ex_blink:
@@ -1284,6 +1387,121 @@ ExcDelay:
     subq.l  #1, d0
     bne.s   .exd
     rts
+
+;---------------------------------------------------------------------------
+; ExcReport (S53): la cornice dell'eccezione come riga su COM8,
+;   EXC v=vv pc=pppppppp sr=ssss ad=aaaaaaaa sp=ssssssss
+; v = numero del vettore (= i lampi; 14 = "tutti gli altri"), ad = indirizzo
+; d'accesso per Bus/Address Error (0 per gli altri). Senza GameDrive non fa
+; niente. Qui non c'e' piu' fretta: la risposta di una riga precedente e quella
+; di questa si aspettano con un tetto lungo (~secondi), perche' un micro
+; lasciato a meta' transazione ignora reboot e upload via USB fino a un ciclo
+; di accensione (gamedrive_usb.md, regola 3). I lampi restano il canale che
+; non dipende dalla GD (regola 7).
+;---------------------------------------------------------------------------
+EXC_LINE        EQU     SPARE_LO+$40        ; dopo EXC_SAVE (36 byte)
+
+ExcReport:
+    tst.l   GD_BIOS
+    beq     .er_done
+    tst.w   GD_PEND
+    beq.s   .er_free
+    bsr     ExcReply
+.er_free:
+    lea     EXC_LINE, a1
+    lea     ExcTxtV, a0
+    bsr     ExcPut
+    moveq   #0, d0
+    move.w  EXC_BLINKS, d0
+    moveq   #2, d2
+    bsr     ExcHex
+    moveq   #0, d3                          ; ad
+    moveq   #0, d4
+    move.w  EXC_BLINKS, d0
+    cmp.w   #2, d0
+    blo.s   .er_short
+    cmp.w   #3, d0
+    bhi.s   .er_short
+    move.l  EXC_SAVE+6, d3                  ; cornice lunga: indirizzo d'accesso
+    move.w  EXC_SAVE+12, d4                 ; SR
+    move.l  EXC_SAVE+14, d0                 ; PC
+    bra.s   .er_pc
+.er_short:
+    move.w  EXC_SAVE+4, d4                  ; cornice corta: SR, PC
+    move.l  EXC_SAVE+6, d0
+.er_pc:
+    lea     ExcTxtPc, a0
+    bsr     ExcPut
+    moveq   #8, d2
+    bsr     ExcHex
+    lea     ExcTxtSr, a0
+    bsr     ExcPut
+    move.l  d4, d0
+    moveq   #4, d2
+    bsr     ExcHex
+    lea     ExcTxtAd, a0
+    bsr     ExcPut
+    move.l  d3, d0
+    moveq   #8, d2
+    bsr     ExcHex
+    lea     ExcTxtSp, a0
+    bsr     ExcPut
+    move.l  EXC_SAVE, d0
+    moveq   #8, d2
+    bsr     ExcHex
+    clr.b   (a1)
+    pea     EXC_LINE
+    movea.l GD_SEND_FN, a2                  ; la copia in DRAM, mai quella in ROM
+    jsr     (a2)
+    addq.l  #4, sp
+    tst.w   GD_PEND
+    beq.s   .er_done
+    bsr     ExcReply
+.er_done:
+    rts
+
+ExcReply:                                   ; gd_reply della copia in DRAM, tetto lungo
+    lea     GD_CODE, a2
+    adda.l  #gd_reply-GdBlock, a2
+    move.l  #4000000, d1
+    jsr     (a2)
+    rts
+
+ExcPut:                                     ; a0 stringa C -> a1, a1 sul NUL
+    move.b  (a0)+, (a1)+
+    bne.s   ExcPut
+    subq.l  #1, a1
+    rts
+
+ExcHex:                                     ; d0 valore, d2 cifre (1..8) -> a1
+    move.l  d2, d1
+    lsl.w   #2, d1
+    ror.l   d1, d0                          ; la cifra alta in cima (ror 32 = niente)
+    subq.w  #1, d2
+    lea     ExcHexDig, a0
+.eh_dig:
+    rol.l   #4, d0
+    move.w  d0, d1
+    and.w   #$F, d1
+    move.b  0(a0,d1.w), (a1)+
+    dbra    d2, .eh_dig
+    rts
+
+ExcHexDig:  dc.b    "0123456789ABCDEF"
+ExcTxtV:    dc.b    "EXC v=",0
+ExcTxtPc:   dc.b    " pc=",0
+ExcTxtSr:   dc.b    " sr=",0
+ExcTxtAd:   dc.b    " ad=",0
+ExcTxtSp:   dc.b    " sp=",0
+    .even
+
+; Il canale COM8 (S53): GdInstall, GdSendC, GdCallC. Codice 68000 puro, quindi
+; sta prima dei kernel GPU/DSP, che aprono le loro sezioni con una .org.
+    .long
+GdBlock:
+    .include "src/gd.s"
+GdBlockEnd:
+    .assert (GdBlockEnd-GdBlock) <= GD_CODE_SIZE
 
 ; Il riempitore dei poligoni sulla GPU TOM. Sta in fondo perche' contiene una
 ; sezione .gpu con la sua .org: quel che segue non e' piu' codice 68000.

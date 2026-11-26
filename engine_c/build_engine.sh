@@ -20,7 +20,7 @@ CFLAGS="-m68000 -O2 -fomit-frame-pointer -ffreestanding -fno-builtin \
 
 # L'ordine non conta per il linker, ma conta per leggere gli errori: prima
 # l'HAL, poi chi lo usa.
-SRC="hal_debug.c hal_mem.c hal_time.c hal_input.c hal_hqr.c hal_panic.c \
+SRC="hal_debug.c hal_mem.c hal_time.c hal_log.c hal_input.c hal_hqr.c hal_panic.c \
      scene_walk.c scene_load.c scene_bg.c body_draw.c sprite_draw.c \
      object_move.c front_menu.c engine_main.c"
 OBJS="crt0.o"

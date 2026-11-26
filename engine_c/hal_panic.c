@@ -42,6 +42,7 @@ void TheEnd(WORD code, const char *msg)
     Dbg_Value(1, (ULONG)(UWORD)code);        /* il codice                   */
     Dbg_Value(2, (ULONG)msg);                /* dove sta la stringa in ROM: */
                                              /* identifica il call site     */
+    Log_End(code, msg);                      /* S53: e una riga E su COM8   */
     for (;;)
         ;
 }
