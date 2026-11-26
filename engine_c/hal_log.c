@@ -29,7 +29,9 @@
  *      c scena, h GPU che non hanno alzato DONE, dr/to del canale,
  *      q/i interruzioni I2S e giri di riposo del DSP nella finestra, s fame.
  *   D  gli stadi dei corpi nella finestra (BodyStat.t_stage, ora in mezze
- *      righe): po ve sh cu so em gp, piu' ov = M3d.
+ *      righe): po ve sh cu so em gp, piu' ov = M3d e rs = ripristino dei
+ *      rettangoli (gia' tolto da em e ov).
+ *   A  mezze righe per attore nella finestra, "indice:tempo" (Body_ActorT).
  *   R  il profiler a campionamento (ViHandler): ogni PROF_SECS secondi una
  *      riga "R n= o=" e poi, una riga per quadro, i cassetti non vuoti come
  *      indice:conteggio (indice = (PC - ROM_CODE) / 64). tools/prof_sum.py li
@@ -126,7 +128,7 @@ static ULONG lg_sum[LG_N];
 static ULONG lg_t0, lg_at, lg_out, lg_mark;
 static ULONG lg_frames, lg_hang;
 static int   lg_started, lg_in_frame;
-static ULONG st0[BODY_TSTAGES], ov0;
+static ULONG st0[BODY_TSTAGES], ov0, cls0;
 static ULONG dsp_irq0, dsp_idle0;
 static int   lg_secs;
 static ULONG prof_cursor;       /* != 0: scarico in corso, prossimo cassetto + 1 */
@@ -143,6 +145,7 @@ static void stage_snapshot(void)
     for (i = 0; i < BODY_TSTAGES; i++)
         st0[i] = BodyStat.t_stage[i];
     ov0 = BodyStat.t_over;
+    cls0 = BgStat.t_cls;
 }
 
 static void prof_clear(void)
@@ -243,9 +246,26 @@ static void line_s(ULONG now)
         for (i = 0; i < BODY_TSTAGES; i++)
             o = put_kv(o, sk[i], BodyStat.t_stage[i] - st0[i], 5);
         o = put_kv(o, "ov", BodyStat.t_over - ov0, 5);
+        o = put_kv(o, "rs", BgStat.t_cls - cls0, 5);
+        *o = 0;
+        log_line(lg_buf);
+
+        /* Riga A: mezze righe per attore nella finestra, "indice:tempo". */
+        o = lg_buf;
+        *o++ = 'A';
+        for (i = 0; i < BODY_ACTOR_T && o < lg_buf + sizeof(lg_buf) - 12; i++) {
+            if (Body_ActorT[i]) {
+                *o++ = ' ';
+                o = put_hex(o, (ULONG)i, 2);
+                *o++ = ':';
+                o = put_hex(o, Body_ActorT[i], 5);
+            }
+        }
         *o = 0;
         log_line(lg_buf);
     }
+    for (i = 0; i < BODY_ACTOR_T; i++)
+        Body_ActorT[i] = 0;
     stage_snapshot();
 
     if (++lg_secs >= PROF_SECS && !prof_cursor) {

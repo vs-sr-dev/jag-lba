@@ -18,7 +18,7 @@ HL_US = {60: 31.7778, 30: 31.7778, 50: 32.0, 25: 32.0}
 PHASES = 'LWGBDFP'
 NAMES = {'L': 'logica', 'W': 'FrameDelay', 'G': 'sync fork', 'B': 'Bg_Show',
          'D': 'corpi', 'F': 'fade', 'P': 'riga COM8'}
-STAGES = ['po', 've', 'sh', 'cu', 'so', 'em', 'gp', 'ov']
+STAGES = ['po', 've', 'sh', 'cu', 'so', 'em', 'gp', 'ov', 'rs']
 
 _state = {'us': 31.7778, 'f': 0}
 
@@ -37,6 +37,19 @@ def parse(text):
             except ValueError:
                 kv[k] = v
     return kind, kv
+
+
+def actors(text):
+    """'A 00:01234 08:05678' -> {0: 0x1234, 8: 0x5678} (mezze righe per attore)."""
+    out = {}
+    for tok in text.split()[1:]:
+        if ':' in tok:
+            i, v = tok.split(':', 1)
+            try:
+                out[int(i, 16)] = int(v, 16)
+            except ValueError:
+                pass
+    return out
 
 
 def brief(text):
@@ -67,6 +80,10 @@ def brief(text):
         us, f = _state['us'], _state['f']
         return 'corpi ms/quadro: ' + ' '.join(
             f'{s} {kv.get(s, 0) * us / 1000 / f:.1f}' for s in STAGES if kv.get(s))
+    if kind == 'A' and _state['f']:
+        us, f = _state['us'], _state['f']
+        return 'attori ms/quadro: ' + ' '.join(
+            f'#{i} {v * us / 1000 / f:.1f}' for i, v in sorted(actors(text).items()))
     if kind == 'E':
         return 'TheEnd!'
     if kind == 'EXC':
@@ -98,6 +115,8 @@ def main(argv):
             rows.append((t, kv, {}))
         elif kind == 'D' and rows and t >= start:
             rows[-1][2].update(kv)
+        elif kind == 'A' and rows and t >= start:
+            rows[-1][2]['_act'] = actors(text)
         elif kind in ('E', 'EXC'):
             print(f'{t:7.2f}  {text}')
 
@@ -139,6 +158,17 @@ def main(argv):
     for s in STAGES:
         ms = tot_st[s] * us / 1000 / tf
         print(f'      {s} {ms:7.2f} ms  {100 * tot_st[s] / ta:5.1f}%')
+    act = {}
+    for t, kv, d in rows:
+        f = kv.get('f', 0)
+        if f and kv.get('B', 0) < 3000 and kv.get('F', 0) < 3000:
+            for i, v in d.get('_act', {}).items():
+                act.setdefault(i, []).append(v * us / 1000 / f)
+    if act:
+        import statistics
+        print('  per attore, ms a quadro (mediana / massimo sulle finestre senza ridisegni):')
+        for i in sorted(act):
+            print(f'      #{i:<3} {statistics.median(act[i]):7.1f} {max(act[i]):7.1f}   ({len(act[i])} finestre)')
 
 
 if __name__ == '__main__':

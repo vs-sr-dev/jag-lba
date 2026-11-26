@@ -1780,7 +1780,7 @@ void Bg_ClsPending(void)
      * aritmetica dei bordi, e la misura che deve scegliere la prossima
      * ottimizzazione manderebbe il lavoro sul pezzo sbagliato
      * ([[feedback_spostare_non_e_togliere]]). Chi lo racchiude lo sottrae. */
-    tc0 = (ULONG)JAG_HAL_VBL_TICK;
+    tc0 = Jag_Time();              /* S53: mezze righe, come BODY_CLOCK */
 
     /* Lista traboccata: si ripristina l'unione invece dei singoli rettangoli.
      * Copre tutto per costruzione (Bg_AddBox aggiorna l'unione anche per quelli
@@ -1797,7 +1797,7 @@ void Bg_ClsPending(void)
 
     BgStat.boxcells = cells;
     npend = 0;
-    BgStat.t_cls += (ULONG)JAG_HAL_VBL_TICK - tc0;
+    BgStat.t_cls += Jag_Time() - tc0;
 }
 
 

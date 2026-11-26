@@ -101,6 +101,8 @@ void  Log_Idle(void);
 void  Log_Boot(void);
 void  Log_End(WORD code, const char *msg);
 void  Log_Vals(const char *tag, const ULONG *v, int n);
+#define BODY_ACTOR_T 24
+extern ULONG Body_ActorT[BODY_ACTOR_T];   /* body_draw.c, mezze righe per attore */
 
 /* ===== INPUT =====
  * Il motore legge queste tre variabili in cima al MainLoop. Le riempie

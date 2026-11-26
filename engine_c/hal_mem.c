@@ -136,12 +136,39 @@ ULONG Hal_MemUsedCube(void)
  * un ciclo di riempimento in una chiamata), quindi vanno fornite comunque. E
  * al motore servono per conto proprio.
  * -------------------------------------------------------------------------*/
+/* S53: A LONG, non piu' a byte. Il profiler del ferro le dava al 4,4% del
+ * tempo (le chiamano AffMask, AffGraph, Box, Cls e i riempitori di poligoni
+ * del fork, una volta per segmento). Sul 68000 una long va scritta a indirizzo
+ * PARI, non multiplo di quattro: basta allineare a pari. Il ciclo srotolato a
+ * quattro long e' quello che GCC non riscrive in una chiamata a memset grazie
+ * a -fno-tree-loop-distribute-patterns (altrimenti sarebbe ricorsione). */
 void *memset(void *dst, int c, unsigned long n)
 {
     unsigned char *p = (unsigned char *)dst;
+    unsigned char b = (unsigned char)c;
 
+    if (n >= 16) {
+        ULONG w, k;
+        ULONG *q;
+
+        if ((ULONG)p & 1) {
+            *p++ = b;
+            n--;
+        }
+        w = (ULONG)b | ((ULONG)b << 8);
+        w |= w << 16;
+        q = (ULONG *)p;
+        for (k = n >> 4; k; k--) {
+            q[0] = w; q[1] = w; q[2] = w; q[3] = w;
+            q += 4;
+        }
+        for (k = (n >> 2) & 3; k; k--)
+            *q++ = w;
+        p = (unsigned char *)q;
+        n &= 3;
+    }
     while (n--)
-        *p++ = (unsigned char)c;
+        *p++ = b;
     return dst;
 }
 
@@ -150,6 +177,30 @@ void *memcpy(void *dst, const void *src, unsigned long n)
     unsigned char *d = (unsigned char *)dst;
     const unsigned char *s = (const unsigned char *)src;
 
+    /* A long solo se i due hanno la stessa parita': dopo al piu' un byte sono
+     * entrambi pari. Altrimenti resta a byte (il 68000 non legge long dispari). */
+    if (n >= 16 && !(((ULONG)d ^ (ULONG)s) & 1)) {
+        ULONG k;
+        ULONG *dq;
+        const ULONG *sq;
+
+        if ((ULONG)d & 1) {
+            *d++ = *s++;
+            n--;
+        }
+        dq = (ULONG *)d;
+        sq = (const ULONG *)s;
+        for (k = n >> 4; k; k--) {
+            dq[0] = sq[0]; dq[1] = sq[1]; dq[2] = sq[2]; dq[3] = sq[3];
+            dq += 4;
+            sq += 4;
+        }
+        for (k = (n >> 2) & 3; k; k--)
+            *dq++ = *sq++;
+        d = (unsigned char *)dq;
+        s = (const unsigned char *)sq;
+        n &= 3;
+    }
     while (n--)
         *d++ = *s++;
     return dst;

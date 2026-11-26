@@ -3952,6 +3952,13 @@ void Body_AnimTick(void)
 }
 
 
+/* S53: il costo di ogni attore in mezze righe, dall'inizio del suo turno nel
+ * ciclo di Body_DrawAll all'inizio del turno dopo (cosi' anche i `continue`
+ * sono contati giusti). Lo legge e lo azzera hal_log.c una volta al secondo
+ * (riga A). Il ripristino dei rettangoli cade dentro il PRIMO attore che lancia
+ * la GPU: per questo la riga D riporta anche `rs` (BgStat.t_cls). */
+ULONG Body_ActorT[BODY_ACTOR_T];
+
 void Body_DrawAll(void)
 {
     LONG light[3];
@@ -4060,11 +4067,22 @@ void Body_DrawAll(void)
         int have_first = 0;
         int first_n = -1;
 
+        ULONG t_act = BODY_CLOCK;
+        int n_act = -1;
+
         for (n = 0; n < NbObjets; n++) {
             T_OBJET *o = &ListObjet[n];
             T_BODY3D b;
             ULONG before;
             WORD ax, ay;
+
+            {
+                ULONG tn = BODY_CLOCK;
+                if (n_act >= 0 && n_act < BODY_ACTOR_T)
+                    Body_ActorT[n_act] += tn - t_act;
+                n_act = n;
+                t_act = tn;
+            }
 
             /* L'ALTRO RAMO di AffScene, e sta QUI dentro apposta: il gioco
              * percorre una lista sola e sceglie il ramo per attore
@@ -4151,6 +4169,8 @@ void Body_DrawAll(void)
             if ((int)n == first_n)
                 BodyStat.firstpolys = (UWORD)(BodyStat.polys - before);
         }
+        if (n_act >= 0 && n_act < BODY_ACTOR_T)
+            Body_ActorT[n_act] += BODY_CLOCK - t_act;
     }
 
     /* La rete di sicurezza: una passata che non ha scritto un pixel - tutti
