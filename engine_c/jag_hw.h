@@ -176,6 +176,24 @@ static inline void Blit_Wait(void)
  * per prudenza. */
 #define GPU_RUN_GUARD_PER_VERT    40UL
 
+/* S53, fase 1: una pausa FUORI DAL BUS fra due letture di DONE. Un 68000 che
+ * esegue dalla DRAM e sorveglia la DRAM in un ciclo stretto porta le `load (rn)`
+ * della GPU da 5,83 a 13,75 clk (JaguarDocs hw/01 6, [FERRO]): proprio mentre
+ * la GPU lavora per noi. Tre `mulu` (~210 clk) non toccano il bus; e' lo schema
+ * di JaguarMI e JagSkyroads. Con la pausa ogni giro dell'attesa dura di piu',
+ * quindi i tetti GPU_RUN_GUARD_* (contati in giri) diventano solo piu' larghi. */
+#ifndef GPU_WAIT_PAUSE
+#define GPU_WAIT_PAUSE 1
+#endif
+
+static inline void Gpu_BusPause(void)
+{
+#if GPU_WAIT_PAUSE
+    unsigned long a = 0, b = 0xFFFFu;
+    __asm__ volatile("mulu.w %1,%0\n\tmulu.w %1,%0\n\tmulu.w %1,%0" : "+d"(a) : "d"(b));
+#endif
+}
+
 static inline int Gpu_Run(unsigned long entry, unsigned long done_addr,
                           unsigned long guard)
 {
@@ -221,6 +239,7 @@ static inline int Gpu_Run(unsigned long entry, unsigned long done_addr,
 
     HW_L(G_CTRL) = GPU_RISCGO;
     while (!HW_L(done_addr)) {
+        Gpu_BusPause();
         if (!--guard) {
             HW_L(G_CTRL) = 0;
             (void)HW_L(G_CTRL);

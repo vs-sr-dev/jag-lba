@@ -27,7 +27,17 @@ entry_table:
 	.text
 	.global _c_init
 _c_init:
-	move.l	#__data_lma, %a0
+	| S53, fase 1: il codice caldo (.fast) dalla ROM alla DRAM, a long (il
+	| linker allinea a 4 sia la LMA sia la VMA). Prima di tutto il resto: da
+	| qui in poi engine_init e chiunque altro la chiama dalla DRAM.
+	move.l	#__fast_lma, %a0
+	move.l	#__fast_start, %a1
+	move.l	#__fast_end, %a2
+5:	cmpa.l	%a1, %a2
+	bls.s	6f
+	move.l	(%a0)+, (%a1)+
+	bra.s	5b
+6:	move.l	#__data_lma, %a0
 	move.l	#__data_start, %a1
 	move.l	#__data_end, %a2
 1:	cmpa.l	%a1, %a2

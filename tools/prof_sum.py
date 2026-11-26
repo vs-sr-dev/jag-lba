@@ -4,7 +4,8 @@
     python tools/prof_sum.py build/logs/ROM_hhmmss.log [--from SECS] [--top N]
 
 ViHandler (src/main_v6.s) conta il PC interrotto in cassetti da 64 byte su tutto
-il codice in cartuccia, da ROM_CODE ($802000) alla fine di ROM_CBLOB ($842000);
+il codice in cartuccia, da ROM_CODE ($802000) alla fine di ROM_CBLOB ($842000),
+e da S53 (fase 1) anche i primi 64 KB di C_ARENA, dove sta la .fast (indici da $1000);
 engine_c/hal_log.c li scarica come righe "R iii:nn ..." (indice del cassetto e
 conteggio, esadecimali). Qui si sommano su tutto il giro e si attribuiscono:
 
@@ -27,6 +28,8 @@ import sys
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ROM_CODE, ROM_CBLOB = 0x802000, 0x812000
+C_ARENA = 0x153000          # S53 fase 1: la .fast in DRAM, indici da $1000
+RAM_IDX = 0x1000
 BIN = 64
 
 
@@ -100,8 +103,12 @@ def main(argv):
     ckeys, rkeys = [s[0] for s in csyms], [s[0] for s in rsyms]
     per, nb = {}, {}
     for i, c in bins.items():
-        a = ROM_CODE + i * BIN
-        name = owner(csyms, ckeys, a) if a >= ROM_CBLOB else 'rmac:' + owner(rsyms, rkeys, a)
+        if i >= RAM_IDX:
+            a = C_ARENA + (i - RAM_IDX) * BIN
+            name = owner(csyms, ckeys, a) + ' [DRAM]'
+        else:
+            a = ROM_CODE + i * BIN
+            name = owner(csyms, ckeys, a) if a >= ROM_CBLOB else 'rmac:' + owner(rsyms, rkeys, a)
         per[name] = per.get(name, 0) + c
         nb[name] = nb.get(name, 0) + 1
     print(f'{total} campioni nei cassetti (dichiarati {n_tot}, fuori dal codice in cartuccia {n_out})')

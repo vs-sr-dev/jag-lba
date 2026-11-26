@@ -150,9 +150,13 @@ static void prof_clear(void)
     volatile UWORD *bin = (volatile UWORD *)JAG_PROF_BINS;
     ULONG i;
 
+    volatile UWORD *ram = (volatile UWORD *)JAG_PROF_BINS_RAM;
+
     JAG_HAL_PROF_ON = 0;
     for (i = 0; i < JAG_PROF_BINS_SIZE / 2; i++)
         bin[i] = 0;
+    for (i = 0; i < JAG_PROF_BINS_RAM_SIZE / 2; i++)
+        ram[i] = 0;
     JAG_HAL_PROF_N = 0;
     JAG_HAL_PROF_OUT = 0;
 }
@@ -160,21 +164,33 @@ static void prof_clear(void)
 /* Una riga R di cassetti non vuoti, a partire dal cursore; ciascuno si azzera
  * appena letto, quindi quel che l'ISR conta nel frattempo va alla finestra
  * dopo (al piu' si perde il campione che cade fra la lettura e l'azzeramento). */
+/* Indici: 0..$FFF i cassetti della cartuccia (PC = ROM_CODE + i*64), da $1000
+ * quelli della .fast in DRAM (PC = C_ARENA + (i-$1000)*64). */
+#define PROF_ROM_N  (JAG_PROF_BINS_SIZE / 2)
+#define PROF_RAM_N  (JAG_PROF_BINS_RAM_SIZE / 2)
+
+static volatile UWORD *prof_bin_at(ULONG i)
+{
+    if (i < PROF_ROM_N)
+        return (volatile UWORD *)JAG_PROF_BINS + i;
+    return (volatile UWORD *)JAG_PROF_BINS_RAM + (i - PROF_ROM_N);
+}
+
 static void prof_dump_line(void)
 {
-    volatile UWORD *bin = (volatile UWORD *)JAG_PROF_BINS;
-    ULONG nbins = JAG_PROF_BINS_SIZE / 2;
+    ULONG nbins = PROF_ROM_N + PROF_RAM_N;
     ULONG i = prof_cursor - 1;
     char *o = lg_buf;
     int k = 0;
 
     *o++ = 'R';
     while (i < nbins && k < PROF_PER_LINE) {
-        UWORD n = bin[i];
+        volatile UWORD *bin = prof_bin_at(i);
+        UWORD n = *bin;
         if (n) {
-            bin[i] = 0;
+            *bin = 0;
             *o++ = ' ';
-            o = put_hex(o, i, 3);
+            o = put_hex(o, i, i < 0x1000 ? 3 : 4);
             *o++ = ':';
             o = put_hex(o, n, n > 0xFF ? 4 : 2);
             k++;

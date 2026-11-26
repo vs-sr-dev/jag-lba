@@ -1053,6 +1053,18 @@ PROF_SPAN       EQU     ROM_CBLOB+ROM_CBLOB_SIZE-ROM_CODE
     addq.w  #1, 0(a0,d0.l)
     bra.s   .vh_prof_n
 .vh_prof_out:
+; Fase 1: il codice caldo in DRAM (.fast, in testa a C_ARENA) ha i suoi
+; cassetti; fuori da tutte e due le zone si conta e basta.
+    move.l  18(sp), d0
+    sub.l   #C_ARENA, d0
+    cmp.l   #(PROF_BINS_RAM_SIZE*32), d0
+    bcc.s   .vh_prof_none
+    lsr.l   #5, d0
+    and.w   #$FFFE, d0
+    lea     PROF_BINS_RAM, a0
+    addq.w  #1, 0(a0,d0.l)
+    bra.s   .vh_prof_n
+.vh_prof_none:
     addq.l  #1, PROF_OUT
 .vh_prof_n:
     addq.l  #1, PROF_N

@@ -80,7 +80,10 @@ DRAM = [
     # Il codice del canale (src/gd.s) gira da QUI, non dalla cartuccia: chiamato
     # da codice in cartuccia, GdInstall bloccava il boot sul ferro (S53).
     ("GD_CODE",        0x1E8000, 0x000400, "src/gd.s copiato in DRAM al boot (S53)"),
-    ("SPARE_HI",       0x1E8400, 0x007C00, "margine alto (audio DSP, M7)"),
+    # I cassetti del profiler per il codice in DRAM (S53, fase 1): i primi
+    # 64 KB di C_ARENA, dove sta la sezione .fast. Una word ogni 64 byte.
+    ("PROF_BINS_RAM",  0x1E8400, 0x000800, "profiler: cassetti per la .fast in DRAM (S53)"),
+    ("SPARE_HI",       0x1E8C00, 0x007400, "margine alto (audio DSP, M7)"),
     ("STACK",          0x1F0000, 0x010000, "stack 68000, top = fine DRAM"),
 ]
 
@@ -778,14 +781,48 @@ def gen_cart_inc():
     return "".join(out)
 
 
+# ---------------------------------------------------------------------------
+# S53, FASE 1: IL CODICE CALDO IN DRAM.
+#
+# Il 68000 che esegue dalla cartuccia va 1,43x piu' piano che dalla DRAM, e
+# rende 2,03-2,11x piu' care le load/store indicizzate della GPU verso la DRAM
+# (JaguarDocs hw/01 6, [FERRO]). Il .text di questi file va nella sezione
+# .fast: VMA in testa a C_ARENA, LMA in ROM, copiata da crt0 al boot.
+#
+# La lista NON e' a occhio: e' il profiler a campionamento del ferro (S53, giro
+# S53_p1f, gioco vero), sommato per file oggetto. Questi coprono ~85% dei
+# campioni con ~30 KB. Fuori, apposta: OBJECT.C del fork (25 KB per il 7%:
+# andra' per funzione) e malloc/free della libc (4%+3,5%: e' lavoro di troppo
+# da togliere, non da accelerare).
+#
+# Lo spazio esce dall'heap di C_ARENA (126 KB liberi nella stanza 0). Il tetto
+# FAST_MAX e' anche quanto vedono i cassetti del profiler in DRAM.
+FAST_OBJS = [
+    "*body_draw.o",       # 35%: la pipeline dei corpi
+    "*scene_bg.o",        # 24%: fondo, M3d, ridisegno
+    "*sprite_draw.o",     # 7%
+    "*hal_mem.o",         # 3,5% (Jag_Size_HQM_Memory, vedi sopra)
+    "*mask_a.o",          # 2,8%
+    "*hal_hqr.o",         # 2,5%
+    "*game_FUNC.o",       # 2,1%
+    "*l3d_P_FUNC.o",      # 1,3%
+    "*jag_video.o",       # 1,0%
+    "*libgcc.a:*",        # __mulsi3, __udivsi3 & co.: pochi byte, chiamate ovunque
+]
+FAST_MAX = 0x10000
+
+
 def gen_linker():
     rom_addr, _, rom_size = cart_region("ROM_CBLOB")
     ram_base, ram_size = region("C_ARENA")
+    excl = " ".join(FAST_OBJS)
+    fast = chr(10).join("        %s(.text .text.*)" % o for o in FAST_OBJS)
     return """/* GENERATO DA tools/memory_map.py - NON MODIFICARE A MANO.
  *
  * Split ROM/RAM del blob C dell'engine (docs/skeleton_design.md 3.1):
- * il 68000 esegue dalla cartuccia in place, quindi .text e .rodata restano
- * in ROM. Solo .data (copiata al boot da crt0) e .bss stanno in DRAM.
+ * il 68000 esegue dalla cartuccia, ma da S53 il codice CALDO (FAST_OBJS in
+ * tools/memory_map.py) sta in DRAM: sezione .fast, VMA in testa a C_ARENA,
+ * LMA in ROM, copiata da crt0. .data (copiata) e .bss seguono in DRAM.
  */
 
 OUTPUT_ARCH(m68k)
@@ -801,13 +838,23 @@ SECTIONS
 {
     .text : {
         *(.entry)
-        *(.text*)
+        *(EXCLUDE_FILE(%s) .text EXCLUDE_FILE(%s) .text.*)
         *(.rodata*)
-        . = ALIGN(2);
+        . = ALIGN(4);
     } > ROM
 
+    /* .fast: VMA in DRAM, LMA in ROM. crt0 copia a long da __fast_lma. */
+    .fast : AT (ADDR(.text) + SIZEOF(.text)) {
+        __fast_start = .;
+%s
+        . = ALIGN(4);
+        __fast_end = .;
+    } > RAM
+    __fast_lma = LOADADDR(.fast);
+    ASSERT(__fast_end - __fast_start <= 0x%X, "FAST_OBJS oltre FAST_MAX: i cassetti del profiler in DRAM non la coprono")
+
     /* .data: VMA in DRAM, LMA in ROM. crt0 copia da __data_lma a __data_start. */
-    .data : AT (ADDR(.text) + SIZEOF(.text)) {
+    .data : AT (LOADADDR(.fast) + SIZEOF(.fast)) {
         . = ALIGN(2);
         __data_start = .;
         *(.data*)
@@ -830,7 +877,8 @@ SECTIONS
 
     /DISCARD/ : { *(.comment) *(.note*) *(.eh_frame*) }
 }
-""" % (rom_addr, rom_size, ram_base, ram_size, ram_base + ram_size)
+""" % (rom_addr, rom_size, ram_base, ram_size, excl, excl, fast, FAST_MAX,
+       ram_base + ram_size)
 
 
 def gen_header():
