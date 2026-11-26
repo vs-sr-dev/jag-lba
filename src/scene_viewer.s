@@ -2737,7 +2737,9 @@ PadFlagsLut:
 ; ---------------------------------------------------------------------------
 ; JagGD BIOS bindings (RetroHQ official)
 ; ---------------------------------------------------------------------------
-    .include "src/gdbios_bindings.s"
+; S53: the RetroHQ GD BIOS bindings that were included here are gone from the
+; repository (no licence to redistribute them; nothing here called them). The
+; GameDrive channel is src/gd.s, run from DRAM (see src/main_v6.s).
 
 ; ---------------------------------------------------------------------------
 ; F4.2a GPU TOM rasterizer (harness + V0 test pixel)
